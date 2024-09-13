@@ -6,7 +6,7 @@ const Web_logo = () => {
             <div className="logo flex">
                 <div className='text-green-900 font-extrabold'>&lt;</div>
                 <div className='text-green-900 font-extrabold'>Smart</div>
-                <div className=' font-extrabold'>Classroom</div>
+                <div className=' font-extrabold'>Skill</div>
                 <div className='text-green-900 font-extrabold'>&gt;</div>
             </div>
         </div>

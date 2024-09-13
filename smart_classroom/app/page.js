@@ -3,6 +3,7 @@ import Image from "next/image";
 import Web_logo from "./Components/Web_logo";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -12,18 +13,18 @@ export default function Home() {
   // const navigate = useNavigate();
 
   const { register, handleSubmit, errors, reset } = useForm()
-    const LearnerOnSubmit = async (data) => {
-        console.log(data)
-        setIslearnerlogin(!islearnerlogin)
-        reset()
-        // navigate('/Learner')
-    }
-    const AdminOnSubmit = async (data) => {
-        console.log(data)
-        setIsAdminlogin(!IsAdminlogin)
-        reset()
-        // navigate('/Learner')
-    }
+  const LearnerOnSubmit = async (data) => {
+    console.log(data)
+    setIslearnerlogin(!islearnerlogin)
+    reset()
+    // navigate('/Learner')
+  }
+  const AdminOnSubmit = async (data) => {
+    console.log(data)
+    setIsAdminlogin(!IsAdminlogin)
+    reset()
+    // navigate('/Learner')
+  }
 
   return (
     <>
@@ -37,8 +38,8 @@ export default function Home() {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, reprehenderit?
           </div>
           <div className="buttons flex justify-around items-center gap-3">
-            <button onClick={() => {setIsAdminlogin(!IsAdminlogin)}} className="px-4 py-2 bg-green-600 text-white font-bold rounded-full hover:bg-green-700 active:bg-green-800">Instructor's Login</button>
-            <button onClick={() => {setIslearnerlogin(!islearnerlogin)}} className="px-4 py-2 bg-green-600 text-white font-bold rounded-full hover:bg-green-700 active:bg-green-800">Learner's Login</button>
+            <button onClick={() => { setIsAdminlogin(!IsAdminlogin) }} className="px-4 py-2 bg-green-600 text-white font-bold rounded-full hover:bg-green-700 active:bg-green-800">Instructor's Login</button>
+            <button onClick={() => { setIslearnerlogin(!islearnerlogin) }} className="px-4 py-2 bg-green-600 text-white font-bold rounded-full hover:bg-green-700 active:bg-green-800">Learner's Login</button>
           </div>
         </div>
         <div className="partition h-1 bg-green-400"></div>
@@ -56,18 +57,20 @@ export default function Home() {
             <h1 className='px-4 py-2 font-bold text-xl'>
               Learner Login
             </h1>
-            <form className='flex flex-col justify-around items-start' onSubmit={handleSubmit(LearnerOnSubmit)}>
+            <form className='flex flex-col justify-around items-start' onSubmit={handleSubmit(AdminOnSubmit)}>
               <label htmlFor="name">First Name</label>
-              <input type="text" {...register("name")} />
+              <input type="text" {...register("name", { required: true })} />
               <label htmlFor="email">Email</label>
-              <input type="email" {...register("email")} />
+              <input type="email" {...register("email", { required: true })} />
               <label htmlFor="password">Password</label>
-              <input type="password" {...register("password")} />
-              <input className='px-6 py-2 mt-2 rounded-full bg-green-500 w-full' type="submit" value="Submit" />
+              <input type="password" {...register("password", { required: true })} />
+              <Link href="/Learner">
+                <input className='px-6 py-2 mt-2 rounded-full bg-green-500 w-full' type="submit" value="Submit" />
+              </Link>
             </form>
           </div>
         )}
-        {/* Login form for Admin */}
+        {/* Login form for ADMIN */}
         {IsAdminlogin && (
           <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-6 py-4 rounded-lg'>
             <h1 className='px-4 py-2 font-bold text-xl'>
