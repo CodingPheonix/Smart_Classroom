@@ -25,7 +25,7 @@ const page = () => {
                                 </ul>
                             </div>
                             <Image
-                                className='h-40 w-32 border border-black'
+                                className='h-40 w-32 border border-black m-10'
                             // src={profilePic}
                             // alt="Picture of the author"
                             // width={500} automatically provided
