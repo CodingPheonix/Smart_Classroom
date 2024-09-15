@@ -2,6 +2,8 @@
 import React from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Link from 'next/link'
+import { v4 as uuidv4 } from 'uuid';
 import Instructor_nav from '../Components/Instructor_nav'
 import I_course_card from '../Components/I_course_card'
 
@@ -20,7 +22,7 @@ const page = () => {
 
     const onSubmit = (data) => {
         console.log(data)
-        setCourseList([...CourseList, data])
+        setCourseList([...CourseList, {...data, id:uuidv4()}])
         reset()
         setIsCreate(!isCreate)
     }
@@ -43,7 +45,7 @@ const page = () => {
                 {/* Course List */}
                 {CourseList.length > 0 ? (
                     CourseList.map((course, index) => (
-                        <I_course_card key={index} courseTitle={course.courseTitle} courseCategory={course.courseCategory} courseDuration={course.courseDuration} />
+                        <Link href={`../Courses/${course.id}`}><I_course_card key={course.id} courseTitle={course.courseTitle} courseCategory={course.courseCategory} courseDuration={course.courseDuration} /></Link>
                     ))
                 ) : (
                     <p className='grid place-items-center'>No courses available</p>
