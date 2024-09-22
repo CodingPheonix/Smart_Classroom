@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import { v4 as uuidv4 } from 'uuid';
@@ -21,10 +21,55 @@ const page = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        console.log(data)
-        setCourseList([...CourseList, {...data, id:uuidv4()}])
+        const dataid = [{ ...data, id: uuidv4() }]
+        console.log(dataid)
+        post_course(dataid[0])
+        getCourse()
         reset()
         setIsCreate(!isCreate)
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getCourse();
+        };
+        fetchData();
+    }, []);
+
+
+
+    //Get Course
+    const getCourse = async () => {
+        try {
+            const responce = await fetch('http://localhost:5000/courses/getCourses', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            const result = await responce.json()
+            console.log(result.data)
+            setCourseList(result.data)
+        } catch (error) {
+            res.send({ status: 'error', message: 'Failed to fetch courses', error: error.message });
+        }
+    }
+
+    //Post Course
+    const post_course = async (data) => {
+        try {
+            const responce = await fetch('http://localhost:5000/courses/postCourses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            const result = await responce.json()
+            console.log(result)
+        } catch (error) {
+            res.send({ status: 'error', message: 'Failed to fetch courses', error: error.message });
+        }
     }
 
     return (
@@ -45,7 +90,13 @@ const page = () => {
                 {/* Course List */}
                 {CourseList.length > 0 ? (
                     CourseList.map((course, index) => (
-                        <Link href={`../Courses/${course.id}`}><I_course_card key={course.id} courseTitle={course.courseTitle} courseCategory={course.courseCategory} courseDuration={course.courseDuration} /></Link>
+                        <Link href={`../Courses/${course.id}`} key={index}>
+                            <I_course_card
+                                key={course.course_id}
+                                courseTitle={course.course_title}
+                                courseCategory={course.course_category}
+                                courseDuration={course.course_duration} />
+                        </Link>
                     ))
                 ) : (
                     <p className='grid place-items-center'>No courses available</p>
