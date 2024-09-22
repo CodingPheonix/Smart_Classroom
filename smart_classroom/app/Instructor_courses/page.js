@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Instructor_nav from '../Components/Instructor_nav'
 import I_course_card from '../Components/I_course_card'
 
-const page = () => {
+const Page = () => {
 
     const [isCreate, setIsCreate] = useState(false)
     const [CourseList, setCourseList] = useState([])
@@ -15,16 +15,15 @@ const page = () => {
     const {
         register,
         handleSubmit,
-        watch,
         reset,
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => {
-        const dataid = [{ ...data, id: uuidv4() }]
+    const onSubmit = async (data) => {
+        const dataid = { ...data, id: uuidv4() }
         console.log(dataid)
-        post_course(dataid[0])
-        getCourse()
+        await post_course(dataid)
+        await getCourse()
         reset()
         setIsCreate(!isCreate)
     }
@@ -36,39 +35,37 @@ const page = () => {
         fetchData();
     }, []);
 
-
-
-    //Get Course
+    // Get Course
     const getCourse = async () => {
         try {
-            const responce = await fetch('http://localhost:5000/courses/getCourses', {
+            const response = await fetch('http://localhost:5000/courses/getCourses', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
-            const result = await responce.json()
+            const result = await response.json()
             console.log(result.data)
             setCourseList(result.data)
         } catch (error) {
-            res.send({ status: 'error', message: 'Failed to fetch courses', error: error.message });
+            console.error('Failed to fetch courses', error.message);
         }
     }
 
-    //Post Course
+    // Post Course
     const post_course = async (data) => {
         try {
-            const responce = await fetch('http://localhost:5000/courses/postCourses', {
+            const response = await fetch('http://localhost:5000/courses/postCourses', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data)
             })
-            const result = await responce.json()
+            const result = await response.json()
             console.log(result)
         } catch (error) {
-            res.send({ status: 'error', message: 'Failed to fetch courses', error: error.message });
+            console.error('Failed to post course', error.message);
         }
     }
 
@@ -86,16 +83,17 @@ const page = () => {
                     <li>Course Title</li>
                     <li>Course Category</li>
                     <li>Duration</li>
+                    <li>Actions</li>
                 </ul>
                 {/* Course List */}
                 {CourseList.length > 0 ? (
                     CourseList.map((course, index) => (
-                        <Link href={`../Courses/${course.id}`} key={index}>
-                            <I_course_card
-                                key={course.course_id}
-                                courseTitle={course.course_title}
-                                courseCategory={course.course_category}
-                                courseDuration={course.course_duration} />
+                        <Link key={index} href={`/course/${course.course_id}`}>
+                                <I_course_card
+                                    id={course.course_id}
+                                    courseTitle={course.course_title}
+                                    courseCategory={course.course_category}
+                                    courseDuration={course.course_duration} />
                         </Link>
                     ))
                 ) : (
@@ -118,8 +116,9 @@ const page = () => {
                                     type="text"
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
                                     placeholder="Enter course title"
-                                    {...register("courseTitle")}
+                                    {...register("courseTitle", { required: true })}
                                 />
+                                {errors.courseTitle && <p className="text-red-500">Course Title is required</p>}
                             </div>
 
                             {/* Course Description */}
@@ -131,8 +130,9 @@ const page = () => {
                                     rows="4"
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
                                     placeholder="Enter course description"
-                                    {...register("courseDescription")}
+                                    {...register("courseDescription", { required: true })}
                                 ></textarea>
+                                {errors.courseDescription && <p className="text-red-500">Course Description is required</p>}
                             </div>
 
                             {/* Course Category */}
@@ -142,7 +142,7 @@ const page = () => {
                                 </label>
                                 <select
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
-                                    {...register("courseCategory")}
+                                    {...register("courseCategory", { required: true })}
                                 >
                                     <option value="" disabled>Select a category</option>
                                     <option value="Computer Science">Computer Science</option>
@@ -150,6 +150,7 @@ const page = () => {
                                     <option value="Physics">Physics</option>
                                     <option value="Literature">Literature</option>
                                 </select>
+                                {errors.courseCategory && <p className="text-red-500">Course Category is required</p>}
                             </div>
 
                             {/* Course Duration */}
@@ -161,8 +162,9 @@ const page = () => {
                                     type="number"
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
                                     placeholder="Enter duration in weeks"
-                                    {...register("courseDuration")}
+                                    {...register("courseDuration", { required: true })}
                                 />
+                                {errors.courseDuration && <p className="text-red-500">Course Duration is required</p>}
                             </div>
 
                             {/* Submit Button */}
@@ -183,4 +185,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

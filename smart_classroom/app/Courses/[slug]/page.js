@@ -1,13 +1,16 @@
 "use client"
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 
-const page = ({ params }) => {
+const page = ({params}) => {
+  console.log(params.slug)
 
   const [isAddingCourse, setIsAddingCourse] = useState(false)
   const [contentType, setContentType] = useState('')
+  const [title, settitle] = useState('')
+  const [courseDetails, setCourseDetails] = useState({})
 
   const {
     register,
@@ -23,10 +26,33 @@ const page = ({ params }) => {
     reset()
   }
 
+  useEffect(() => {
+    const fetchTitle = async () => {
+        await getTitle();
+    };
+    fetchTitle();
+}, []);
+  
+
+  const getTitle = async () => {
+    const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        }
+    })
+    const data = await responce.json()
+    console.log(data.data)
+    settitle(data.data.course_title)
+    setCourseDetails([() => [...courseDetails, data.data]])
+    console.log("course details are",courseDetails)
+  }
+  
+
   return (
     <div className='relative h-screen'>
       <div className='flex justify-between items-center px-4 h-16 bg-green-200 '>
-        <h1 className='font-bold text-xl'>Title</h1>
+        <h1 className='font-bold text-xl'>{title}</h1>
         <button onClick={() => { setIsAddingCourse(!isAddingCourse) }} className='px-4 py-2 border-green-700 border-2 rounded-full bg-white'>Add Module</button>
       </div>
       {isAddingCourse && (
@@ -52,7 +78,7 @@ const page = ({ params }) => {
                 )}
               </div>
 
-              {/* Module Description */}
+              {/* Module Description
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2" htmlFor="moduleDescription">
                   Module Description
@@ -67,7 +93,7 @@ const page = ({ params }) => {
                 {errors.moduleDescription && (
                   <p className="text-red-500 text-sm mt-1">{errors.moduleDescription.message}</p>
                 )}
-              </div>
+              </div> */}
 
               {/* Content Type */}
               <div className="mb-4">
