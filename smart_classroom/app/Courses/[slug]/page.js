@@ -1,16 +1,27 @@
 "use client"
+import Course_details_card from '@/app/Components/Course_details_card'
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 
-const page = ({params}) => {
-  console.log(params.slug)
+const page = ({ params }) => {
 
   const [isAddingCourse, setIsAddingCourse] = useState(false)
   const [contentType, setContentType] = useState('')
   const [title, settitle] = useState('')
   const [courseDetails, setCourseDetails] = useState({})
+  const [moduleList, setModuleList] = useState([])
+
+  useEffect(() => {
+    const getModules = async () => {
+      const modules = await getModule()
+      console.log("modules fetched = ", modules)
+      setModuleList(modules)
+    }
+    getModules()
+  }, [isAddingCourse])
+  
 
   const {
     register,
@@ -22,39 +33,97 @@ const page = ({params}) => {
 
   const onSubmit = (data) => {
     console.log(data)
+    setModuleList([...moduleList, data])
+    const newdata = { ...data, id: uuidv4() }
+    console.log(newdata)
+    createModule(newdata)
     setIsAddingCourse(false)
     reset()
   }
 
+  const getModule = async () => {
+    try {
+      const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const result = await responce.json()
+      // console.log(result.data.course_details)
+      return result.data.course_details
+      // setModuleList(result.data.course_details)
+      // console.log(moduleList)
+    } catch (error) {
+      console.error("Failed to fetch course list: ", error.message)
+    }
+  }
+
+
+  const createModule = async (data) => {
+    try {
+      const result = await fetch(`http://localhost:5000/courses/course/createModule/${params.slug}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      const response = await result.json()
+      console.log(response)
+    } catch (error) {
+      console.error('Failed to modify courses', error.message);
+    }
+  }
+
+
   useEffect(() => {
     const fetchTitle = async () => {
-        await getTitle();
+      await getTitle();
     };
     fetchTitle();
-}, []);
-  
+  }, []);
+
 
   const getTitle = async () => {
     const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        }
+      }
     })
     const data = await responce.json()
     console.log(data.data)
     settitle(data.data.course_title)
-    setCourseDetails([() => [...courseDetails, data.data]])
-    console.log("course details are",courseDetails)
   }
-  
+
 
   return (
-    <div className='relative h-screen'>
+    <div className='relative h-[calc(100vh-9rem)]'>
       <div className='flex justify-between items-center px-4 h-16 bg-green-200 '>
         <h1 className='font-bold text-xl'>{title}</h1>
         <button onClick={() => { setIsAddingCourse(!isAddingCourse) }} className='px-4 py-2 border-green-700 border-2 rounded-full bg-white'>Add Module</button>
       </div>
+
+      {/* module  */}
+      <ol className='h-full'>
+        {moduleList.length > 0 ? (
+          moduleList.map((module, index) => (
+            <li key={index}>
+              <Course_details_card
+                module_title={module.module_title}
+                module_description={module.module_description}
+                content_type={module.content_type}
+              />
+            </li>
+          ))
+        ) : (
+          <p className='grid place-items-center h-full'>No modules yet</p>
+        )}
+      </ol>
+
+
+      {/* Form for adding courses */}
       {isAddingCourse && (
         <div className="absolute top-0 left-0 w-full h-full bg-gray-100 flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
@@ -78,7 +147,7 @@ const page = ({params}) => {
                 )}
               </div>
 
-              {/* Module Description
+              {/* Module Description */}
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2" htmlFor="moduleDescription">
                   Module Description
@@ -93,7 +162,7 @@ const page = ({params}) => {
                 {errors.moduleDescription && (
                   <p className="text-red-500 text-sm mt-1">{errors.moduleDescription.message}</p>
                 )}
-              </div> */}
+              </div>
 
               {/* Content Type */}
               <div className="mb-4">

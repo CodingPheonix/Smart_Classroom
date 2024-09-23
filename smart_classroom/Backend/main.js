@@ -52,7 +52,7 @@ app.post('/courses/postCourses', async (req, res) => {
   }
 })
 
-//Fetch title for each course
+//Fetch each course
 app.get('/courses/course/get-title/:slug', async (req, res) => {
   try {
     const courses = await course.findOne({course_id: req.params.slug})
@@ -61,6 +61,34 @@ app.get('/courses/course/get-title/:slug', async (req, res) => {
     res.send({ status: 'error', message: 'Failed to fetch course title', error: error.message });
   }
 })
+
+app.put('/courses/course/createModule/:slug', async (req, res) => {
+  try {
+    const courses = await course.findOne({ course_id: req.params.slug });
+    if (!courses) {
+      return res.status(404).send({ success: false, message: 'Course not found' });
+    }
+
+    const { id, moduleTitle, moduleDescription, contentType, videoUrl } = req.body;
+
+    const newModule = {
+      module_id: id,
+      module_title: moduleTitle,
+      module_description: moduleDescription,
+      content_type: contentType,
+      module_data: contentType === 'video' ? [videoUrl] : []
+    };
+
+    courses.course_details.push(newModule); // Add new module to the array
+
+    const updated_course = await courses.save();
+
+    res.json({ success: true, message: 'Course updated successfully', data: courses });
+  } catch (error) {
+    res.status(500).send({ success: false, message: 'Failed to update course', error: error.message });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
