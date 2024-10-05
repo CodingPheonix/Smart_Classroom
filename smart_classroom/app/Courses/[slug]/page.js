@@ -21,7 +21,13 @@ const page = ({ params }) => {
     }
     getModules()
   }, [isAddingCourse])
-  
+
+  useEffect(() => {
+    const fetchTitle = async () => {
+      await getTitle();
+    };
+    fetchTitle();
+  }, []);
 
   const {
     register,
@@ -76,15 +82,6 @@ const page = ({ params }) => {
     }
   }
 
-
-  useEffect(() => {
-    const fetchTitle = async () => {
-      await getTitle();
-    };
-    fetchTitle();
-  }, []);
-
-
   const getTitle = async () => {
     const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {
       method: 'GET',
@@ -111,6 +108,8 @@ const page = ({ params }) => {
           moduleList.map((module, index) => (
             <li key={index}>
               <Course_details_card
+                course_id={params.slug}
+                module_id={module.module_id}
                 module_title={module.module_title}
                 module_description={module.module_description}
                 content_type={module.content_type}
@@ -176,8 +175,7 @@ const page = ({ params }) => {
                   onChange={(e) => setContentType(e.target.value)}
                 >
                   <option value="" disabled>Select content type</option>
-                  <option value="video">Video</option>
-                  <option value="pdf">PDF</option>
+                  <option value="Content">Content</option>
                   <option value="quiz">Quiz</option>
                 </select>
                 {errors.contentType && (
@@ -186,7 +184,7 @@ const page = ({ params }) => {
               </div>
 
               {/* Video URL */}
-              {contentType === 'video' && (
+              {/* {contentType === 'content' && (
                 <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="videoUrl">
                     Video URL
@@ -208,10 +206,10 @@ const page = ({ params }) => {
                     <p className="text-red-500 text-sm mt-1">{errors.videoUrl.message}</p>
                   )}
                 </div>
-              )}
+              )} */}
 
               {/* PDF Upload */}
-              {contentType === 'pdf' && (
+              {/* {contentType === 'pdf' && (
                 <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="pdfFile">
                     Upload PDF
@@ -227,10 +225,10 @@ const page = ({ params }) => {
                     <p className="text-red-500 text-sm mt-1">{errors.pdfFile.message}</p>
                   )}
                 </div>
-              )}
+              )} */}
 
               {/* Quiz Questions */}
-              {contentType === 'quiz' && (
+              {/* {contentType === 'quiz' && (
                 <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="quizQuestions">
                     Quiz Questions (comma separated)
@@ -246,7 +244,7 @@ const page = ({ params }) => {
                     <p className="text-red-500 text-sm mt-1">{errors.quizQuestions.message}</p>
                   )}
                 </div>
-              )}
+              )} */}
 
               {/* Submit Button */}
               <div className="mt-6">

@@ -88,7 +88,7 @@ const Page = () => {
                 {/* Course List */}
                 {CourseList.length > 0 ? (
                     CourseList.map((course, index) => (
-                        <Link key={index} href={`/course/${course.course_id}`}>
+                        <Link key={index} href={`/Courses/${course.course_id}`}>
                                 <I_course_card
                                     id={course.course_id}
                                     courseTitle={course.course_title}

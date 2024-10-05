@@ -55,7 +55,7 @@ app.post('/courses/postCourses', async (req, res) => {
 //Fetch each course
 app.get('/courses/course/get-title/:slug', async (req, res) => {
   try {
-    const courses = await course.findOne({course_id: req.params.slug})
+    const courses = await course.findOne({ course_id: req.params.slug })
     res.send({ success: true, message: "Course title fetched successfully", data: courses })
   } catch (error) {
     res.send({ status: 'error', message: 'Failed to fetch course title', error: error.message });
@@ -88,6 +88,23 @@ app.put('/courses/course/createModule/:slug', async (req, res) => {
     res.status(500).send({ success: false, message: 'Failed to update course', error: error.message });
   }
 });
+
+//Delete each course
+app.put('/courses/course/deleteModule/:Course/:Module', async (req, res) => {
+  const { Course, Module } = req.params;
+  try {
+    const target_course = await course.findOne({ course_id: Course });
+    if (!target_course) {
+      return res.status(404).send({ success: false, message: 'Course not found' })
+    }
+    target_course.course_details = target_course.course_details.filter(module => module.module_id !== Module);
+    console.log(target_course.course_details);
+    await target_course.save()
+    res.json({ success: true, message: "module deleted successfully" })
+  } catch (error) {
+    res.status(500).send({ success: false, message: 'Failed to delete module', error: error.message });
+  }
+})
 
 
 app.listen(port, () => {
