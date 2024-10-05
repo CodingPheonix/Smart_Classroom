@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link';
 
 const Course_details_card = (props) => {
 
@@ -21,7 +22,7 @@ const Course_details_card = (props) => {
         </svg>
     );
 
-    const handleDelete = async (course,id) => {
+    const handleDelete = async (course, id) => {
         const responce = await fetch(`http://localhost:5000/courses/course/deleteModule/${course}/${id}`, {
             method: 'PUT',
             headers: {
@@ -41,11 +42,13 @@ const Course_details_card = (props) => {
                     <p className='text-sm'>{props.module_description} . {props.content_type}</p>
                 </div>
                 <div className='flex gap-3'>
-                    <button className='flex gap-1'>
-                        <Book02Icon />
-                        Read
-                    </button>
-                    <button onClick={()=>{handleDelete(props.course_id, props.module_id)}} className='flex gap-1'>
+                    <Link href={`/Module/${props.module_id}@${props.course_id}`}>
+                        <button className='flex gap-1'>
+                            <Book02Icon />
+                            Read
+                        </button>
+                    </Link>
+                    <button onClick={() => { handleDelete(props.course_id, props.module_id) }} className='flex gap-1'>
                         <Delete03Icon />
                         Delete
                     </button>

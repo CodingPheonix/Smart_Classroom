@@ -106,6 +106,27 @@ app.put('/courses/course/deleteModule/:Course/:Module', async (req, res) => {
   }
 })
 
+//Get the details for indivisual module
+app.get('/courses/course/module/:Course/:Module', async(req, res) => {
+  try {
+    const {Course, Module} = req.params
+    const target_course = await course.findOne({ course_id: Course });
+
+    if (!target_course) {
+      return res.status(404).send({ success: false, message: 'Course not found' })
+    }
+
+    const target_module = target_course.course_details.find(module => module.module_id === Module)
+
+    if (!target_module) {
+      return res.status(404).send({ success: false, message: 'Module not found' })
+    }
+
+    res.json({success: true, message: "Module fetched successfully", data: target_module})
+  } catch (error) {
+    res.status(500).send({ success: false, message: 'Failed to fetch module', error: error.message });
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
