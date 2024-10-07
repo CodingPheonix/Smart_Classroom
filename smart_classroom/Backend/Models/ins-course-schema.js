@@ -17,4 +17,15 @@ const course_schema = new mongoose.Schema({
     course_details: [module_schema]
 })
 
+const theory = new mongoose.Schema({
+    theory_heading: String,
+    theory_explanation: String,
+})
+
+const module_data_schema = new mongoose.Schema({
+    module_theory: [theory],
+    module_attachments: [String]
+})
+
 export const course = mongoose.model('course', course_schema)
+export const module_data = mongoose.model('module_data', module_data_schema)

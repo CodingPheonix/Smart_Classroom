@@ -3,6 +3,7 @@ import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import cors from "cors"
 import { course } from "./Models/ins-course-schema.js"
+import { module_data } from "./Models/ins-course-schema.js"
 
 const app = express()
 const port = 5000
@@ -125,6 +126,15 @@ app.get('/courses/course/module/:Course/:Module', async(req, res) => {
     res.json({success: true, message: "Module fetched successfully", data: target_module})
   } catch (error) {
     res.status(500).send({ success: false, message: 'Failed to fetch module', error: error.message });
+  }
+})
+
+//post Module data(Theory) to db
+app.post('/courses/course/module/:module', async(req, res) => {
+  try {
+    
+  } catch (error) {
+    res.status(500).send({ success: false, message: 'Failed to post module data', error: error.message });
   }
 })
 
