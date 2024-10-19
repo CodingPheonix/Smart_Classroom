@@ -184,25 +184,45 @@ app.put('/courses/course/module/:Module', async (req, res) => {
 });
 
 //Get module data (theory)
-app.get('/courses/course/module/getparapagedata/:Module', async (req, res) => {
-  try {
-    const { Module } = req.params;
-    console.log(Module);
+// app.get('/courses/course/module/getparapagedata/:Module', async (req, res) => {
+//   try {
+//     const { Module } = req.params;
+//     console.log(Module);
     
-    console.log(`Looking for module with ID: ${Module}`);
-    const target_module = await module_data.findOne({ module_id: Module });
-    console.log(target_module.module_theory)
+//     console.log(`Looking for module with ID: ${Module}`);
+//     const target_module = await module_data.findOne({ module_id: Module });
+//     console.log(target_module.module_theory)
 
-    if (target_module) {
-      res.status(200).send({ message: "Data required found", data: target_module.module_theory });
-    } else {
-      res.status(404).send({ success: false, message: "Module not found" }); 
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ success: false, message: "Internal Server Error" });
+//     if (target_module) {
+//       res.status(200).send({ message: "Data required found", data: target_module.module_theory });
+//     } else {
+//       res.status(404).send({ success: false, message: "Module not found" }); 
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ success: false, message: "Internal Server Error" });
+//   }
+// });
+
+app.get('/getparapagedata/:Module', async (req, res) => {
+  try {
+        const { Module } = req.params;
+        console.log(Module);
+        
+        console.log(`Looking for module with ID: ${Module}`);
+        const target_module = await module_data.findOne({ module_id: Module });
+        console.log(target_module.module_theory)
+    
+        if (target_module) {
+          res.status(200).send({ message: "Data required found", data: target_module.module_theory });
+        } else {
+          res.status(404).send({ success: false, message: "Module not found" }); 
+        }
+      } catch (error) {
+    
   }
-});
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
