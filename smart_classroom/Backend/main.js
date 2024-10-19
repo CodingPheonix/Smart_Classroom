@@ -63,6 +63,8 @@ app.get('/courses/course/get-title/:slug', async (req, res) => {
   }
 })
 
+
+//create module
 app.put('/courses/course/createModule/:slug', async (req, res) => {
   try {
     const courses = await course.findOne({ course_id: req.params.slug });
@@ -108,9 +110,9 @@ app.put('/courses/course/deleteModule/:Course/:Module', async (req, res) => {
 })
 
 //Get the details for indivisual module
-app.get('/courses/course/module/:Course/:Module', async(req, res) => {
+app.get('/courses/course/module/:Course/:Module', async (req, res) => {
   try {
-    const {Course, Module} = req.params
+    const { Course, Module } = req.params
     const target_course = await course.findOne({ course_id: Course });
 
     if (!target_course) {
@@ -123,20 +125,84 @@ app.get('/courses/course/module/:Course/:Module', async(req, res) => {
       return res.status(404).send({ success: false, message: 'Module not found' })
     }
 
-    res.json({success: true, message: "Module fetched successfully", data: target_module})
+    res.json({ success: true, message: "Module fetched successfully", data: target_module })
   } catch (error) {
     res.status(500).send({ success: false, message: 'Failed to fetch module', error: error.message });
   }
 })
 
 //post Module data(Theory) to db
-app.post('/courses/course/module/:module', async(req, res) => {
+app.post('/courses/course/setModule', async (req, res) => {
   try {
-    
+    console.log(req.body)
+    const { moduleTitle, contentType, id } = req.body
+
+    const new_module_data = new module_data({
+      module_id: id,
+      module_title: moduleTitle,
+      content_type: contentType,
+      module_theory: [],
+      module_attachments: [],
+    })
+
+    console.log(new_module_data);
+    await new_module_data.save()
+
+    res.status(200).send({ message: "Default module values added successfully", data: new_module_data })
+
   } catch (error) {
     res.status(500).send({ success: false, message: 'Failed to post module data', error: error.message });
   }
 })
+
+//Modify module theory data
+app.put('/courses/course/module/:Module', async (req, res) => {
+  try {
+    const { Module } = req.params;
+    const target_module = await module_data.findOne({ module_id: Module });
+
+    if (target_module) { 
+      target_module.module_theory = []; 
+
+      req.body.forEach(item => {
+        const newTheory = {
+          theory_heading: item.heading,
+          theory_explanation: item.explanation
+        };
+        target_module.module_theory.push(newTheory);
+      });
+
+      await target_module.save();
+      res.status(200).json({ message: 'Module theory updated successfully' });
+    } else {
+      res.status(404).json({ message: 'Module not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+//Get module data (theory)
+app.get('/courses/course/module/getparapagedata/:Module', async (req, res) => {
+  try {
+    const { Module } = req.params;
+    console.log(Module);
+    
+    console.log(`Looking for module with ID: ${Module}`);
+    const target_module = await module_data.findOne({ module_id: Module });
+    console.log(target_module.module_theory)
+
+    if (target_module) {
+      res.status(200).send({ message: "Data required found", data: target_module.module_theory });
+    } else {
+      res.status(404).send({ success: false, message: "Module not found" }); 
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ success: false, message: "Internal Server Error" });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

@@ -43,6 +43,7 @@ const page = ({ params }) => {
     const newdata = { ...data, id: uuidv4() }
     console.log(newdata)
     createModule(newdata)
+    set_default_moduleData(newdata)
     setIsAddingCourse(false)
     reset()
   }
@@ -81,6 +82,23 @@ const page = ({ params }) => {
       console.error('Failed to modify courses', error.message);
     }
   }
+
+  const set_default_moduleData = async (data) => {
+    try {
+      const responce = await fetch(`http://localhost:5000/courses/course/setModule`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      const result = await responce.json()
+      console.log(result)
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
 
   const getTitle = async () => {
     const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {
