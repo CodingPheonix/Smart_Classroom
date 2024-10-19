@@ -44,6 +44,7 @@ const page = ({ params }) => {
     console.log(newdata)
     createModule(newdata)
     set_default_moduleData(newdata)
+    default_post_quiz_data(newdata)
     setIsAddingCourse(false)
     reset()
   }
@@ -99,6 +100,21 @@ const page = ({ params }) => {
     }
   }
 
+  const default_post_quiz_data = async (data) => {
+    try {
+      const responce = await fetch(`http://localhost:5000/post_quiz_data`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      const result = await responce.json()
+      console.log(result)
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 
   const getTitle = async () => {
     const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {

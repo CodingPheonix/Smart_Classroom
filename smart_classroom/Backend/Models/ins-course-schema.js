@@ -30,5 +30,19 @@ const module_data_schema = new mongoose.Schema({
     module_attachments: [String]
 })
 
+const questions = new mongoose.Schema({
+    question_title: String,
+    options: [String],
+    correct_option: String
+})
+
+const quiz_data_schema = new mongoose.Schema({
+    module_id: String,
+    module_title: String,
+    content_type: String,
+    quiz: [questions]
+})
+
 export const course = mongoose.model('course', course_schema)
 export const module_data = mongoose.model('module_data', module_data_schema)
+export const quiz_data = mongoose.model('quiz_data', quiz_data_schema)
