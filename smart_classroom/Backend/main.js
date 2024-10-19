@@ -222,6 +222,7 @@ app.post('/post_quiz_data', async (req, res) => {
   }
 })
 
+// Modify the quiz data on adding
 app.put('/post_quiz_data/:Module', async (req, res) => {
   try {
     const { Module } = req.params; 
@@ -251,6 +252,20 @@ app.put('/post_quiz_data/:Module', async (req, res) => {
   }
 });
 
+app.get('/get_quiz_data/:Module', async (req, res) => {
+  try {
+    const { Module } = req.params
+    const target_quiz_data = await quiz_data.findOne({ module_id: Module });
+    if (target_quiz_data) {
+      res.status(200).send({message: "quiz data fetched successfully", data: target_quiz_data.quiz})
+    }else{
+      res.status(404).json({ message: 'quiz data not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

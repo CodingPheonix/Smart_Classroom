@@ -23,10 +23,10 @@ const Page = ({ params }) => {
         }
     });
 
-    const { fields: questionFields, append: appendQuestion } = useFieldArray({
+    const { fields: questionFields, append: appendQuestion, replace: replaceQuestions } = useFieldArray({
         control,
         name: 'questions'
-    });
+      });
 
     // Fetch List
     const get_module_data = async () => {
@@ -87,12 +87,37 @@ const Page = ({ params }) => {
       const result = await responce.json()
       console.log(result);
     }
+
+    //get quiz details
+    const get_quiz_details = async (data) => {
+        const responce = await fetch(`http://localhost:5000/get_quiz_data/${module_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+        })
+        const result = await responce.json()
+        console.log(result);
+
+        if (result.data) {
+            const formattedQuestions = result.data.map((q) => ({
+              question: q.question_title,
+              options: q.options,
+              correctAnswer: q.correct_option // Or index if needed
+            }));
+      
+            // Use `replace` to update the `useFieldArray` with new questions
+            replaceQuestions(formattedQuestions);
+          }
+      
+    }
     
 
     //UseEffects
     useEffect(() => {
         get_module_data();
         get_parapagedata();
+        get_quiz_details();
     }, []);
 
     // Submit Functions
