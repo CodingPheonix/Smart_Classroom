@@ -43,7 +43,7 @@ const L_mycourse_card = (props) => {
                     <button onClick={handleDeleteCourse}>
                         <Delete02Icon />
                     </button>
-                    <Link href={`/Courses/${props.id}`}>
+                    <Link href={`/LearnerCourses/${props.id}`}>
                         <button>
                             <ArrowUpRight03Icon />
                         </button>

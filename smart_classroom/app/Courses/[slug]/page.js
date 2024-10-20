@@ -1,12 +1,12 @@
 "use client"
-import Course_details_card from '@/app/Components/Course_details_card'
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
+import Course_details_card from '../../Components/Course_details_card'
+
 
 const page = ({ params }) => {
-
   const [isAddingCourse, setIsAddingCourse] = useState(false)
   const [contentType, setContentType] = useState('')
   const [title, settitle] = useState('')

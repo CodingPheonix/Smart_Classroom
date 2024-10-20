@@ -337,6 +337,15 @@ app.delete('/delete_from_mycourses/:id', async (req, res) => {
   }
 })
 
+//Fetch course for Learner
+// app.get('/get_L_course_details/:Course', async (req, res) => {
+//   try {
+//     const target_course = await course.find({})
+//   } catch (error) {
+    
+//   }
+// })
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

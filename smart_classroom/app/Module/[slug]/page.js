@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import Para_courses from '@/app/Components/Para_courses';
+import Para_courses from '../../Components/Para_courses';
 
 const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
