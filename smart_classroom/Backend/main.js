@@ -5,6 +5,7 @@ import cors from "cors"
 import { course } from "./Models/ins-course-schema.js"
 import { module_data } from "./Models/ins-course-schema.js"
 import { quiz_data } from "./Models/ins-course-schema.js"
+import { learner_course } from "./Models/ins-course-schema.js"
 
 const app = express()
 const port = 5000
@@ -278,6 +279,59 @@ app.put('/handle_delete_quiz/:Module', async (req, res) => {
     } else {
       res.status(404).json({ message: 'Quiz not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+//Selected courses get into students courses inventory
+app.post('/get_to_mycourses/:id', async(req, res) => {
+  try {
+    const  { id } = req.params
+    const target_course = await course.findOne({ course_id: id });
+    
+    if (target_course) {
+      const saved_course = new learner_course({
+        course_id: target_course.course_id,
+        course_title: target_course.course_title,
+        course_description: target_course.course_description,
+        course_category: target_course.course_category,
+        course_duration: target_course.course_duration,
+        course_details: target_course.course_details
+      })
+      await saved_course.save()
+      res.status(200).send({message: "Course is saved"})
+    }else {
+      res.status(404).json({ message: 'target course not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+//get all courses for "My courses" in learner section
+app.get('/getMyCourseList', async (req, res) =>{
+  try {
+    const  courses = await learner_course.find({})
+
+    if (courses) {
+      res.status(200).send({message: "Fetched all courses", data: courses})
+    }else {
+      res.status(404).json({ message: 'target course not found' });
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+// delete course from "My courses" in learner section
+app.delete('/delete_from_mycourses/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const course = await learner_course.findOneAndDelete({course_id: id})
+    console.log(course)
+    res.status(200).send({message:"Target course deleted"})
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
