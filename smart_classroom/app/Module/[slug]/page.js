@@ -17,7 +17,7 @@ const Page = ({ params }) => {
     ]);
 
     // Useform and Usefield array
-    const { register, handleSubmit, control,  reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
             questions: [{ question: '', options: ['', '', '', ''], correctAnswer: '' }]
         }
@@ -26,7 +26,7 @@ const Page = ({ params }) => {
     const { fields: questionFields, append: appendQuestion, replace: replaceQuestions } = useFieldArray({
         control,
         name: 'questions'
-      });
+    });
 
     // Fetch List
     const get_module_data = async () => {
@@ -77,15 +77,15 @@ const Page = ({ params }) => {
 
     // Post quiz questions to db
     const post_quiz_data = async (data) => {
-      const responce = await fetch(`http://localhost:5000/post_quiz_data/${module_id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      })
-      const result = await responce.json()
-      console.log(result);
+        const responce = await fetch(`http://localhost:5000/post_quiz_data/${module_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        const result = await responce.json()
+        console.log(result);
     }
 
     //get quiz details
@@ -94,24 +94,34 @@ const Page = ({ params }) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                },
+            },
         })
         const result = await responce.json()
         console.log(result);
 
         if (result.data) {
             const formattedQuestions = result.data.map((q) => ({
-              question: q.question_title,
-              options: q.options,
-              correctAnswer: q.correct_option // Or index if needed
+                question: q.question_title,
+                options: q.options,
+                correctAnswer: q.correct_option // Or index if needed
             }));
-      
+
             // Use `replace` to update the `useFieldArray` with new questions
             replaceQuestions(formattedQuestions);
-          }
-      
+        }
+
     }
-    
+
+    const handle_delete_quiz = async () => {
+        const response = await fetch(`http://localhost:5000/handle_delete_quiz/${module_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const result = await response.json()
+        console.log(result);
+    }
 
     //UseEffects
     useEffect(() => {
@@ -120,7 +130,7 @@ const Page = ({ params }) => {
         get_quiz_details();
     }, []);
 
-    // Submit Functions
+    // Functions
     const paragraphSubmit = (data) => {
         console.log(data);
         setparaPageData((prev) => [
@@ -185,14 +195,17 @@ const Page = ({ params }) => {
                     // Section for the quiz setting
 
                     <div className="min-h-screen bg-green-50 p-8">
-                        <h1 className="text-3xl font-bold text-green-700 mb-6">Create Quiz</h1>
+                        <div className='flex justify-between items-center'>
+                            <h1 className="text-3xl font-bold text-green-700 mb-6">Create Quiz</h1>
+                            <button onClick={handle_delete_quiz} className='px-4 py-2 rounded-full border border-green-400 bg-white hover:text-green-500 text-black hover:border-green-600 font-semibold mb-6'>Delete All</button>
+                        </div>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             {questionFields.map((question, qIndex) => (
                                 <div key={question.id} className="mb-8 p-6 bg-white shadow rounded-lg">
                                     <div className="mb-4">
                                         <div className='flex justify-between'>
-                                        <label className="block text-green-700 font-medium">Question {qIndex + 1}</label>
-                                        <p className='text-green-300'>Select the correct option</p>
+                                            <label className="block text-green-700 font-medium">Question {qIndex + 1}</label>
+                                            <p className='text-green-300'>Select the correct option</p>
                                         </div>
                                         <input
                                             type="text"

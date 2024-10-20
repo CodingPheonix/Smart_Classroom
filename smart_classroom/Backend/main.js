@@ -225,7 +225,7 @@ app.post('/post_quiz_data', async (req, res) => {
 // Modify the quiz data on adding
 app.put('/post_quiz_data/:Module', async (req, res) => {
   try {
-    const { Module } = req.params; 
+    const { Module } = req.params;
     const target_module = await quiz_data.findOne({ module_id: Module });
 
     if (target_module) {
@@ -233,9 +233,9 @@ app.put('/post_quiz_data/:Module', async (req, res) => {
 
       req.body.forEach(ques => {
         const newQuestion = {
-          correct_option: ques.correctAnswer, 
-          question_title: ques.question,    
-          options: ques.options               
+          correct_option: ques.correctAnswer,
+          question_title: ques.question,
+          options: ques.options
         };
 
         target_module.quiz.push(newQuestion);
@@ -257,12 +257,28 @@ app.get('/get_quiz_data/:Module', async (req, res) => {
     const { Module } = req.params
     const target_quiz_data = await quiz_data.findOne({ module_id: Module });
     if (target_quiz_data) {
-      res.status(200).send({message: "quiz data fetched successfully", data: target_quiz_data.quiz})
-    }else{
+      res.status(200).send({ message: "quiz data fetched successfully", data: target_quiz_data.quiz })
+    } else {
       res.status(404).json({ message: 'quiz data not found' });
     }
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+app.put('/handle_delete_quiz/:Module', async (req, res) => {
+  try {
+    const { Module } = req.params
+    const target_quiz_data = await quiz_data.findOne({ module_id: Module });
+    if (target_quiz_data) {
+      target_quiz_data.quiz = [];
+      await target_quiz_data.save();
+      res.status(200).json({ message: 'Quiz deleted successfully!' });
+    } else {
+      res.status(404).json({ message: 'Quiz not found' });
+    }
+  } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
 })
