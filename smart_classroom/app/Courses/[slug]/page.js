@@ -43,8 +43,11 @@ const page = ({ params }) => {
     const newdata = { ...data, id: uuidv4() }
     console.log(newdata)
     createModule(newdata)
-    set_default_moduleData(newdata)
-    default_post_quiz_data(newdata)
+    if (newdata.contentType === "Content") {
+      set_default_moduleData(newdata)
+    } else {
+      default_post_quiz_data(newdata)
+    }
     setIsAddingCourse(false)
     reset()
   }

@@ -63,6 +63,7 @@ const Page = ({ params }) => {
             },
         })
         const result = await responce.json()
+        console.log(result)
         console.log(result.data);
 
         // Map the fetched data to the expected format for Para_courses

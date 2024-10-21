@@ -132,7 +132,7 @@ const page = ({ params }) => {
       <div className='flex justify-between items-center px-4 h-16 bg-green-200 '>
         <h1 className='font-bold text-xl'>{title}</h1>
       </div>
-
+      
       {/* module  */}
       <ol className='h-full'>
         {moduleList.length > 0 ? (

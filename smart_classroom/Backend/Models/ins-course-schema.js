@@ -5,7 +5,7 @@ const module_schema = new mongoose.Schema({
     module_title: String,
     module_description: String,
     content_type: String,
-    module_data:[String]
+    module_data: [String]
 })
 
 const course_schema = new mongoose.Schema({
@@ -48,7 +48,7 @@ const learner_module_schema = new mongoose.Schema({
     module_title: String,
     module_description: String,
     content_type: String,
-    module_data:[String]
+    module_data: [String]
 })
 
 const learner_course_schema = new mongoose.Schema({
@@ -60,7 +60,16 @@ const learner_course_schema = new mongoose.Schema({
     course_details: [learner_module_schema]
 })
 
+const dashboard = new mongoose.Schema({
+    student_id: { type: String, required: true },
+    module_id: { type: String, required: true },
+    course_id: { type: String, required: true },
+    quiz_result: { type: [String], required: true }, // Assuming quiz_result is stored as a Map
+    quiz_score: { type: Number, required: true }
+});
+
 export const course = mongoose.model('course', course_schema)
 export const module_data = mongoose.model('module_data', module_data_schema)
 export const quiz_data = mongoose.model('quiz_data', quiz_data_schema)
 export const learner_course = mongoose.model('learner_course', learner_course_schema)
+export const student_dashboard = mongoose.model('student_dashboard', dashboard)

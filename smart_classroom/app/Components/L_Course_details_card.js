@@ -28,12 +28,12 @@ const L_Course_details_card = (props) => {
                     <p className='text-sm'>{props.module_description} . {props.content_type}</p>
                 </div>
                 <div className='flex gap-3'>
-                    {/* <Link href={`/Module/${props.module_id}@${props.course_id}`}> */}
+                    <Link href={`/L_Module_theory/${props.module_id}@${props.course_id}`}>
                         <button className='flex gap-1'>
                             <Book02Icon />
                             Read
                         </button>
-                    {/* </Link> */}
+                    </Link>
                     <button className='flex gap-1'>
                         <CheckmarkSquare03Icon/>
                         Mark as Read

@@ -6,6 +6,7 @@ import { course } from "./Models/ins-course-schema.js"
 import { module_data } from "./Models/ins-course-schema.js"
 import { quiz_data } from "./Models/ins-course-schema.js"
 import { learner_course } from "./Models/ins-course-schema.js"
+import { student_dashboard } from "./Models/ins-course-schema.js"
 
 const app = express()
 const port = 5000
@@ -337,14 +338,48 @@ app.delete('/delete_from_mycourses/:id', async (req, res) => {
   }
 })
 
-//Fetch course for Learner
-// app.get('/get_L_course_details/:Course', async (req, res) => {
-//   try {
-//     const target_course = await course.find({})
-//   } catch (error) {
-    
-//   }
-// })
+//post student marks
+app.post('/post_student_marks/:Course/:Module', async (req, res) => {
+  try {
+    const { Course, Module } = req.params;
+    const { result, score, id } = req.body;
+
+    // Create a new instance of the model
+    const new_data = new student_dashboard({
+      student_id: id,
+      module_id: Module,
+      course_id: Course,
+      quiz_result: result, // Should match the schema (array or object)
+      quiz_score: score // Ensure score is a number in the schema
+    });
+
+    // Save the new instance and await the operation
+    const savedData = await new_data.save();
+
+    // Send the response with the saved document
+    res.status(200).send({ message: "Student result uploaded", data: savedData });
+
+  } catch (error) {
+    console.error("Error saving student data:", error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+//fetch student quiz data from db
+app.get('/fetch_student_quiz_data/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const target_data = await student_dashboard.find({student_id: id})
+    if (target_data) {
+      res.status(200).send({message: "Student quiz data fetched", data: target_data})
+    }else{
+      res.status(404).json({ message: 'target data not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
