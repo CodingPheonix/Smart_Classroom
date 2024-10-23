@@ -381,6 +381,7 @@ app.get('/fetch_student_quiz_data/:id', async (req, res) => {
   }
 })
 
+// Upload signup details
 app.post('/upload_login_details', async (req, res) => {
   try {
     const { name, email, id, password } = req.body
@@ -399,6 +400,31 @@ app.post('/upload_login_details', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 })
+
+// Verify user authentivation
+app.post('/verify_user_auth', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Fetch the account by email
+    const target_account = await login.findOne({ candidate_email: email });
+    
+    if (!target_account) {
+      res.status(404).send({ message: "Account not found" });
+    } else {
+      // Compare passwords
+      if (target_account.candidate_password !== password) {
+        res.status(401).send({ message: "Incorrect Password" });
+      } else {
+        res.status(200).send({ message: "Login successful", account: target_account });
+      }
+    }
+  } catch (error) {
+    console.error("Error verifying user authentication:", error); // Log the actual error
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

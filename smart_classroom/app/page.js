@@ -42,7 +42,7 @@ export default function Home() {
     console.log({ ...data, id: uuidv4(), hasAccount: isLogin })
 
     if (isLogin) {
-      await verify_user_auth({ ...data, id: uuidv4()})
+      await verify_user_auth(data)
     }else{
       await upload_login_details({ ...data, id: uuidv4()})
     }
