@@ -2,7 +2,7 @@ import express from "express"
 import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import cors from "cors"
-import { course } from "./Models/ins-course-schema.js"
+import { course, login } from "./Models/ins-course-schema.js"
 import { module_data } from "./Models/ins-course-schema.js"
 import { quiz_data } from "./Models/ins-course-schema.js"
 import { learner_course } from "./Models/ins-course-schema.js"
@@ -286,11 +286,11 @@ app.put('/handle_delete_quiz/:Module', async (req, res) => {
 })
 
 //Selected courses get into students courses inventory
-app.post('/get_to_mycourses/:id', async(req, res) => {
+app.post('/get_to_mycourses/:id', async (req, res) => {
   try {
-    const  { id } = req.params
+    const { id } = req.params
     const target_course = await course.findOne({ course_id: id });
-    
+
     if (target_course) {
       const saved_course = new learner_course({
         course_id: target_course.course_id,
@@ -301,8 +301,8 @@ app.post('/get_to_mycourses/:id', async(req, res) => {
         course_details: target_course.course_details
       })
       await saved_course.save()
-      res.status(200).send({message: "Course is saved"})
-    }else {
+      res.status(200).send({ message: "Course is saved" })
+    } else {
       res.status(404).json({ message: 'target course not found' });
     }
   } catch (error) {
@@ -311,13 +311,13 @@ app.post('/get_to_mycourses/:id', async(req, res) => {
 })
 
 //get all courses for "My courses" in learner section
-app.get('/getMyCourseList', async (req, res) =>{
+app.get('/getMyCourseList', async (req, res) => {
   try {
-    const  courses = await learner_course.find({})
+    const courses = await learner_course.find({})
 
     if (courses) {
-      res.status(200).send({message: "Fetched all courses", data: courses})
-    }else {
+      res.status(200).send({ message: "Fetched all courses", data: courses })
+    } else {
       res.status(404).json({ message: 'target course not found' });
     }
 
@@ -330,9 +330,9 @@ app.get('/getMyCourseList', async (req, res) =>{
 app.delete('/delete_from_mycourses/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const course = await learner_course.findOneAndDelete({course_id: id})
+    const course = await learner_course.findOneAndDelete({ course_id: id })
     console.log(course)
-    res.status(200).send({message:"Target course deleted"})
+    res.status(200).send({ message: "Target course deleted" })
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -370,12 +370,31 @@ app.get('/fetch_student_quiz_data/:id', async (req, res) => {
   try {
     const { id } = req.params
 
-    const target_data = await student_dashboard.find({student_id: id})
+    const target_data = await student_dashboard.find({ student_id: id })
     if (target_data) {
-      res.status(200).send({message: "Student quiz data fetched", data: target_data})
-    }else{
+      res.status(200).send({ message: "Student quiz data fetched", data: target_data })
+    } else {
       res.status(404).json({ message: 'target data not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+app.post('/upload_login_details', async (req, res) => {
+  try {
+    const { name, email, id, password } = req.body
+
+    const new_login = new login({
+      candidate_name: name,
+      candidate_id: id,
+      candidate_email: email,
+      candidate_password: password
+    })
+
+    await new_login.save()
+
+    res.status(200).send({ message: "login details uploaded", data: new_login })
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
