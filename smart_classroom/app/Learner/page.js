@@ -1,8 +1,26 @@
+"use client"
 import React from 'react'
 import Learner_nav from '../Components/Learner_nav'
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 const page = () => {
+
+  const dispatch = useDispatch()
+
+  // store the id of the current user
+  const user_id = useSelector(state => state.counter.text)
+  console.log("user_id: ", user_id)
+
+  //State List
+
+  const [Name, setName] = useState("")
+  const [date_of_birth, setDate_of_birth] = useState("")
+  const [Age, setAge] = useState(0)
+
+
   return (
     <>
       <div className='flex h-full bg-green-200'>
@@ -19,8 +37,8 @@ const page = () => {
               <ul className='h-full'>
                 <li className='p-3 pt-4'>Name: </li>
                 <li className='p-3 pt-4'>Date of Birth: </li>
-                <li className='p-3 pt-4'>Age: </li>
-                <li className='p-3 pt-4'>No of Courses registered: </li>
+                <li className='p-3 pt-4'>Student Id: </li>
+                <li className='p-3 pt-4'>Address: </li>
               </ul>
             </div>
             <Image

@@ -4,9 +4,10 @@ import Web_logo from "./Components/Web_logo";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-// import { useNavigate, Navigate } from "react-router-dom";
 import { useRouter } from 'next/navigation'
 import { v4 as uuidv4 } from 'uuid';
+import { useSelector, useDispatch } from 'react-redux'
+import { setText, clearText } from "./redux/counter/counterSlice";
 
 export default function Home() {
 
@@ -16,7 +17,11 @@ export default function Home() {
   const [message, setMessage] = useState("")
 
   const router = useRouter()
+  const dispatch = useDispatch()
 
+  // store the id of the current user
+  const user_id = useSelector(state => state.counter.text)
+  console.log(user_id)
   // API Routes
   const upload_login_details = async (data) => {
     const responce = await fetch('http://localhost:5000/upload_login_details', {
@@ -53,15 +58,14 @@ export default function Home() {
       response = await upload_login_details({ ...data, id: uuidv4(), position: "Learner" });
     }
   
-    const result = await response.json(); // Get the JSON response
-  
-    // Check for successful status code
+    const result = await response.json(); 
+
     if (response.status === 200) {
       setIslearnerlogin(!islearnerlogin);
       reset();
-      router.push('/Learner'); // Navigate only on success
+      dispatch(setText(result.account.candidate_id))
+      router.push('/Learner'); 
     } else {
-      // Display the error message returned from the server
       setMessage(result.message || "An error occurred");
     }
   }
@@ -82,6 +86,7 @@ export default function Home() {
     if (response.status === 200) {
       setIsInstructorlogin(!IsInstructorlogin);
       reset();
+      dispatch(setText(result.account.candidate_id))
       router.push('/Instructor'); // Navigate only on success
     } else {
       // Display the error message returned from the server

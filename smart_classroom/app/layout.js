@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import Navbar from "./Components/Navbar";
 import "./globals.css";
 import Footer from "./Components/Footer";
+import ClientProvider from "./clientProvider"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,15 +26,17 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-y-hidden`}
       >
-        <div className="relative h-full flex flex-col">
-          <Navbar/>
-          <div className="flex-1 overflow-y-auto">
-            {children}
+        <ClientProvider>
+          <div className="relative h-full flex flex-col">
+            <Navbar />
+            <div className="flex-1 overflow-y-auto">
+              {children}
+            </div>
+            <div className="w-full">
+              <Footer />
+            </div>
           </div>
-          <div className="w-full">
-            <Footer/>
-          </div>
-        </div>
+        </ClientProvider>
       </body>
     </html>
   );
