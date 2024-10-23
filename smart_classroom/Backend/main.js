@@ -384,18 +384,26 @@ app.get('/fetch_student_quiz_data/:id', async (req, res) => {
 // Upload signup details
 app.post('/upload_login_details', async (req, res) => {
   try {
-    const { name, email, id, password } = req.body
+    const { name, email, id, password, position } = req.body
 
-    const new_login = new login({
-      candidate_name: name,
-      candidate_id: id,
-      candidate_email: email,
-      candidate_password: password
-    })
+    // Fetch the account by email
+    const target_account = await login.findOne({ candidate_email: email });
 
-    await new_login.save()
+    if (target_account) {
+      res.send({ message: "Account already exists" })
+    } else {
+      const new_login = new login({
+        candidate_name: name,
+        candidate_id: id,
+        candidate_email: email,
+        candidate_password: password,
+        candidate_position: position
+      })
 
-    res.status(200).send({ message: "login details uploaded", data: new_login })
+      await new_login.save()
+
+      res.status(200).send({ message: "login details uploaded", data: new_login, status:"200" })
+    }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -408,15 +416,15 @@ app.post('/verify_user_auth', async (req, res) => {
 
     // Fetch the account by email
     const target_account = await login.findOne({ candidate_email: email });
-    
+
     if (!target_account) {
-      res.status(404).send({ message: "Account not found" });
+      res.status(404).send({ message: "Account not found", status: "500" });
     } else {
       // Compare passwords
       if (target_account.candidate_password !== password) {
-        res.status(401).send({ message: "Incorrect Password" });
+        res.status(401).send({ message: "Incorrect Password", status: "500" });
       } else {
-        res.status(200).send({ message: "Login successful", account: target_account });
+        res.status(200).send({ message: "Login successful", account: target_account, status:"200" });
       }
     }
   } catch (error) {

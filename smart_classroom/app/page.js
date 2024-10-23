@@ -4,7 +4,8 @@ import Web_logo from "./Components/Web_logo";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate, Navigate } from "react-router-dom";
+import { useRouter } from 'next/navigation'
 import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
@@ -12,7 +13,9 @@ export default function Home() {
   const [islearnerlogin, setIslearnerlogin] = useState(false)
   const [IsInstructorlogin, setIsInstructorlogin] = useState(false)
   const [isLogin, setIsLogin] = useState(true);
-  // const navigate = useNavigate();
+  const [message, setMessage] = useState("")
+
+  const router = useRouter()
 
   // API Routes
   const upload_login_details = async (data) => {
@@ -21,8 +24,9 @@ export default function Home() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    const result = await responce.json()
-    console.log(result);
+    // const result = await responce.json()
+    // console.log(result);
+    return responce
   }
 
   const verify_user_auth = async (data) => {
@@ -31,32 +35,60 @@ export default function Home() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    const result = await responce.json()
-    console.log(result);
+    // const result = await responce.json()
+    // console.log(result);
+    return responce
   }
 
   const { register, handleSubmit, errors, reset } = useForm()
 
   // Form Submits
   const LearnerOnSubmit = async (data) => {
-    console.log({ ...data, id: uuidv4(), hasAccount: isLogin })
-
+    console.log({ ...data, id: uuidv4(), hasAccount: isLogin });
+    let response;
+  
     if (isLogin) {
-      await verify_user_auth(data)
-    }else{
-      await upload_login_details({ ...data, id: uuidv4()})
+      response = await verify_user_auth(data);
+    } else {
+      response = await upload_login_details({ ...data, id: uuidv4(), position: "Learner" });
     }
-    setIslearnerlogin(!islearnerlogin)
-    reset()
-    // navigate('/Learner')
+  
+    const result = await response.json(); // Get the JSON response
+  
+    // Check for successful status code
+    if (response.status === 200) {
+      setIslearnerlogin(!islearnerlogin);
+      reset();
+      router.push('/Learner'); // Navigate only on success
+    } else {
+      // Display the error message returned from the server
+      setMessage(result.message || "An error occurred");
+    }
   }
+  
   const InstructorOnSubmit = async (data) => {
-    console.log({ ...data, id: uuidv4() })
-    upload_login_details({ ...data, id: uuidv4() })
-    setIsInstructorlogin(!IsInstructorlogin)
-    reset()
-    // navigate('/Learner')
+    console.log({ ...data, id: uuidv4(), hasAccount: isLogin });
+    let response;
+  
+    if (isLogin) {
+      response = await verify_user_auth(data);
+    } else {
+      response = await upload_login_details({ ...data, id: uuidv4(), position: "Instructor" });
+    }
+  
+    const result = await response.json(); // Get the JSON response
+  
+    // Check for successful status code
+    if (response.status === 200) {
+      setIsInstructorlogin(!IsInstructorlogin);
+      reset();
+      router.push('/Instructor'); // Navigate only on success
+    } else {
+      // Display the error message returned from the server
+      setMessage(result.message || "An error occurred");
+    }
   }
+  
 
   return (
     <>
@@ -85,23 +117,6 @@ export default function Home() {
 
         {/* Login form for LEARNER */}
         {islearnerlogin && (
-          // <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-6 py-4 rounded-lg'>
-          //   <h1 className='px-4 py-2 font-bold text-xl'>
-          //     Learner Login
-          //   </h1>
-          //   <form className='flex flex-col justify-around items-start' onSubmit={handleSubmit(LearnerOnSubmit)}>
-          //     <label htmlFor="name">First Name</label>
-          //     <input type="text" {...register("name", { required: true })} />
-          //     <label htmlFor="email">Email</label>
-          //     <input type="email" {...register("email", { required: true })} />
-          //     <label htmlFor="password">Password</label>
-          //     <input type="password" {...register("password", { required: true })} />
-          //     {/* <Link href="/Learner"> */}
-          //       <input className='px-6 py-2 mt-2 rounded-full bg-green-500 w-full' type="submit" value="Submit" />
-          //     {/* </Link> */}
-          //   </form>
-          // </div>
-
           <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-8 py-6 rounded-lg shadow-lg'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
               {isLogin ? 'Learner Login' : 'Learner Sign Up'}
@@ -148,25 +163,58 @@ export default function Home() {
                 {isLogin ? 'Sign Up' : 'Login'}
               </span>
             </p>
+            <p className="text-red-600">*{message}</p>
           </div>
         )}
         {/* Login form for Instructor */}
         {IsInstructorlogin && (
-          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-6 py-4 rounded-lg'>
-            <h1 className='px-4 py-2 font-bold text-xl'>
-              Instructor Login
+          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-8 py-6 rounded-lg shadow-lg'>
+            <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
+              {isLogin ? 'Learner Login' : 'Learner Sign Up'}
             </h1>
-            <form className='flex flex-col justify-around items-start' onSubmit={handleSubmit(InstructorOnSubmit)}>
-              <label htmlFor="name">First Name</label>
-              <input type="text" {...register("name")} />
-              <label htmlFor="email">Email</label>
-              <input type="email" {...register("email")} />
-              <label htmlFor="password">Password</label>
-              <input type="password" {...register("password")} />
-              {/* <Link href="Instructor"> */}
-              <input className='px-6 py-2 mt-2 rounded-full bg-green-500 w-full' type="submit" value="Submit" />
-              {/* </Link> */}
+
+            <form className='flex flex-col justify-around items-start w-full' onSubmit={handleSubmit(InstructorOnSubmit)}>
+              {!isLogin && (
+                <>
+                  <label className='text-white' htmlFor="name">Name</label>
+                  <input
+                    className='px-4 py-2 mb-2 w-full rounded-lg'
+                    type="text"
+                    {...register("name", { required: !isLogin })}
+                  />
+                </>
+              )}
+
+              <label className='text-white' htmlFor="email">Email</label>
+              <input
+                className='px-4 py-2 mb-2 w-full rounded-lg'
+                type="email"
+                {...register("email", { required: true })}
+              />
+
+              <label className='text-white' htmlFor="password">Password</label>
+              <input
+                className='px-4 py-2 mb-2 w-full rounded-lg'
+                type="password"
+                {...register("password", { required: true })}
+              />
+
+              <input
+                className='px-6 py-2 mt-2 rounded-full bg-green-500 text-white font-semibold w-full hover:bg-green-600 transition duration-300'
+                type="submit"
+                value={isLogin ? 'Login' : 'Sign Up'}
+              />
             </form>
+
+            <p className='text-white mt-4'>
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
+              <span
+                onClick={() => setIsLogin(!isLogin)}
+                className='underline cursor-pointer hover:text-gray-300 transition duration-300'>
+                {isLogin ? 'Sign Up' : 'Login'}
+              </span>
+            </p>
+            <p className="text-red-600">*{message}</p>
           </div>
         )}
 

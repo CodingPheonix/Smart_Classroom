@@ -69,6 +69,7 @@ const dashboard = new mongoose.Schema({
 });
 
 const login_schema = new mongoose.Schema({
+    candidate_position: String,
     candidate_name: String,
     candidate_id: String,
     candidate_email: String,
