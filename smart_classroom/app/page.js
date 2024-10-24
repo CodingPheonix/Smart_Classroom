@@ -63,7 +63,11 @@ export default function Home() {
     if (response.status === 200) {
       setIslearnerlogin(!islearnerlogin);
       reset();
-      dispatch(setText(result.account.candidate_id))
+      if (isLogin) {
+        dispatch(setText(result.account.candidate_id))
+      }else{
+        dispatch(setText(result.data.candidate_id))
+      }
       router.push('/Learner'); 
     } else {
       setMessage(result.message || "An error occurred");
@@ -79,14 +83,18 @@ export default function Home() {
     } else {
       response = await upload_login_details({ ...data, id: uuidv4(), position: "Instructor" });
     }
-  
     const result = await response.json(); // Get the JSON response
+  console.log(result);
   
     // Check for successful status code
     if (response.status === 200) {
       setIsInstructorlogin(!IsInstructorlogin);
       reset();
-      dispatch(setText(result.account.candidate_id))
+      if (isLogin) {
+        dispatch(setText(result.account.candidate_id))
+      }else{
+        dispatch(setText(result.data.candidate_id))
+      }
       router.push('/Instructor'); // Navigate only on success
     } else {
       // Display the error message returned from the server
@@ -175,7 +183,7 @@ export default function Home() {
         {IsInstructorlogin && (
           <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-8 py-6 rounded-lg shadow-lg'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
-              {isLogin ? 'Learner Login' : 'Learner Sign Up'}
+              {isLogin ? 'Instructor Login' : 'Instructor Sign Up'}
             </h1>
 
             <form className='flex flex-col justify-around items-start w-full' onSubmit={handleSubmit(InstructorOnSubmit)}>

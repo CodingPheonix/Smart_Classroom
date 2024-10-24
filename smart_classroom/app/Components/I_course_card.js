@@ -38,21 +38,24 @@ const I_course_card = (props) => {
     return (
         <div>
             <ul className='m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
-                <li>{props.courseTitle}</li>
-                <li>{props.courseCategory}</li>
-                <li>{props.courseDuration}</li>
-                <li className='flex gap-4'>
-                    <button onClick={handleEditClick}>
-                        <PencilEdit01Icon />
-                    </button>
-                    <button onClick={handleDeleteClick}>
-                        <Delete02Icon />
-                    </button>
-                    <Link href={`/Courses/${props.id}`}>
-                        <button>
-                            <ArrowUpRight03Icon />
+                <li className=' w-1/4 grid place-items-center'>{props.courseTitle}</li>
+                <li className=' w-1/4 grid place-items-center'>{props.courseCategory}</li>
+                <li className=' w-1/4 grid place-items-center'>{props.courseDuration}</li>
+                <li className=' w-1/4 grid place-items-center'>
+                    <div className='flex gap-4'>
+                        <button onClick={handleEditClick}>
+                            <PencilEdit01Icon />
                         </button>
-                    </Link>
+                        <button onClick={handleDeleteClick}>
+                            <Delete02Icon />
+                        </button>
+                        <Link href={`/Courses/${props.id}`}>
+                            <button>
+                                <ArrowUpRight03Icon />
+                            </button>
+                        </Link>
+                    </div>
+
                 </li>
             </ul>
         </div>

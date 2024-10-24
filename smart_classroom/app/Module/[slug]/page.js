@@ -162,9 +162,9 @@ const Page = ({ params }) => {
             <div className="max-w-5xl min-h-[calc(100vh-7rem)] mx-auto mt-5 p-6 bg-gray-100 rounded-lg shadow-md">
                 {module_data.content_type === "Content" ? (
                     <div>
-                        <div className="relative">
+                        <div className="relative pt-16"> {/* Add top padding to the container */}
                             <h1 className="text-3xl font-bold text-center text-green-600">{module_data.module_title}</h1>
-                            <div className="btn absolute top-3 right-20 flex gap-2">
+                            <div className="btn absolute top-2 right-20 flex gap-2"> {/* Set top to a positive value */}
                                 <button
                                     onClick={() => setAddParagraph(!addParagraph)}
                                     className="px-4 py-2 rounded-full bg-green-400 text-white font-semibold">
@@ -182,9 +182,11 @@ const Page = ({ params }) => {
                                     <Para_courses key={index} heading={data.heading} paragraph={data.explanation} />
                                 ))
                             ) : (
-                                <p className='grid place-items-center'>No data available</p>
+                                <p className="grid place-items-center">No data available</p>
                             )}
                         </div>
+
+
 
                         {/* submit the format */}
                         <div className="absolute left-1/2 bottom-20 transform -translate-x-1/2">

@@ -24,9 +24,10 @@ app.get('/', (req, res) => {
 })
 
 // Fetch all courses
-app.get('/courses/getCourses', async (req, res) => {
+app.get('/courses/getCourses/:Instructor', async (req, res) => {
   try {
-    const courses = await course.find({})
+    const { Instructor } = req.params
+    const courses = await course.find({ instructor_id: Instructor })
     res.send({ success: true, message: "Courses fetched successfully", data: courses })
   } catch (error) {
     res.send({ status: 'error', message: 'Failed to fetch courses', error: error.message });
@@ -403,7 +404,7 @@ app.post('/upload_login_details', async (req, res) => {
 
       await new_login.save()
 
-      res.status(200).send({ message: "login details uploaded", data: new_login, status:"200" })
+      res.status(200).send({ message: "login details uploaded", data: new_login, status: "200" })
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
@@ -425,7 +426,7 @@ app.post('/verify_user_auth', async (req, res) => {
       if (target_account.candidate_password !== password) {
         res.status(401).send({ message: "Incorrect Password", status: "500" });
       } else {
-        res.status(200).send({ message: "Login successful", account: target_account, status:"200" });
+        res.status(200).send({ message: "Login successful", account: target_account, status: "200" });
       }
     }
   } catch (error) {
@@ -433,6 +434,21 @@ app.post('/verify_user_auth', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+//get user details
+app.get('/get_user_details/:Id', async (req, res) => {
+  try {
+    const { Id } = req.params
+    const target_user = await login.findOne({ candidate_id: Id })
+    if (target_user) {
+      res.status(200).send({ message: "Fetched user details", data: target_user })
+    } else {
+      res.send({ message: "Required user not found" })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
 
 
 app.listen(port, () => {

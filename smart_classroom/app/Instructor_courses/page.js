@@ -46,7 +46,7 @@ const Page = () => {
     // Get Course
     const getCourse = async () => {
         try {
-            const response = await fetch('http://localhost:5000/courses/getCourses', {
+            const response = await fetch(`http://localhost:5000/courses/getCourses/${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,20 +88,21 @@ const Page = () => {
                     <button onClick={() => { setIsCreate(!isCreate) }} className='py-2 px-6 border border-green-600 rounded-full font-bold text-xl  hover:border-green-700 transition-all ease-in-out'>Create Courses</button>
                 </div>
                 <ul className='m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
-                    <li>Course Title</li>
-                    <li>Course Category</li>
-                    <li>Duration</li>
-                    <li>Actions</li>
+                    <li className='w-1/4 grid place-items-center'>Course Title</li>
+                    <li className='w-1/4 grid place-items-center'>Course Category</li>
+                    <li className='w-1/4 grid place-items-center'>Duration</li>
+                    <li className='w-1/4 grid place-items-center'>Actions</li>
                 </ul>
                 {/* Course List */}
                 {CourseList.length > 0 ? (
                     CourseList.map((course, index) => (
                         // <Link key={index} href={`/Courses/${course.course_id}`}>
-                            <I_course_card
-                                id={course.course_id}
-                                courseTitle={course.course_title}
-                                courseCategory={course.course_category}
-                                courseDuration={course.course_duration} />
+                        <I_course_card
+                            key={index}
+                            id={course.course_id}
+                            courseTitle={course.course_title}
+                            courseCategory={course.course_category}
+                            courseDuration={course.course_duration} />
                         // </Link>
                     ))
                 ) : (

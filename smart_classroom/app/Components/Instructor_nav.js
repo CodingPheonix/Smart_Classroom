@@ -1,11 +1,35 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useSelector, useDispatch } from 'react-redux'
 
 const Instructor_nav = () => {
+
+    const user_id = useSelector(state => state.counter.text)
+
+    const [name, setName] = useState("")
+
+    const get_instructor_details = async (data) => {
+      const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      })
+      const result = await response.json()
+      console.log(result)
+      setName(result.data.candidate_name)
+    }
+    
+    useEffect(() => {
+      get_instructor_details()
+    }, [])
+    
+
     return (
         <div className='h-full p-2 flex flex-col justify-around'>
             <h1 className='font-bold text-2xl h-1/5 grid place-items-center'>
-                Hi "Instructor",
+                Hi "{name}",
             </h1>
             <div className='flex justify-start h-3/5'>
                 <ul className='text-lg p-2 '>
