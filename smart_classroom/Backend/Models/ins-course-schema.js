@@ -75,6 +75,7 @@ const login_schema = new mongoose.Schema({
     candidate_id: String,
     candidate_email: String,
     candidate_password: String,
+    candidate_courses: [String],
 })
 
 export const course = mongoose.model('course', course_schema)

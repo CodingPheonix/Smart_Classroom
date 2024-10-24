@@ -63,7 +63,7 @@ const Page = () => {
     // Post Course
     const post_course = async (data) => {
         try {
-            const response = await fetch('http://localhost:5000/courses/postCourses', {
+            const response = await fetch(`http://localhost:5000/courses/postCourses`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const Page = () => {
                 <ul className='m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
                     <li className='w-1/4 grid place-items-center'>Course Title</li>
                     <li className='w-1/4 grid place-items-center'>Course Category</li>
-                    <li className='w-1/4 grid place-items-center'>Duration</li>
+                    <li className='w-1/4 grid place-items-center'>Duration (in weeks)</li>
                     <li className='w-1/4 grid place-items-center'>Actions</li>
                 </ul>
                 {/* Course List */}

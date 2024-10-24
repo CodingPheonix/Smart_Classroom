@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import Learner_nav from '../Components/Learner_nav'
 

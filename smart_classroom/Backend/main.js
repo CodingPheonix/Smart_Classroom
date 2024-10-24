@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-// Fetch all courses
+// Fetch all instructor courses
 app.get('/courses/getCourses/:Instructor', async (req, res) => {
   try {
     const { Instructor } = req.params
@@ -34,24 +34,49 @@ app.get('/courses/getCourses/:Instructor', async (req, res) => {
   }
 })
 
+// Fetch all courses
+app.get('/courses/getCourses', async (req, res) => {
+  try {
+    // const { Instructor } = req.params
+    const courses = await course.find({})
+    res.send({ success: true, message: "Courses fetched successfully", data: courses })
+  } catch (error) {
+    res.send({ status: 'error', message: 'Failed to fetch courses', error: error.message });
+  }
+})
+
 // Post a course
 app.post('/courses/postCourses', async (req, res) => {
   try {
+
+    const { id, instructor_id, courseTitle, courseDescription, courseCategory, courseDuration } = req.body
+
     if (!req.body || !req.body.id || !req.body.courseTitle) {
       return res.status(400).send({ success: false, message: "Missing required fields" });
     }
 
     console.log(req.body)
     const newcourse = new course({
-      course_id: req.body.id,
-      instructor_id: req.body.instructor_id,
-      course_title: req.body.courseTitle,
-      course_description: req.body.courseDescription,
-      course_category: req.body.courseCategory,
-      course_duration: req.body.courseDuration
+      course_id: id,
+      instructor_id: instructor_id,
+      course_title: courseTitle,
+      course_description: courseDescription,
+      course_category: courseCategory,
+      course_duration: courseDuration
     })
     console.log(newcourse)
     await newcourse.save()
+
+    const target_user = await login.findOne({candidate_id: instructor_id})
+    console.log(target_user)
+    if (target_user) {
+      target_user.candidate_courses.push(id)
+      await target_user.save()
+      console.log("instructor courses modified");
+    }else{
+      console.log("instructor courses not modified");
+    }
+
     res.send({ success: true, message: "Course added successfully", data: newcourse })
   } catch (error) {
     res.send({ status: 'error', message: 'Failed to upload course', error: error.message });
@@ -399,7 +424,8 @@ app.post('/upload_login_details', async (req, res) => {
         candidate_id: id,
         candidate_email: email,
         candidate_password: password,
-        candidate_position: position
+        candidate_position: position,
+        candidate_courses: []
       })
 
       await new_login.save()

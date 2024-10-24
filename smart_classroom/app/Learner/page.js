@@ -16,10 +16,25 @@ const page = () => {
 
   //State List
 
-  const [Name, setName] = useState("")
+  const [name, setName] = useState("")
   const [date_of_birth, setDate_of_birth] = useState("")
   const [Age, setAge] = useState(0)
 
+  const get_Learner_details = async (data) => {
+    const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
+    const result = await response.json()
+    console.log(result)
+    setName(result.data.candidate_name)
+  }
+  
+  useEffect(() => {
+    get_Learner_details()
+  }, [])
 
   return (
     <>
@@ -35,7 +50,7 @@ const page = () => {
           <div className='h-4/5 flex justify-between m-4'>
             <div className="h-full">
               <ul className='h-full'>
-                <li className='p-3 pt-4'>Name: </li>
+                <li className='p-3 pt-4'>Name: {name}</li>
                 <li className='p-3 pt-4'>Date of Birth: </li>
                 <li className='p-3 pt-4'>Student Id: </li>
                 <li className='p-3 pt-4'>Address: </li>

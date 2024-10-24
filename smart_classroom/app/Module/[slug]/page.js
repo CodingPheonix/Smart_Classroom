@@ -55,26 +55,59 @@ const Page = ({ params }) => {
         console.log(result);
     }
 
+    // const get_parapagedata = async () => {
+    //     const responce = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     })
+    //     const result = await responce.json()
+    //     console.log(result)
+    //     console.log(result.data);
+
+    //     // Map the fetched data to the expected format for Para_courses
+    //     const formattedData = result.data.map(item => ({
+    //         heading: item.theory_heading,
+    //         explanation: item.theory_explanation
+    //     }));
+
+    //     // Update the state with the formatted data
+    //     setparaPageData(formattedData);
+    // }
+
+
     const get_parapagedata = async () => {
-        const responce = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        const result = await responce.json()
-        console.log(result)
-        console.log(result.data);
-
-        // Map the fetched data to the expected format for Para_courses
-        const formattedData = result.data.map(item => ({
-            heading: item.theory_heading,
-            explanation: item.theory_explanation
-        }));
-
-        // Update the state with the formatted data
-        setparaPageData(formattedData);
-    }
+        try {
+            const response = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const result = await response.json();
+            console.log(result);
+    
+            // Check if result.data exists and is an array
+            if (Array.isArray(result.data)) {
+                // Map the fetched data to the expected format for Para_courses
+                const formattedData = result.data.map(item => ({
+                    heading: item.theory_heading || "No heading",  // Provide a default value if heading is missing
+                    explanation: item.theory_explanation || "No explanation",  // Provide a default value if explanation is missing
+                }));
+    
+                // Update the state with the formatted data
+                setparaPageData(formattedData);
+            } else {
+                console.log("No data or data is not in expected format");
+                setparaPageData([]); // Set an empty array if no data is available
+            }
+        } catch (error) {
+            console.error("Error fetching parapage data:", error);
+            setparaPageData([]); // Handle errors by setting an empty array
+        }
+    };
+    
 
     // Post quiz questions to db
     const post_quiz_data = async (data) => {
