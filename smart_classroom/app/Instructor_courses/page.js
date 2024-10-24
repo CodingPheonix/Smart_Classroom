@@ -6,9 +6,17 @@ import Link from 'next/link'
 import { v4 as uuidv4 } from 'uuid';
 import Instructor_nav from '../Components/Instructor_nav'
 import I_course_card from '../Components/I_course_card'
+import { useSelector, useDispatch } from 'react-redux'
+// import { setText, clearText } from "./redux/counter/counterSlice";
 
 const Page = () => {
 
+    const dispatch = useDispatch()
+
+    // store the id of the current user
+    const user_id = useSelector(state => state.counter.text)
+
+    //State list
     const [isCreate, setIsCreate] = useState(false)
     const [CourseList, setCourseList] = useState([])
 
@@ -20,7 +28,7 @@ const Page = () => {
     } = useForm()
 
     const onSubmit = async (data) => {
-        const dataid = { ...data, id: uuidv4() }
+        const dataid = { ...data, id: uuidv4(), instructor_id: user_id }
         console.log(dataid)
         await post_course(dataid)
         await getCourse()
@@ -88,13 +96,13 @@ const Page = () => {
                 {/* Course List */}
                 {CourseList.length > 0 ? (
                     CourseList.map((course, index) => (
-                        <Link key={index} href={`/Courses/${course.course_id}`}>
-                                <I_course_card
-                                    id={course.course_id}
-                                    courseTitle={course.course_title}
-                                    courseCategory={course.course_category}
-                                    courseDuration={course.course_duration} />
-                        </Link>
+                        // <Link key={index} href={`/Courses/${course.course_id}`}>
+                            <I_course_card
+                                id={course.course_id}
+                                courseTitle={course.course_title}
+                                courseCategory={course.course_category}
+                                courseDuration={course.course_duration} />
+                        // </Link>
                     ))
                 ) : (
                     <p className='grid place-items-center'>No courses available</p>

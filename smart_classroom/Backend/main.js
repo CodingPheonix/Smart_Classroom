@@ -43,6 +43,7 @@ app.post('/courses/postCourses', async (req, res) => {
     console.log(req.body)
     const newcourse = new course({
       course_id: req.body.id,
+      instructor_id: req.body.instructor_id,
       course_title: req.body.courseTitle,
       course_description: req.body.courseDescription,
       course_category: req.body.courseCategory,
