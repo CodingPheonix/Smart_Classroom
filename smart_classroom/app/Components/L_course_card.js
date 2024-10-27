@@ -1,8 +1,11 @@
 "use client"
 import React from 'react'
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux'
 
 const L_course_card = (props) => {
+
+    const user_id = useSelector(state => state.counter.text)
 
     const PlusSignIcon = (props) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
@@ -19,7 +22,7 @@ const L_course_card = (props) => {
 
     // Api calls
     const handleAddCourse = async () => {
-      const responce = await fetch(`http://localhost:5000/get_to_mycourses/${props.id}`, {
+      const responce = await fetch(`http://localhost:5000/get_to_mycourses/${props.id}/${user_id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

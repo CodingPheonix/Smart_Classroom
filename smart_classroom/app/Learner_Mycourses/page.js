@@ -4,8 +4,10 @@ import React from 'react'
 import Link from 'next/link'
 import L_mycourse_card from '../Components/L_mycourse_card'
 import Learner_nav from '../Components/Learner_nav'
+import { useSelector, useDispatch } from 'react-redux'
 
 const page = () => {
+    const user_id = useSelector(state => state.counter.text)
 
     //States declaration
     const [CourseList, setCourseList] = useState([])
@@ -13,14 +15,17 @@ const page = () => {
     //API calls
     const getCourseList = async () => {
         try {
-            const response = await fetch('http://localhost:5000/getMyCourseList', {
+            const response = await fetch(`http://localhost:5000/getMyCourseList/${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
             const data = await response.json()
+            console.log(data);
+            
             setCourseList(data.data)
+            // setCourseList(data)
         } catch (error) {
             console.error(error)
         }

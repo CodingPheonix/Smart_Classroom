@@ -313,37 +313,57 @@ app.put('/handle_delete_quiz/:Module', async (req, res) => {
 })
 
 //Selected courses get into students courses inventory
-app.post('/get_to_mycourses/:id', async (req, res) => {
+app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
   try {
-    const { id } = req.params
-    const target_course = await course.findOne({ course_id: id });
+    const { id, learner_id } = req.params
+    const target_candidate = await login.findOne({ candidate_id: learner_id });
 
-    if (target_course) {
-      const saved_course = new learner_course({
-        course_id: target_course.course_id,
-        course_title: target_course.course_title,
-        course_description: target_course.course_description,
-        course_category: target_course.course_category,
-        course_duration: target_course.course_duration,
-        course_details: target_course.course_details
-      })
-      await saved_course.save()
+    if(target_candidate){
+      target_candidate.candidate_courses.push(id)
+      await target_candidate.save()
       res.status(200).send({ message: "Course is saved" })
-    } else {
+    }else{
       res.status(404).json({ message: 'target course not found' });
     }
+
+
+    // if (target_course) {
+    //   const saved_course = new learner_course({
+    //     course_id: target_course.course_id,
+    //     course_title: target_course.course_title,
+    //     course_description: target_course.course_description,
+    //     course_category: target_course.course_category,
+    //     course_duration: target_course.course_duration,
+    //     course_details: target_course.course_details
+    //   })
+    //   await saved_course.save()
+    //   res.status(200).send({ message: "Course is saved" })
+    // } else {
+    //   res.status(404).json({ message: 'target course not found' });
+    // }
+
+
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
 })
 
 //get all courses for "My courses" in learner section
-app.get('/getMyCourseList', async (req, res) => {
+app.get('/getMyCourseList/:learner_id', async (req, res) => {
   try {
-    const courses = await learner_course.find({})
+    const { learner_id } = req.params
+    const candidate = await login.findOne({candidate_id: learner_id})
 
-    if (courses) {
-      res.status(200).send({ message: "Fetched all courses", data: courses })
+    const mycourses_id = candidate.candidate_courses
+
+    const mycourses = await Promise.all(
+      mycourses_id.map(async (courseId) => {
+        return await course.findOne({ course_id: courseId });
+      })
+    );
+
+    if (mycourses) {
+      res.status(200).send({ message: "Fetched all courses", data: mycourses })
     } else {
       res.status(404).json({ message: 'target course not found' });
     }
