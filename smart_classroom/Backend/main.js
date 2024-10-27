@@ -67,13 +67,13 @@ app.post('/courses/postCourses', async (req, res) => {
     console.log(newcourse)
     await newcourse.save()
 
-    const target_user = await login.findOne({candidate_id: instructor_id})
+    const target_user = await login.findOne({ candidate_id: instructor_id })
     console.log(target_user)
     if (target_user) {
       target_user.candidate_courses.push(id)
       await target_user.save()
       console.log("instructor courses modified");
-    }else{
+    } else {
       console.log("instructor courses not modified");
     }
 
@@ -318,11 +318,11 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
     const { id, learner_id } = req.params
     const target_candidate = await login.findOne({ candidate_id: learner_id });
 
-    if(target_candidate){
+    if (target_candidate) {
       target_candidate.candidate_courses.push(id)
       await target_candidate.save()
       res.status(200).send({ message: "Course is saved" })
-    }else{
+    } else {
       res.status(404).json({ message: 'target course not found' });
     }
 
@@ -352,7 +352,7 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
 app.get('/getMyCourseList/:learner_id', async (req, res) => {
   try {
     const { learner_id } = req.params
-    const candidate = await login.findOne({candidate_id: learner_id})
+    const candidate = await login.findOne({ candidate_id: learner_id })
 
     const mycourses_id = candidate.candidate_courses
 
@@ -391,20 +391,31 @@ app.post('/post_student_marks/:Course/:Module', async (req, res) => {
     const { Course, Module } = req.params;
     const { result, score, id } = req.body;
 
-    // Create a new instance of the model
-    const new_data = new student_dashboard({
-      student_id: id,
-      module_id: Module,
-      course_id: Course,
-      quiz_result: result, // Should match the schema (array or object)
-      quiz_score: score // Ensure score is a number in the schema
-    });
+    const existing_data = await student_dashboard.findOne({ student_id: id, module_id: Module, course_id: Course })
 
-    // Save the new instance and await the operation
-    const savedData = await new_data.save();
+    if (existing_data) {
+      existing_data.quiz_result = result
+      existing_data.quiz_score = score
 
-    // Send the response with the saved document
-    res.status(200).send({ message: "Student result uploaded", data: savedData });
+      await existing_data.save()
+
+      res.status(200).send({ message: "Student result uploaded", data: existing_data });
+    } else {
+      // Create a new instance of the model
+      const new_data = new student_dashboard({
+        student_id: id,
+        module_id: Module,
+        course_id: Course,
+        quiz_result: result, // Should match the schema (array or object)
+        quiz_score: score // Ensure score is a number in the schema
+      });
+
+      // Save the new instance and await the operation
+      const savedData = await new_data.save();
+      
+      // Send the response with the saved document
+      res.status(200).send({ message: "Student result uploaded", data: savedData });
+    }
 
   } catch (error) {
     console.error("Error saving student data:", error);

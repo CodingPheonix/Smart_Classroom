@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
 import Learner_nav from '../Components/Learner_nav'
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
     return (
@@ -9,7 +10,14 @@ const page = () => {
                 <Learner_nav />
             </div>
             <div className='h-full w-4/5 border border-black rounded-xl m-2 bg-white'>
-            <h1 className='font-extrabold text-2xl h-1/6 flex items-center p-4'>Dashboard</h1>
+                <h1 className='font-extrabold text-2xl h-1/6 flex items-center p-4'>Dashboard</h1>
+
+                <div>
+                    <div>total quizes attempted</div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
         </div>
     )
