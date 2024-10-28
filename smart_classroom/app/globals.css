@@ -2,3 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.learner_dashboard_basic {
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.learner_dashboard_basic:hover {
+    background-image: none;
+    background-color: rgba(8, 209, 8, 0.758);
+    color: white;
+    border-radius: 10px;
+    transform: scale(1.2) rotateY(20deg)  rotateX(20deg);
+    box-shadow: 0 8px 15px rgb(13, 87, 10);
+}

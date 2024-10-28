@@ -15,10 +15,22 @@ const page = () => {
                 <h1 className='font-extrabold text-2xl h-28 flex items-center p-4'>Dashboard</h1>
 
                 <div className='flex w-full justify-around items-center'>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm'>Total quizzes attempted</div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm'>Total Grade achieved</div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm'>Total quizzes attempted</div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm'>Overall Rank</div>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
+                        <div className='h-1/6'>Total quizzes attempted</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>10</div>
+                    </div>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
+                        <div className='h-1/6'>Total Grade achieved</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>23</div>
+                    </div>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
+                        <div className='h-1/6'>Total quizzes attempted</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>2</div>
+                    </div>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
+                        <div className='h-1/6'>Overall Rank</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>5th</div>
+                    </div>
                 </div>
 
                 <div className='w-full flex justify-center items-start'>
@@ -29,7 +41,7 @@ const page = () => {
                             <div className='font-semibold'>Activity</div>
                             <div className='font-semibold'>Score</div>
                         </div>
-                        <div className='overflow-y-auto max-h-[40vh]'>
+                        <div className='overflow-y-auto h-[40vh]'>
                             <Dashboard_activities />
                             <Dashboard_activities />
                             <Dashboard_activities />
