@@ -123,21 +123,68 @@ app.put('/courses/course/createModule/:slug', async (req, res) => {
 });
 
 //Delete each course
+// app.put('/courses/course/deleteModule/:Course/:Module', async (req, res) => {
+//   const { Course, Module } = req.params;
+//   try {
+//     const target_course = await course.findOne({ course_id: Course });
+//     if (!target_course) {
+//       return res.status(404).send({ success: false, message: 'Course not found' })
+//     }
+//     console.log("target course = "+target_course)
+//     const target_module = target_course.course_details.filter(module => module.module_id === Module)
+//     console.log("target module = "+target_module)
+//     if (target_module.contentType === 'Content') {
+//       console.log("content data found")
+//       await module_data.findOneAndDelete({module_id: target_module.module_id})
+//     }else{
+//       console.log("quiz data found")
+//       await quiz_data.findOneAndDelete({module_id: target_module.module_id})
+//     }
+
+//     target_course.course_details = target_course.course_details.filter(module => module.module_id !== Module);
+//     console.log(target_course.course_details);
+//     await target_course.save()
+
+//     res.json({ success: true, message: "module deleted successfully" })
+//   } catch (error) {
+//     res.status(500).send({ success: false, message: 'Failed to delete module', error: error.message });
+//   }
+// })
+
 app.put('/courses/course/deleteModule/:Course/:Module', async (req, res) => {
   const { Course, Module } = req.params;
   try {
+    // Find the target course
     const target_course = await course.findOne({ course_id: Course });
     if (!target_course) {
-      return res.status(404).send({ success: false, message: 'Course not found' })
+      return res.status(404).send({ success: false, message: 'Course not found' });
     }
+
+    // Find the specific module in course_details
+    const target_module = target_course.course_details.find(module => module.module_id === Module);
+    if (!target_module) {
+      return res.status(404).send({ success: false, message: 'Module not found in the course' });
+    }
+console.log('target module: '+ target_module)
+    // Check the content type and delete accordingly
+    if (target_module.content_type === 'Content') {
+      console.log("Content data found");
+      await module_data.findOneAndDelete({ module_id: target_module.module_id });
+    } else {
+      console.log("Quiz data found");
+      await quiz_data.findOneAndDelete({ module_id: target_module.module_id });
+    }
+
+    // Remove the module from course_details array
     target_course.course_details = target_course.course_details.filter(module => module.module_id !== Module);
-    console.log(target_course.course_details);
-    await target_course.save()
-    res.json({ success: true, message: "module deleted successfully" })
+    await target_course.save();
+
+    res.json({ success: true, message: "Module deleted successfully" });
   } catch (error) {
     res.status(500).send({ success: false, message: 'Failed to delete module', error: error.message });
   }
-})
+});
+
 
 //Get the details for indivisual module
 app.get('/courses/course/module/:Course/:Module', async (req, res) => {
