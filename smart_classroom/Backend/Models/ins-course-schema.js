@@ -27,6 +27,7 @@ const module_data_schema = new mongoose.Schema({
     module_id: String,
     module_title: String,
     content_type: String,
+    completed: Boolean,
     module_theory: [theory],
     module_attachments: [String]
 })
@@ -41,6 +42,7 @@ const quiz_data_schema = new mongoose.Schema({
     module_id: String,
     module_title: String,
     content_type: String,
+    completed: Boolean,
     quiz: [questions]
 })
 

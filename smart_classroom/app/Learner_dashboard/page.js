@@ -55,7 +55,7 @@ const Page = () => {
                         <div className='h-5/6 grid place-items-center text-2xl'>23</div>
                     </div>
                     <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
-                        <div className='h-1/6'>Total quizzes attempted</div>
+                        <div className='h-1/6'>Modules Completed</div>
                         <div className='h-5/6 grid place-items-center text-2xl'>2</div>
                     </div>
                     <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
@@ -65,7 +65,7 @@ const Page = () => {
                 </div>
 
                 <div className='w-full flex justify-center items-start'>
-                    <div className='w-1/2 border border-black rounded-xl m-2 p-2 flex flex-col items-center'>
+                    <div className='w-1/2 h-72 border border-black rounded-xl m-2 p-2 flex flex-col items-center'>
                         <h3 className='w-full text-center font-bold'>ACTIVITIES</h3>
                         <div className='w-full flex justify-around items-center'>
                             <div className='font-semibold'>Sl no.</div>
@@ -84,7 +84,7 @@ const Page = () => {
                         </div>
                     </div>
 
-                    <div className='w-1/2 border border-black rounded-xl m-2 p-2'>
+                    <div className='w-1/2 h-72 border border-black rounded-xl m-2 p-2'>
                         <h3 className='w-full text-center font-bold'>ANALYSIS</h3>
                         <div className='w-full grid grid-cols-2 gap-4 p-4'>
                             <div>
