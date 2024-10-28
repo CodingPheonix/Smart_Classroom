@@ -532,6 +532,17 @@ app.get('/get_activities/:student_id', async (req, res) => {
   }
 });
 
+//delete isntructor courses
+app.delete('/delete_I_courses/:course_id', async (req, res) => {
+  try {
+    const { course_id } = req.params
+
+    const target = await course.findOneAndDelete({course_id: course_id})
+    res.send({message: "target course deleted"})
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

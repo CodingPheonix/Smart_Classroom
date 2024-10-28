@@ -8,8 +8,15 @@ const I_course_card = (props) => {
         // Handle edit click
     }
 
-    const handleDeleteClick = () => {
-        // Handle delete click
+    const handleDeleteClick = async () => {
+        const response = await fetch(`http://localhost:5000/delete_I_courses/${props.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const result = await response.json()
+        console.log(result);
     }
 
     const PencilEdit01Icon = (props) => (
@@ -43,17 +50,17 @@ const I_course_card = (props) => {
                 <li className=' w-1/4 grid place-items-center'>{props.courseDuration}</li>
                 <li className=' w-1/4 grid place-items-center'>
                     <div className='flex gap-4'>
-                        <button onClick={handleEditClick}>
-                            <PencilEdit01Icon />
-                        </button>
+                        <Link href={`/Courses/${props.id}`}>
+                            <button onClick={handleEditClick}>
+                                <PencilEdit01Icon />
+                            </button>
+                        </Link>
                         <button onClick={handleDeleteClick}>
                             <Delete02Icon />
                         </button>
-                        <Link href={`/Courses/${props.id}`}>
-                            <button>
-                                <ArrowUpRight03Icon />
-                            </button>
-                        </Link>
+                        {/* <button>
+                            <ArrowUpRight03Icon />
+                        </button> */}
                     </div>
 
                 </li>
