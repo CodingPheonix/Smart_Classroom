@@ -20,7 +20,7 @@ const L_mycourse_card = (props) => {
     );
 
     const handleDeleteCourse = async (params) => {
-        const responce = await fetch(`http://localhost:5000/delete_from_mycourses/${props.id}`, {
+        const responce = await fetch(`http://localhost:5000/delete_from_mycourses/${props.id}/${props.user}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

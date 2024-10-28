@@ -57,6 +57,7 @@ const page = () => {
                         // <Link key={index} href={`/Courses/${course.course_id}`}>
                         <L_mycourse_card
                             key={index}
+                            user={user_id}
                             id={course.course_id}
                             courseTitle={course.course_title}
                             courseCategory={course.course_category}
