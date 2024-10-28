@@ -1,10 +1,41 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Learner_nav from '../Components/Learner_nav'
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard_activities from '../Components/Dashboard_activities'
+import { useSelector } from 'react-redux'
 
-const page = () => {
+const Page = () => {
+    const user_id = useSelector(state => state.counter.text)
+
+    //State list
+    const [activity_list, setActivity_list] = useState([])
+
+    //Api calls
+    const get_activities = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/get_activities/${user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            const result = await response.json()  // Add 'await' here
+            console.log(result)
+            setActivity_list(result.data)
+        } catch (error) {
+            console.error('Error fetching activities:', error)
+        }
+    }
+
+    useEffect(() => {
+        // Define an async function within useEffect
+        const fetchData = async () => {
+            await get_activities()
+        }
+        fetchData()
+    }, [])  // Empty dependency array to run once on mount
+
     return (
         <div className='flex min-h-screen bg-green-200'>
             <div className='w-1/5 border border-black rounded-xl m-2 bg-white'>
@@ -34,28 +65,22 @@ const page = () => {
                 </div>
 
                 <div className='w-full flex justify-center items-start'>
-                    <div className='w-1/2 border border-black rounded-xl m-2 p-2'>
+                    <div className='w-1/2 border border-black rounded-xl m-2 p-2 flex flex-col items-center'>
                         <h3 className='w-full text-center font-bold'>ACTIVITIES</h3>
                         <div className='w-full flex justify-around items-center'>
                             <div className='font-semibold'>Sl no.</div>
                             <div className='font-semibold'>Activity</div>
                             <div className='font-semibold'>Score</div>
                         </div>
-                        <div className='overflow-y-auto h-[40vh]'>
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
-                            <Dashboard_activities />
+                        <div className='w-5/6 h-[1px] bg-black my-1'></div>
+                        <div className='overflow-y-auto w-full h-[40vh]'>
+                            {activity_list.length === 0 ? (
+                                <div>No Activities Recorded</div>
+                            ) : (
+                                activity_list.map((activity, index) => (
+                                    <Dashboard_activities key={index} slno={index + 1} activity={activity.name} score={activity.data} />
+                                ))
+                            )}
                         </div>
                     </div>
 
@@ -102,4 +127,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

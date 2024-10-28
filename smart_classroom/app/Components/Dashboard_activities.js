@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Dashboard_activities = () => {
+const Dashboard_activities = (props) => {
     return (
         <div>
             <div className='w-full flex justify-around items-center'>
-                <div className='font-semibold' >1</div>
-                <div className='font-semibold' >Html Practice</div>
-                <div className='font-semibold' >4</div>
+                <div className='font-semibold w-1/3 text-center' >{props.slno}</div>
+                <div className='font-semibold w-1/3 text-center' >{props.activity}</div>
+                <div className='font-semibold w-1/3 text-center' >{props.score}</div>
             </div>
         </div>
     )

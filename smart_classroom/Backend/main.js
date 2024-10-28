@@ -507,6 +507,31 @@ app.get('/get_user_details/:Id', async (req, res) => {
   }
 })
 
+//get data for student dashboard activities
+app.get('/get_activities/:student_id', async (req, res) => {
+  try {
+    const { student_id } = req.params;
+    const data = await student_dashboard.find({ student_id });
+
+    if (data && data.length > 0) {
+      const result = await Promise.all(
+        data.map(async (item) => {
+          const target_module = await quiz_data.findOne({ module_id: item.module_id });
+          const target_module_name = target_module ? target_module.module_title : 'Unknown Module';
+          const target_quiz_data = item.quiz_score;
+          return { name: target_module_name, data: target_quiz_data };
+        })
+      );
+
+      res.status(200).json({ message: "Fetched student data successfully", data: result });
+    } else {
+      res.status(404).json({ message: "No data found for the student" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
