@@ -59,13 +59,21 @@ export function fper_cent_score(arr) {
 }
 
 export function tot_assign_submitted(arr) {
+    let count = 0;
     arr.forEach((e) => {
         if (e.content_type === "quiz") {
             count += 1;
         }
     });
+    return count
 }
 
 export function max_score(arr){
-    
+    let max = 0;
+    arr.forEach((e) => {
+        if (e.content_type === "quiz" && e.quiz_score > max) {
+            max = e.quiz_score
+        }
+    });
+    return max
 }
