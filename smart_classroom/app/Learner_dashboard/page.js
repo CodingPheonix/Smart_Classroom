@@ -4,7 +4,8 @@ import Learner_nav from '../Components/Learner_nav'
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard_activities from '../Components/Dashboard_activities'
 import { useSelector } from 'react-redux'
-import { ftotal_quiz, fper_cent_score, fmodules_completed, favg_score, ftotal_lessons } from "../../Backend/operations.js"
+import Set_star from '../Components/Set_star.js'
+import { ftotal_quiz, fper_cent_score, fmodules_completed, favg_score, ftotal_lessons, fmax_score } from "../../Backend/operations.js"
 
 const Page = () => {
     const user_id = useSelector(state => state.counter.text)
@@ -16,6 +17,8 @@ const Page = () => {
     const [per_cent_score, setPer_cent_score] = useState(0)
     const [modules_completed, setModules_completed] = useState(0)
     const [total_lessons, setTotal_lessons] = useState(0)
+    const [max_quiz_score, setMax_quiz_score] = useState(0)
+    const [req_arr, setReq_arr] = useState([])
 
     //Api calls
     const get_activities = async () => {
@@ -45,11 +48,13 @@ const Page = () => {
             const result = await response.json()
             console.log(result.data)
 
+            setReq_arr(result.data)
             setTotal_quiz(ftotal_quiz(result.data));
             setAvg_score(favg_score(result.data));
             setPer_cent_score(fper_cent_score(result.data))
             setModules_completed(fmodules_completed(result.data));
             setTotal_lessons(ftotal_lessons(result.data))
+            setMax_quiz_score(fmax_score(result.data))
 
         } catch (error) {
             console.error('Error fetching activities:', error)
@@ -130,7 +135,7 @@ const Page = () => {
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Max quiz score:</div>
-                                <div className='w-full text-center'>85%</div>
+                                <div className='w-full text-center'>{max_quiz_score}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total assignments submitted:</div>
@@ -146,7 +151,7 @@ const Page = () => {
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Academic Rating:</div>
-                                <div className='w-full text-center'>70%</div>
+                                <div className='w-full flex justify-center items-center pt-1'><Set_star arr={req_arr} /></div>
                             </div>
                         </div>
                     </div>
