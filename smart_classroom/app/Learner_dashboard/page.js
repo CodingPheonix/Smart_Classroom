@@ -4,12 +4,17 @@ import Learner_nav from '../Components/Learner_nav'
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard_activities from '../Components/Dashboard_activities'
 import { useSelector } from 'react-redux'
+import { ftotal_quiz, fper_cent_score, fmodules_completed, favg_score } from "../../Backend/operations.js"
 
 const Page = () => {
     const user_id = useSelector(state => state.counter.text)
 
     //State list
     const [activity_list, setActivity_list] = useState([])
+    const [total_quiz, setTotal_quiz] = useState(0)
+    const [avg_score, setAvg_score] = useState(0)
+    const [per_cent_score, setPer_cent_score] = useState(0)
+    const [modules_completed, setModules_completed] = useState(0)
 
     //Api calls
     const get_activities = async () => {
@@ -28,10 +33,33 @@ const Page = () => {
         }
     }
 
+    const get_dashboard = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/fetch_student_dashboard_data/${user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            const result = await response.json()
+            console.log(result.data)
+
+            setTotal_quiz(ftotal_quiz(result.data));
+            setAvg_score(favg_score(result.data));
+            setPer_cent_score(fper_cent_score(result.data))
+            setModules_completed(fmodules_completed(result.data));
+
+
+        } catch (error) {
+            console.error('Error fetching activities:', error)
+        }
+    }
+
     useEffect(() => {
         // Define an async function within useEffect
         const fetchData = async () => {
             await get_activities()
+            await get_dashboard()
         }
         fetchData()
     }, [])  // Empty dependency array to run once on mount
@@ -46,19 +74,19 @@ const Page = () => {
                 <h1 className='font-extrabold text-2xl h-28 flex items-center p-4'>Dashboard</h1>
 
                 <div className='flex w-full justify-around items-center'>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Total quizzes attempted</div>
-                        <div className='h-5/6 grid place-items-center text-2xl'>10</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>{total_quiz}</div>
                     </div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
-                        <div className='h-1/6'>Total Grade achieved</div>
-                        <div className='h-5/6 grid place-items-center text-2xl'>23</div>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
+                        <div className='h-1/6'>Percentage score achieved</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>{per_cent_score}</div>
                     </div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Modules Completed</div>
-                        <div className='h-5/6 grid place-items-center text-2xl'>2</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>{modules_completed}</div>
                     </div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-sm learner_dashboard_basic'>
+                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Overall Rank</div>
                         <div className='h-5/6 grid place-items-center text-2xl'>5th</div>
                     </div>
@@ -93,7 +121,7 @@ const Page = () => {
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Average quiz score:</div>
-                                <div className='w-full text-center'>78%</div>
+                                <div className='w-full text-center'>{avg_score}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total assignments submitted:</div>

@@ -109,7 +109,8 @@ const Page = ({ params }) => {
             result: answers.map(answer => answer.selectedOption),
             score: count,
             id: user_id, // Example student ID
-            content_type:  module_data.content_type
+            content_type:  module_data.content_type,
+            total: answers.length
         };
 
         upload_result_data(final_data);

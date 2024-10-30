@@ -448,7 +448,7 @@ app.delete('/delete_from_mycourses/:id/:user', async (req, res) => {
 app.post('/post_student_marks/:Course/:Module', async (req, res) => {
   try {
     const { Course, Module } = req.params;
-    const { result, score, id, content_type } = req.body;
+    const { result, score, id, total, content_type } = req.body;
 
     const existing_data = await student_dashboard.findOne({ student_id: id, module_id: Module, course_id: Course })
 
@@ -468,6 +468,7 @@ app.post('/post_student_marks/:Course/:Module', async (req, res) => {
         content_type: content_type,
         quiz_result: result, // Should match the schema (array or object)
         quiz_score: score, // Ensure score is a number in the schema
+        total_score: total,
         is_complete: false
       });
 
@@ -497,6 +498,7 @@ app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
       content_type: content_type, // Should match the schema (array or object)
       quiz_result: [], // Should match the schema (array or object)
       quiz_score: 0, // Ensure score is a number in the schema
+      total_score: 0,
       is_complete: false
     });
 
@@ -505,22 +507,6 @@ app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
     res.status(200).send({ message: "Content data uploaded", data: savedData });
   } catch (error) {
 
-  }
-})
-
-//fetch student quiz data from db
-app.get('/fetch_student_quiz_data/:id', async (req, res) => {
-  try {
-    const { id } = req.params
-
-    const target_data = await student_dashboard.find({ student_id: id })
-    if (target_data) {
-      res.status(200).send({ message: "Student quiz data fetched", data: target_data })
-    } else {
-      res.status(404).json({ message: 'target data not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
   }
 })
 
@@ -596,7 +582,7 @@ app.get('/get_user_details/:Id', async (req, res) => {
 app.get('/get_activities/:student_id', async (req, res) => {
   try {
     const { student_id } = req.params;
-    const data = await student_dashboard.find({ student_id });
+    const data = await student_dashboard.find({ student_id: student_id, content_type: "quiz" });
 
     if (data && data.length > 0) {
       const result = await Promise.all(
@@ -660,6 +646,22 @@ app.get('/get_mark/:user/:Module', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+})
+
+//fetch student dashboard data from db
+app.get('/fetch_student_dashboard_data/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const target_data = await student_dashboard.find({ student_id: id })
+    if (target_data) {
+      res.status(200).send({ message: "Student quiz data fetched", data: target_data })
+    } else {
+      res.status(404).json({ message: 'target data not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
 })
 

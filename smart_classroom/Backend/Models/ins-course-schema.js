@@ -71,6 +71,7 @@ const dashboard = new mongoose.Schema({
     content_type: {type: String, required: true},
     quiz_result: { type: [String], required: true }, 
     quiz_score: { type: Number, required: true },
+    total_score: { type: Number, required: true },
     is_complete: { type: Boolean, required: true },
 });
 
