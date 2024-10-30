@@ -141,10 +141,12 @@ const Page = () => {
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total assignments submitted:</div>
                                 <div className='w-full text-center'>{total_quiz}</div>
                             </div>
+                            {/* This is for Extra assignments given by Instructor in separate sections */}
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Pending assignments:</div>
                                 <div className='w-full text-center'>3</div>
                             </div>
+                            {/* ..... */}
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total reading time:</div>
                                 <div className='w-full text-center'>12 hours</div>
