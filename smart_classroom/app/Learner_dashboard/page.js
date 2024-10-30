@@ -74,7 +74,7 @@ const Page = () => {
                         </div>
                         <div className='w-5/6 h-[1px] bg-black my-1'></div>
                         <div className='overflow-y-auto w-full h-[40vh]'>
-                            {activity_list.length === 0 ? (
+                            {(activity_list.length === 0 && activity_list) ? (
                                 <div className='text-center'>No Activities Recorded</div>
                             ) : (
                                 activity_list.map((activity, index) => (

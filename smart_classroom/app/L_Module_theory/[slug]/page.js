@@ -11,7 +11,7 @@ const Page = ({ params }) => {
 
     const user_id = useSelector(state => state.counter.text)
     console.log(user_id);
-    
+
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
@@ -24,6 +24,8 @@ const Page = ({ params }) => {
     const [score, setScore] = useState(0);
 
     console.log(module_data)
+    console.log(paraPageData);
+    
 
     // Fetch module data
     const get_module_data = async () => {
@@ -69,6 +71,17 @@ const Page = ({ params }) => {
         console.log(result);
     };
 
+    const handle_content_data = async (data) => {
+        const response = await fetch(`http://localhost:5000/handle_content_data/${user_id}/${course_id}/${module_id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        const result = await response.json();
+        console.log(result);
+    }
+
+
     // UseEffects
     useEffect(() => {
         get_module_data();
@@ -95,11 +108,18 @@ const Page = ({ params }) => {
         const final_data = {
             result: answers.map(answer => answer.selectedOption),
             score: count,
-            id: user_id // Example student ID
+            id: user_id, // Example student ID
+            content_type:  module_data.content_type
         };
 
         upload_result_data(final_data);
+        alert('Quiz result uploaded')
     };
+
+    const handle_content_submit = async () => {
+      handle_content_data({content_type:  module_data.content_type});
+      alert('default data uploaded')
+    }
 
     return (
         <div className='min-h-screen w-full flex justify-center'>
@@ -118,7 +138,11 @@ const Page = ({ params }) => {
                     ) : (
                         <p className='grid place-items-center'>No data available</p>
                     )}
-                    <button onClick={handle_content_submit}>Finish reading</button>
+                    <button
+                        onClick={handle_content_submit}
+                        className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700"
+                    >Finish reading</button>
+
                 </div>
             ) : (
                 // Quiz Section

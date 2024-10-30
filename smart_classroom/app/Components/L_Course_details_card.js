@@ -1,23 +1,44 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux'
 
 const L_Course_details_card = (props) => {
+
+    const user_id = useSelector(state => state.counter.text)
 
     // State List 
     const [isMark, setIsMark] = useState(false)
 
+    // useEffects
+    useEffect(() => {
+      setIsMark(props.mark)
+    }, [])
+    
+
     //API Calls
-    const set_is_done = async () => {
-      const response = await fetch(`http://localhost:5000/set_is_done/${user_id}/${props.module_id}/${props.course_id}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+    const set_is_done = async (updatedMark) => {
+        const response = await fetch(`http://localhost:5000/set_is_done/${user_id}/${props.module_id}/${props.course_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({is_done: isMark})
-      })
-      const result = await response.json();
-      console.log(result);
-    }
+            body: JSON.stringify({ is_done: updatedMark })
+        });
+        const result = await response.json();
+        console.log(result);
+    };
+
+    // const get_mark = async () => {
+    //     const response = await fetch(`http://localhost:5000/get_mark/${user_id}/${props.module_id}`, {
+    //       method: 'GET',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     })
+    //     const result = await response.json()
+    //     console.log(result.data);
+    //     setIsMark(result.data)   
+    //   }
 
     const Book02Icon = (props) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
@@ -56,10 +77,18 @@ const L_Course_details_card = (props) => {
                             Read
                         </button>
                     </Link>
-                    <button onClick={() => {setIsMark(!isMark)}} className='flex gap-1'>
-                        {isMark? <CheckmarkSquare03Icon/> : <SquareIcon/>}
+                    <button
+                        onClick={async () => {
+                            const updatedMark = !isMark;  // Toggle the state locally
+                            setIsMark(updatedMark);       // Update the state
+                            await set_is_done(updatedMark); // Pass the new value to the API call
+                        }}
+                        className="flex gap-1"
+                    >
+                        {isMark ? <CheckmarkSquare03Icon /> : <SquareIcon />}
                         Mark as Read
                     </button>
+
                 </div>
             </div>
         </div>
