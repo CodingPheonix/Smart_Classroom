@@ -75,7 +75,7 @@ const Page = () => {
                         <div className='w-5/6 h-[1px] bg-black my-1'></div>
                         <div className='overflow-y-auto w-full h-[40vh]'>
                             {activity_list.length === 0 ? (
-                                <div>No Activities Recorded</div>
+                                <div className='text-center'>No Activities Recorded</div>
                             ) : (
                                 activity_list.map((activity, index) => (
                                     <Dashboard_activities key={index} slno={index + 1} activity={activity.name} score={activity.data} />
@@ -104,7 +104,7 @@ const Page = () => {
                                 <div className='w-full text-center'>3</div>
                             </div>
                             <div>
-                                <div className='bg-white rounded-lg text-center text-xs font-semibold'>Last quiz score:</div>
+                                <div className='bg-white rounded-lg text-center text-xs font-semibold'>Max quiz score:</div>
                                 <div className='w-full text-center'>85%</div>
                             </div>
                             <div>

@@ -603,6 +603,25 @@ app.delete('/delete_I_courses/:course_id', async (req, res) => {
   }
 })
 
+//mark if a module is completed
+app.post('/set_is_done/:user/:Module/:Course', async (req, res) => {
+  try {
+    const { user, Module, Course } = req.params
+    const { is_done } = req.body
+
+    const target_module = await student_dashboard.findOne({student_id: user, module_id: Module, course_id: Course})
+    if (target_module) {
+      target_module.is_complete = is_done
+      await target_module.save()
+      res.send({message: "Module marked as done", data: target_module})
+    }else{
+      res.status(404).json({ message: "No data found for the student" })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

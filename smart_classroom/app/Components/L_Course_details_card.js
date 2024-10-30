@@ -1,7 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link';
 
 const L_Course_details_card = (props) => {
+
+    // State List 
+    const [isMark, setIsMark] = useState(false)
+
+    //API Calls
+    const set_is_done = async () => {
+      const response = await fetch(`http://localhost:5000/set_is_done/${user_id}/${props.module_id}/${props.course_id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({is_done: isMark})
+      })
+      const result = await response.json();
+      console.log(result);
+    }
 
     const Book02Icon = (props) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
@@ -15,10 +31,16 @@ const L_Course_details_card = (props) => {
 
     const CheckmarkSquare03Icon = (props) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
-          <path d="M21.4477 8.2C21.5 9.25014 21.5 10.4994 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C13.0719 2.5 14.0156 2.5 14.85 2.51908" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M8 11.5C8 11.5 9.5 11.5 11.5 15C11.5 15 16.5588 5.83333 21.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M21.4477 8.2C21.5 9.25014 21.5 10.4994 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C13.0719 2.5 14.0156 2.5 14.85 2.51908" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M8 11.5C8 11.5 9.5 11.5 11.5 15C11.5 15 16.5588 5.83333 21.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      );
+    );
+
+    const SquareIcon = (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
+            <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+    );
 
     return (
         <div>
@@ -34,8 +56,8 @@ const L_Course_details_card = (props) => {
                             Read
                         </button>
                     </Link>
-                    <button className='flex gap-1'>
-                        <CheckmarkSquare03Icon/>
+                    <button onClick={() => {setIsMark(!isMark)}} className='flex gap-1'>
+                        {isMark? <CheckmarkSquare03Icon/> : <SquareIcon/>}
                         Mark as Read
                     </button>
                 </div>

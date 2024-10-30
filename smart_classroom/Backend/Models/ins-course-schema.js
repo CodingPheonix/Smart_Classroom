@@ -68,7 +68,8 @@ const dashboard = new mongoose.Schema({
     module_id: { type: String, required: true },
     course_id: { type: String, required: true },
     quiz_result: { type: [String], required: true }, // Assuming quiz_result is stored as a Map
-    quiz_score: { type: Number, required: true }
+    quiz_score: { type: Number, required: true },
+    is_complete: { type: Boolean, required: true },
 });
 
 const login_schema = new mongoose.Schema({

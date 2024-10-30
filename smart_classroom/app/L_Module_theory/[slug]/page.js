@@ -23,6 +23,8 @@ const Page = ({ params }) => {
     const [showModal, setShowModal] = useState(false);
     const [score, setScore] = useState(0);
 
+    console.log(module_data)
+
     // Fetch module data
     const get_module_data = async () => {
         const response = await fetch(`http://localhost:5000/courses/course/module/${course_id}/${module_id}`, {
@@ -67,7 +69,7 @@ const Page = ({ params }) => {
         console.log(result);
     };
 
-    // Fetch quiz data
+    // UseEffects
     useEffect(() => {
         get_module_data();
         if (module_data.content_type === "Content") {
@@ -75,7 +77,7 @@ const Page = ({ params }) => {
         } else {
             get_quiz_details();
         }
-    }, []);
+    }, [module_data.content_type]);
 
     // Submit function
     const onSubmit = (data) => {
@@ -116,6 +118,7 @@ const Page = ({ params }) => {
                     ) : (
                         <p className='grid place-items-center'>No data available</p>
                     )}
+                    <button onClick={handle_content_submit}>Finish reading</button>
                 </div>
             ) : (
                 // Quiz Section
