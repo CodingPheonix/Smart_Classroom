@@ -84,7 +84,15 @@ const login_schema = new mongoose.Schema({
     candidate_courses: [String],
 })
 
-const 
+const notice = new mongoose.Schema({
+    notice_heading: String,
+    notice_description: String,
+})
+
+const notices = new mongoose.Schema({
+    instructor_id: String,
+    notices: [notice]
+})
 
 export const course = mongoose.model('course', course_schema)
 export const module_data = mongoose.model('module_data', module_data_schema)
@@ -92,3 +100,4 @@ export const quiz_data = mongoose.model('quiz_data', quiz_data_schema)
 export const learner_course = mongoose.model('learner_course', learner_course_schema)
 export const student_dashboard = mongoose.model('student_dashboard', dashboard)
 export const login = mongoose.model('login', login_schema)
+export const notice_data = mongoose.model('notice_data', notices)
