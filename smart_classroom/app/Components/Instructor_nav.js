@@ -35,6 +35,7 @@ const Instructor_nav = () => {
                 <ul className='text-lg p-2 '>
                     <Link href="Instructor"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>About Me</li></Link>
                     <Link href="Instructor_courses"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Courses</li></Link>
+                    <Link href="Instructor_notice"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Notice</li></Link>
                 </ul>
             </div>
             <div className='h-1/5 grid place-items-center'>
