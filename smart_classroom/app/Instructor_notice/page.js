@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Notice_card from '../Components/notice_card'
 import Instructor_nav from '../Components/Instructor_nav'
@@ -36,9 +36,13 @@ const page = () => {
         })
         const result = await response.json()
         console.log(result)
-        // setNotice_list()
+        setNotice_list(result.data.notices)
     };
 
+    useEffect(() => {
+      get_notices()
+    }, [])
+    
 
     // Submits
     const onSubmit = (data) => {

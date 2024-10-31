@@ -695,6 +695,22 @@ app.post('/send_notice/:user', async (req, res) => {
   }
 })
 
+//get notice list
+app.get('/get_notices/:user', async (req, res) => {
+  try {
+    const { user } = req.params
+
+    const target_notice = await notice_data.findOne({instructor_id: user})
+    if (target_notice) {
+      res.status(200).send({message:"Fetched notice data successfully", data: target_notice})
+    }else{
+      res.status(404).json({message: 'target data not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
