@@ -12,6 +12,33 @@ const page = () => {
     const [set_notice, setSet_notice] = useState(false)
     const [notice_list, setNotice_list] = useState([])
 
+    // API calls
+    const send_notice = async (data) => {
+        const response = await fetch(`http://localhost:5000/send_notice/${user_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        const result = await response.json()
+        console.log(result)
+    }
+
+    const get_notices = async () => {
+        const response = await fetch(`http://localhost:5000/get_notices/${user_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        // setNotice_list()
+    };
+    
+
+    // Submits
     const onSubmit = data => {
         console.log(data)
         setNotice_list((prev) => [...prev, data])

@@ -84,6 +84,8 @@ const login_schema = new mongoose.Schema({
     candidate_courses: [String],
 })
 
+const 
+
 export const course = mongoose.model('course', course_schema)
 export const module_data = mongoose.model('module_data', module_data_schema)
 export const quiz_data = mongoose.model('quiz_data', quiz_data_schema)
