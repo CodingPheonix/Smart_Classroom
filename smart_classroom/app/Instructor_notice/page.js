@@ -3,9 +3,11 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Notice_card from '../Components/notice_card'
 import Instructor_nav from '../Components/Instructor_nav'
+import { useSelector, useDispatch } from 'react-redux'
 
 const page = () => {
 
+    const user_id = useSelector(state => state.counter.text)
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
 
     //State List
@@ -36,14 +38,18 @@ const page = () => {
         console.log(result)
         // setNotice_list()
     };
-    
+
 
     // Submits
-    const onSubmit = data => {
-        console.log(data)
-        setNotice_list((prev) => [...prev, data])
-        reset()
-        setSet_notice(!set_notice)
+    const onSubmit = (data) => {
+        setNotice_list((prev) => {
+            const updatedList = [...prev, data];
+            console.log(updatedList)
+            send_notice(updatedList); // Send the updated list directly
+            return updatedList;
+        });
+        reset();
+        setSet_notice(!set_notice);
     };
 
     return (

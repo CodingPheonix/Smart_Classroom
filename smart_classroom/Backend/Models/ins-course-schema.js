@@ -85,8 +85,8 @@ const login_schema = new mongoose.Schema({
 })
 
 const notice = new mongoose.Schema({
-    notice_heading: String,
-    notice_description: String,
+    heading: String,
+    description: String,
 })
 
 const notices = new mongoose.Schema({

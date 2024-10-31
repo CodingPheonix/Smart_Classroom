@@ -7,6 +7,7 @@ import { module_data } from "./Models/ins-course-schema.js"
 import { quiz_data } from "./Models/ins-course-schema.js"
 import { learner_course } from "./Models/ins-course-schema.js"
 import { student_dashboard } from "./Models/ins-course-schema.js"
+import { notice_data } from "./Models/ins-course-schema.js"
 
 const app = express()
 const port = 5000
@@ -660,6 +661,35 @@ app.get('/fetch_student_dashboard_data/:id', async (req, res) => {
     } else {
       res.status(404).json({ message: 'target data not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+app.post('/send_notice/:user', async (req, res) => {
+  try {
+    const { user } = req.params;
+    const updatedList = req.body;
+    console.log(updatedList)
+
+    if (!Array.isArray(updatedList) || !updatedList.every(notice => notice.heading && notice.description)) {
+      return res.status(400).json({ message: "Invalid format for updatedList" });
+    }
+
+    const target_notice = await notice_data.findOne({ instructor_id: user })
+    if (target_notice) {
+      target_notice.notices = updatedList
+      await target_notice.save()
+      res.status(200).send({ message: "Notice updated successfully", data: target_notice })
+    } else {
+      const data = new notice_data({
+        instructor_id: user,
+        notices: updatedList
+      })
+      await data.save();
+      res.status(200).send({ message: "Notice sent successfully", data: data })
+    }
+
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
