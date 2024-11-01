@@ -36,7 +36,9 @@ const page = () => {
         })
         const result = await response.json()
         console.log(result)
-        setNotice_list(result.data.notices)
+        if (result.data) {
+            setNotice_list(result.data.notices)
+        }
     };
 
     useEffect(() => {

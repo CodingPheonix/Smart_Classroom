@@ -695,16 +695,45 @@ app.post('/send_notice/:user', async (req, res) => {
   }
 })
 
-//get notice list
+//get notice list according to instructor
 app.get('/get_notices/:user', async (req, res) => {
   try {
     const { user } = req.params
 
-    const target_notice = await notice_data.findOne({instructor_id: user})
+    const target_notice = await notice_data.findOne({ instructor_id: user })
     if (target_notice) {
-      res.status(200).send({message:"Fetched notice data successfully", data: target_notice})
-    }else{
-      res.status(404).json({message: 'target data not found' });
+      res.status(200).send({ message: "Fetched notice data successfully", data: target_notice })
+    } else {
+      res.status(404).json({ message: 'target data not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+//get full notice list
+app.get('/get_all_notices', async (req, res) => {
+  try {
+    const target_notice = await notice_data.find({})
+    if (target_notice) {
+      res.status(200).send({ message: "Fetched notice data successfully", data: target_notice })
+    } else {
+      res.status(404).json({ message: 'target data not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+//get instructor name
+app.get('/get_instructor/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const instructor = await login.findOne({ candidate_id: id })
+    if (instructor) {
+      res.status(200).send({ message: "Fetched instructor name successfully", data: instructor.candidate_name })
+    } else {
+      res.status(404).json({ message: 'Instructor not found' });
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
