@@ -13,6 +13,7 @@ const page = () => {
     //State List
     const [set_notice, setSet_notice] = useState(false)
     const [notice_list, setNotice_list] = useState([])
+    const [id, setId] = useState("")
 
     // API calls
     const send_notice = async (data) => {
@@ -37,13 +38,14 @@ const page = () => {
         const result = await response.json()
         console.log(result)
         if (result.data) {
+            setId(result.data._id)
             setNotice_list(result.data.notices)
         }
     };
 
     useEffect(() => {
       get_notices()
-    }, [])
+    }, [notice_list])
     
 
     // Submits
@@ -75,7 +77,7 @@ const page = () => {
                     {notice_list ? (
                         notice_list.map((notice, index) => {
                             return (
-                                <Notice_card key={index} heading={notice.heading} description={notice.description} />
+                                <Notice_card key={index} id={id} notice_id={notice._id} heading={notice.heading} description={notice.description} />
                             )
                         })
                     ) : (

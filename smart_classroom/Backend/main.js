@@ -711,6 +711,24 @@ app.get('/get_notices/:user', async (req, res) => {
   }
 })
 
+//delete notice by instructor
+app.delete('/delete_notice', async (req, res) => {
+  try {
+    const { id, notice_id } = req.query;
+    const target_notice = await notice_data.findById(id);
+    if (target_notice) {
+      target_notice.notices = target_notice.notices.filter(notice => notice._id.toString() !== notice_id);
+      await target_notice.save();
+      res.status(200).send({ message: "Notice deleted successfully", data: target_notice });
+    } else {
+      res.status(404).json({ message: 'Target data not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 //get full notice list
 app.get('/get_all_notices', async (req, res) => {
   try {
