@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import Para_courses from '../../Components/Para_courses';
+import { analytics } from '../../Firebase/firebase-config';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import Link from 'next/link';
+import File_card from '../../Components/File_card.js';
 
 const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
@@ -15,6 +19,8 @@ const Page = ({ params }) => {
     const [questions, setQuestions] = useState([
         { question: '', options: ['', '', '', ''], correctAnswer: '' }
     ]);
+    const [file_upload, setFile_upload] = useState(null)
+    const [fileList, setFileList] = useState([])
 
     // Useform and Usefield array
     const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -76,7 +82,6 @@ const Page = ({ params }) => {
     //     setparaPageData(formattedData);
     // }
 
-
     const get_parapagedata = async () => {
         try {
             const response = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
@@ -87,7 +92,7 @@ const Page = ({ params }) => {
             });
             const result = await response.json();
             console.log(result);
-    
+
             // Check if result.data exists and is an array
             if (Array.isArray(result.data)) {
                 // Map the fetched data to the expected format for Para_courses
@@ -95,7 +100,7 @@ const Page = ({ params }) => {
                     heading: item.theory_heading || "No heading",  // Provide a default value if heading is missing
                     explanation: item.theory_explanation || "No explanation",  // Provide a default value if explanation is missing
                 }));
-    
+
                 // Update the state with the formatted data
                 setparaPageData(formattedData);
             } else {
@@ -107,7 +112,6 @@ const Page = ({ params }) => {
             setparaPageData([]); // Handle errors by setting an empty array
         }
     };
-    
 
     // Post quiz questions to db
     const post_quiz_data = async (data) => {
@@ -157,12 +161,30 @@ const Page = ({ params }) => {
         console.log(result);
     }
 
+    const post_files = async (data) => {
+        const response = await fetch(`http://localhost:5000/post_files/${module_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        const result = await response.json()
+        console.log(result)
+    };
+
+
     //UseEffects
     useEffect(() => {
         get_module_data();
         get_parapagedata();
         get_quiz_details();
     }, []);
+
+    // useEffect(() => {
+
+    // }, [fileList])
+
 
     // Functions
     const paragraphSubmit = (data) => {
@@ -177,11 +199,37 @@ const Page = ({ params }) => {
         setAddParagraph(false);
     };
 
-    const onSubmitFile = (data) => {
-        console.log(data);
-        reset()
-        setAddFile(false)
-    }
+    //submit file
+    const onFileSubmit = async (event) => {
+        event.preventDefault();  // Prevent form submission default behavior
+        if (!file_upload) {
+            console.log("No file selected.");
+            return;
+        }
+        console.log(file_upload);
+
+        const result = await Promise.all(
+            Array.from(file_upload).map((file, index) => {  // Convert FileList to Array
+                const file_ref = ref(analytics, `SmartSkill_courses/${file.name}`);
+                return uploadBytes(file_ref, file).then((data) => {
+                    return getDownloadURL(data.ref).then((url) => {
+                        return { 'url': url, "name": file.name, "type": file.type };  // Corrected dynamic key syntax
+                    });
+                });
+            })
+        );
+
+        console.log(result);
+        setFileList((prev) => {
+            const final_list = [...prev, ...result];
+            post_files(final_list);
+            return final_list;
+        });
+
+        setAddFile(false);  // Close the file upload modal after submission
+    };
+
+
 
     //submit Quiz data
     const onSubmit = (data) => {
@@ -210,6 +258,7 @@ const Page = ({ params }) => {
                                 </button>
                             </div>
 
+                            {/* Render Lesson List  */}
                             {parapageData.length > 0 ? (
                                 parapageData.map((data, index) => (
                                     <Para_courses key={index} heading={data.heading} paragraph={data.explanation} />
@@ -217,9 +266,20 @@ const Page = ({ params }) => {
                             ) : (
                                 <p className="grid place-items-center">No data available</p>
                             )}
+
+                            {/* Render file list */}
+                            {fileList.length > 0 ? (
+                                <div className='flex flex-wrap gap-4'>
+                                    {fileList.map((file, index) => (
+                                        <Link key={index} href={file.url} target="_blank" rel="noopener noreferrer">
+                                            <File_card fileName={file.name} />
+                                        </Link>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-center text-gray-500">No files available</p>
+                            )}
                         </div>
-
-
 
                         {/* submit the format */}
                         <div className="absolute left-1/2 bottom-20 transform -translate-x-1/2">
@@ -342,15 +402,15 @@ const Page = ({ params }) => {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
                         <h2 className="text-lg font-bold mb-4 text-green-600">Add Files</h2>
-                        <form onSubmit={onSubmitFile}>
+                        <form onSubmit={onFileSubmit}>  {/* Use the new `onFileSubmit` handler */}
                             <label htmlFor="file" className="block text-sm font-medium text-gray-700 mb-1">Select Files</label>
                             <input
                                 type="file"
                                 name="file"
                                 multiple
+                                onChange={(event) => setFile_upload(event.target.files)}
                                 className="border border-gray-300 rounded-md p-2 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
-
                             <input
                                 type="submit"
                                 value="Upload"
@@ -360,6 +420,7 @@ const Page = ({ params }) => {
                     </div>
                 </div>
             )}
+
 
         </div>
     );
