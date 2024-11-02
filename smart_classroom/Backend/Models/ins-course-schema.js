@@ -24,13 +24,19 @@ const theory = new mongoose.Schema({
     theory_explanation: String,
 })
 
+const attachments = new mongoose.Schema({
+    name: String,
+    url: String,
+    type: String
+})
+
 const module_data_schema = new mongoose.Schema({
     module_id: String,
     module_title: String,
     content_type: String,
     completed: Boolean,
     module_theory: [theory],
-    module_attachments: [String]
+    module_attachments: [attachments]
 })
 
 const questions = new mongoose.Schema({

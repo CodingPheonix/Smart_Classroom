@@ -59,6 +59,8 @@ const Page = ({ params }) => {
         })
         const result = await responce.json()
         console.log(result);
+
+        await post_files(fileList);
     }
 
     // const get_parapagedata = async () => {
@@ -161,13 +163,13 @@ const Page = ({ params }) => {
         console.log(result);
     }
 
-    const post_files = async (data) => {
+    const post_files = async (fileList) => {
         const response = await fetch(`http://localhost:5000/post_files/${module_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(fileList),
         })
         const result = await response.json()
         console.log(result)
@@ -222,7 +224,7 @@ const Page = ({ params }) => {
         console.log(result);
         setFileList((prev) => {
             const final_list = [...prev, ...result];
-            post_files(final_list);
+            // post_files(final_list);
             return final_list;
         });
 

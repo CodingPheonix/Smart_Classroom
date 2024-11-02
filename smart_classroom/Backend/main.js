@@ -759,7 +759,23 @@ app.get('/get_instructor/:id', async (req, res) => {
 })
 
 //Upload files in modules
-// app.post('/post_files/:Module', async (req, res))
+app.post('/post_files/:Module', async (req, res) => {
+  try {
+    const { Module } = req.params
+    const files = req.body
+    console.log(files)
+    const target_module = await module_data.findOne({module_id: Module})
+    if (target_module) {
+      target_module.module_attachments = files
+      await target_module.save()
+      res.status(200).send({ message: "Files uploaded successfully", data: target_module })
+    }else{
+      res.status(404).json({ message: 'Module not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
