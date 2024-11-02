@@ -1,9 +1,11 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+
 import { useForm } from 'react-hook-form';
-import L_Para_courses from '../../Components/L_Para_courses';
 import { useSelector, useDispatch } from 'react-redux'
+
+import L_Para_courses from '../../Components/L_Para_courses';
 import File_card from '../../Components/File_card';
 
 const Page = ({ params }) => {

@@ -1,9 +1,11 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+
 import { useForm } from 'react-hook-form'
+import { useSelector, useDispatch } from 'react-redux'
+
 import Notice_card from '../Components/notice_card'
 import Instructor_nav from '../Components/Instructor_nav'
-import { useSelector, useDispatch } from 'react-redux'
 
 const page = () => {
 
@@ -45,7 +47,10 @@ const page = () => {
 
     useEffect(() => {
       get_notices()
-    }, [notice_list])
+    }, [])
+    // useEffect(() => {
+    //   get_notices()
+    // }, [notice_list])
     
 
     // Submits
@@ -58,6 +63,7 @@ const page = () => {
         });
         reset();
         setSet_notice(!set_notice);
+        get_notices()
     };
 
     return (

@@ -1,8 +1,10 @@
 import React from 'react';
+
 import Image from 'next/image';
 import pdf from '../Images/pdf_image.png'
 import word from '../Images/word_logo.jpg'
 import default_img from '../Images/default.png'
+import ppt from '../Images/ppt_logo.jpg'
 
 const File_card = ({ fileName }) => {
     console.log(fileName)
@@ -15,6 +17,8 @@ const File_card = ({ fileName }) => {
             case 'doc':
             case 'docx':
                 return word;
+            case 'pptx':
+                return ppt;
             default:
                 return default_img;
         }
@@ -23,18 +27,19 @@ const File_card = ({ fileName }) => {
     return (
         <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-md w-48">
             {/* File icon */}
-            <Image 
-                src={getFileIcon()} 
+            <Image
+                src={getFileIcon()}
                 width={100}
                 height={100}
-                alt={`${fileName} icon`} 
+                alt={`${fileName} icon`}
                 className="w-16 h-16 mb-4"
             />
 
             {/* File name */}
-            <p className="text-sm font-medium text-gray-800 text-center truncate px-2">
+            <p className="text-sm font-medium text-gray-800 text-center break-words max-w-full px-2 max-h-12 overflow-hidden">
                 {fileName}
             </p>
+
         </div>
     );
 };
