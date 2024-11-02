@@ -175,12 +175,25 @@ const Page = ({ params }) => {
         console.log(result)
     };
 
+    const get_files = async (data) => {
+        const response = await fetch(`http://localhost:5000/get_files/${module_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        setFileList(result.data)
+    };
+    
 
     //UseEffects
     useEffect(() => {
         get_module_data();
         get_parapagedata();
         get_quiz_details();
+        get_files()
     }, []);
 
     // useEffect(() => {

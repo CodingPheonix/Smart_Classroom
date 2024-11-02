@@ -1,8 +1,10 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import L_Para_courses from '../../Components/L_Para_courses';
 import { useSelector, useDispatch } from 'react-redux'
+import File_card from '../../Components/File_card';
 
 const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
@@ -22,10 +24,11 @@ const Page = ({ params }) => {
     const [submittedAnswers, setSubmittedAnswers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [score, setScore] = useState(0);
+    const [fileList, setFileList] = useState([])
 
     console.log(module_data)
     console.log(paraPageData);
-    
+
 
     // Fetch module data
     const get_module_data = async () => {
@@ -81,12 +84,24 @@ const Page = ({ params }) => {
         console.log(result);
     }
 
+    const get_files = async (data) => {
+        const response = await fetch(`http://localhost:5000/get_files/${module_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        setFileList(result.data)
+    };
 
     // UseEffects
     useEffect(() => {
         get_module_data();
         if (module_data.content_type === "Content") {
             get_parapagedata();
+            get_files()
         } else {
             get_quiz_details();
         }
@@ -109,7 +124,7 @@ const Page = ({ params }) => {
             result: answers.map(answer => answer.selectedOption),
             score: count,
             id: user_id, // Example student ID
-            content_type:  module_data.content_type,
+            content_type: module_data.content_type,
             total: answers.length
         };
 
@@ -118,15 +133,15 @@ const Page = ({ params }) => {
     };
 
     const handle_content_submit = async () => {
-      handle_content_data({content_type:  module_data.content_type});
-      alert('default data uploaded')
+        handle_content_data({ content_type: module_data.content_type });
+        alert('default data uploaded')
     }
 
     return (
         <div className='min-h-screen w-full flex justify-center'>
             {module_data.content_type === "Content" ? (
                 // Content Section
-                <div className='w-4/5 bg-slate-100'>
+                <div className='w-4/5 bg-slate-100 p-4'>
                     <h1 className='text-3xl mt-3 font-bold text-center text-green-600'>{module_data.module_title}</h1>
                     {paraPageData.length > 0 ? (
                         paraPageData.map((data, index) => (
@@ -138,6 +153,17 @@ const Page = ({ params }) => {
                         ))
                     ) : (
                         <p className='grid place-items-center'>No data available</p>
+                    )}
+                    {fileList.length > 0 ? (
+                        <div className='flex flex-wrap gap-4'>
+                            {fileList.map((file, index) => (
+                                <Link key={index} href={file.url} target="_blank" rel="noopener noreferrer">
+                                    <File_card fileName={file.name} />
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-center text-gray-500">No files available</p>
                     )}
                     <button
                         onClick={handle_content_submit}

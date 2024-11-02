@@ -280,6 +280,25 @@ app.get('/getparapagedata/:Module', async (req, res) => {
   }
 })
 
+app.get('/get_files/:Module', async (req, res) => {
+  try {
+    const { Module } = req.params;
+    console.log(Module);
+
+    console.log(`Looking for module with ID: ${Module}`);
+    const target_module = await module_data.findOne({ module_id: Module });
+    // console.log(target_module.module_attachments)
+
+    if (target_module) {
+      res.status(200).send({ message: "Attachments required found", data: target_module.module_attachments });
+    } else {
+      res.status(404).send({ success: false, message: "Module not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
 // Post default data for quizes
 app.post('/post_quiz_data', async (req, res) => {
   try {
