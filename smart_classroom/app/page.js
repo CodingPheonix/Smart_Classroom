@@ -239,15 +239,19 @@
 
 
 "use client"
-import Web_logo from "./Components/Web_logo";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useRouter } from 'next/navigation'
+import Image from "next/image";
+
+import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux'
-import { setText } from "./redux/counter/counterSlice";
 import { FaEye } from "react-icons/fa";  // reveal password
 import { BiSolidHide } from "react-icons/bi"; // hide password
+
+import { setText } from "./redux/counter/counterSlice";
+import Web_logo from "./Components/Web_logo";
+import logo from './Images/a logo for a web-based classroom app where students and teachers come together to study.png'
 
 export default function Home() {
   const [islearnerlogin, setIslearnerlogin] = useState(false)
@@ -329,10 +333,23 @@ export default function Home() {
     }
   }
 
+  // This will run after the page loads
+  window.addEventListener("load", () => {
+    document.querySelector(".logo").classList.add("show");
+    document.querySelector(".logo_text").classList.add("show");
+    document.querySelector(".logo_image1").classList.add("show");
+
+    document.querySelectorAll(".buttons").forEach(button => {
+      button.classList.add("show");
+    });
+  });
+
+
+
   return (
     <>
-      <div className="h-full">
-        <div className="first_section flex flex-col justify-evenly items-center h-[calc(100vh-5rem)] bg-green-200">
+      <div className="h-full relative">
+        {/* <div className="first_section flex flex-col justify-evenly items-center h-[calc(100vh-5rem)] bg-green-200">
           <div className="text-5xl">
             <Web_logo />
           </div>
@@ -351,11 +368,48 @@ export default function Home() {
         <div className="partition h-1 bg-green-400"></div>
         <div className="third_section flex flex-col justify-evenly items-center h-2/3 bg-green-200">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ipsa!
+        </div> */}
+
+        <div className="flex flex-col-reverse md:flex-row justify-around items-center overflow-hidden h-[calc(100vh-5rem)] relative">
+          <div className="relative z-10 flex flex-col gap-11">
+            <div className="bg1 absolute bg-green-200 md:h-[150vh] md:w-[150vh] h-[200vh] w-[200vh] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:rotate-45 rounded-3xl z-0"></div>
+            <div className="bg2 absolute bg-green-300 md:h-[150vh] md:w-[150vh] h-[200vh] w-[200vh] left-1/2 top-1/2 -translate-x-[60%] -translate-y-1/2 md:rotate-45 rounded-3xl z-0"></div>
+            <div className="bg3 absolute bg-green-400 md:h-[150vh] md:w-[150vh] h-[200vh] w-[200vh] left-1/2 top-1/2 -translate-x-[70%] -translate-y-1/2 md:rotate-45 rounded-3xl z-0"></div>
+
+            <div className="">
+              <div className="logo text-6xl relative z-20 py-4">
+                <Web_logo />
+              </div>
+              <p className="logo_text relative z-20 px-4">Where Learning Connects....</p>
+            </div>
+            <div className="relative z-20 flex gap-4">
+              <button onClick={() => { setIsInstructorlogin(!IsInstructorlogin) }} className="buttons px-6 py-3 rounded-full border-2 border-white text-white font-bold bg-green-600 hover:bg-green-700 shadow-lg transform hover:scale-105 transition-all ease-in-out duration-300">
+                Instructor's Login
+              </button>
+              <button onClick={() => { setIslearnerlogin(!islearnerlogin) }} className="buttons px-6 py-3 rounded-full border-2 border-white text-white font-bold bg-green-600 hover:bg-green-700 shadow-lg transform hover:scale-105 transition-all ease-in-out duration-300">
+                Learner's Login
+              </button>
+
+            </div>
+          </div>
+          <Image src={logo} height={300} width={300} alt="Picture of the author" className="logo_image1 relative md:-right-20 z-20 shadow-2xl shadow-slate-500 rotate-3" />
         </div>
+
+        <div className="h-[60vh] flex justify-center items-center bg-green-500 text-white text-3xl font-bold shadow-md">
+          Empower Learning Anytime, Anywhere!
+        </div>
+        <div className="h-[60vh] flex justify-center items-center bg-green-600 text-white text-3xl font-bold shadow-md">
+          Streamline Collaboration for a Brighter Future!
+        </div>
+        <div className="h-[60vh] flex justify-center items-center bg-green-700 text-white text-3xl font-bold shadow-md">
+          Organize, Engage, Succeed!
+        </div>
+
+
 
         {/* Login form for LEARNER */}
         {islearnerlogin && (
-          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-8 py-6 rounded-lg shadow-lg'>
+          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
               {isLogin ? 'Learner Login' : 'Learner Sign Up'}
             </h1>
@@ -391,7 +445,7 @@ export default function Home() {
                   onClick={() => setShowLearnerPassword(!showLearnerPassword)}
                   className="absolute right-2 top-1/2 transform -translate-y-1/2"
                 >
-                  {showLearnerPassword ? <BiSolidHide  /> : <FaEye />}
+                  {showLearnerPassword ? <BiSolidHide /> : <FaEye />}
                 </button>
               </div>
 
@@ -416,7 +470,7 @@ export default function Home() {
 
         {/* Login form for Instructor */}
         {IsInstructorlogin && (
-          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-green-600 bg-green-400 px-8 py-6 rounded-lg shadow-lg'>
+          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
               {isLogin ? 'Instructor Login' : 'Instructor Sign Up'}
             </h1>

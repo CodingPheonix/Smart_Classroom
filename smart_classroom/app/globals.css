@@ -14,3 +14,113 @@
     transform: scale(1.2) rotateY(20deg)  rotateX(20deg);
     box-shadow: 0 8px 15px rgb(13, 87, 10);
 }
+
+.bg1{
+    animation: bg1_animation 1s ease-in-out;;
+}
+.bg2{
+    animation: bg2_animation 2s ease-in-out;;
+}
+.bg3{
+    animation: bg3_animation 3s ease-in-out;;
+}
+/* Base styles for logo and logo text */
+.logo {
+    opacity: 0; /* Start hidden */
+    transition: opacity 2s ease; /* Controls the fade-in effect duration */
+    transition-delay: 3s; /* 3-second delay before the fade-in */
+}
+
+.logo_text {
+    opacity: 0; /* Start hidden */
+    transition: opacity 3s ease;
+    transition-delay: 3s;
+}
+
+.buttons {
+    opacity: 0; /* Start hidden */
+    transition: opacity 4s ease;
+    transition-delay: 3s;
+}
+
+.logo_image1 {
+    opacity: 0; /* Start hidden */
+    transition: opacity 3s ease;
+    transition-delay: 3s;
+}
+
+/* Fade-in effect */
+.logo.show, .logo_text.show, .buttons.show, .logo_image1.show {
+    opacity: 1; /* Make visible */
+}
+
+
+@keyframes bg1_animation {
+    /* absolute bg-green-200 h-[50rem] w-[50rem] left-1/2 top-1/2 -translate-x-[50%] -translate-y-1/2 rotate-45 rounded-3xl z-0 */
+    from{
+        position: absolute;
+        background-color: rgb(74 222 128);
+        height: 50rem;
+        width: 50rem;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-100%) translateY(-50%) rotate(45deg);
+        border-radius: 3rem;
+    }
+    to{
+        position: absolute;
+        background-color: rgb(74 222 128);
+        height: 50rem;
+        width: 50rem;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        border-radius: 3rem;
+    }
+}
+@keyframes bg2_animation {
+    /* absolute bg-green-200 h-[50rem] w-[50rem] left-1/2 top-1/2 -translate-x-[50%] -translate-y-1/2 rotate-45 rounded-3xl z-0 */
+    from{
+        position: absolute;
+        background-color: rgb(74 222 128);
+        height: 50rem;
+        width: 50rem;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-100%) translateY(-50%) rotate(45deg);
+        border-radius: 3rem;
+    }
+    to{
+        position: absolute;
+        background-color: rgb(74 222 128);
+        height: 50rem;
+        width: 50rem;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-60%) translateY(-50%) rotate(45deg);
+        border-radius: 3rem;
+    }
+}
+@keyframes bg3_animation {
+    /* absolute bg-green-200 h-[50rem] w-[50rem] left-1/2 top-1/2 -translate-x-[50%] -translate-y-1/2 rotate-45 rounded-3xl z-0 */
+    from{
+        position: absolute;
+        background-color: rgb(74 222 128);
+        height: 50rem;
+        width: 50rem;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-100%) translateY(-50%) rotate(45deg);
+        border-radius: 3rem;
+    }
+    to{
+        position: absolute;
+        background-color: rgb(74 222 128);
+        height: 50rem;
+        width: 50rem;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-70%) translateY(-50%) rotate(45deg);
+        border-radius: 3rem;
+    }
+}
