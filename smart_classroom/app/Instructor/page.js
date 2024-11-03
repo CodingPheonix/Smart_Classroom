@@ -141,7 +141,7 @@ const page = () => {
     const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
       method: 'GET',
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       }
     })
     const result = await response.json()
@@ -187,17 +187,17 @@ const page = () => {
 
   return (
     <>
-      <div className="flex bg-green-200 h-screen">
-        <div className="h-full w-1/5 border border-black rounded-xl p-2 bg-white m-1">
+      <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row">
+        <div className="h-auto lg:h-[calc(100vh-7rem)] w-full lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
           <Instructor_nav />
         </div>
-        <div className="h-full w-4/5 border border-black rounded-xl p-2 bg-white m-1 overflow-auto">
+        <div className="h-auto lg:h-[calc(100vh-7rem)] w-full lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
           <div className="h-full flex flex-col justify-between">
             {/* Header Section */}
-            <div className="w-full px-6 flex justify-between items-center mb-4">
-              <h1 className="font-extrabold text-3xl">My Profile</h1>
+            <div className="w-full flex justify-between items-center mb-6">
+              <h1 className="font-bold text-4xl text-gray-800">My Profile</h1>
               <button
-                className="py-2 px-6 border border-green-600 rounded-full font-bold text-xl hover:border-green-700 transition-all ease-in-out"
+                className="py-2 px-6 border border-green-600 rounded-full font-bold text-xl text-green-600 hover:bg-green-600 hover:text-white transition-all ease-in-out duration-200 shadow-md"
                 onClick={() => setIsEditing(!isEditing)} // Toggle between view and edit mode
               >
                 {isEditing ? "Cancel" : "Edit"}
@@ -206,27 +206,25 @@ const page = () => {
 
             <div className="flex-grow overflow-y-auto">
               {/* Profile Section */}
-              <div className="flex justify-between mb-4">
+              <div className="flex flex-col lg:flex-row justify-between mb-6">
                 {!isEditing ? (
-                  // View Mode
                   <>
-                    <div className="flex-grow">
-                      <ul>
-                        <li className="p-3 pt-4">Name: {name}</li>
-                        <li className="p-3 pt-4">Title / Position: {profileData.title}</li>
-                        <li className="p-3 pt-4">Institution / Department: {profileData.institution}</li>
-                        <li className="p-3 pt-4">Contact Information: {profileData.contact}</li>
+                    <div className="flex-grow p-4">
+                      <ul className="list-disc list-inside">
+                        <li className="py-2"><strong>Name:</strong> {name}</li>
+                        <li className="py-2"><strong>Title / Position:</strong> {profileData.title}</li>
+                        <li className="py-2"><strong>Institution / Department:</strong> {profileData.institution}</li>
+                        <li className="py-2"><strong>Contact Information:</strong> {profileData.contact}</li>
                       </ul>
                     </div>
                     <Image
-                      className="h-40 w-32 border border-black m-10"
-                      // src={profilePic}
-                      // alt="Profile Picture"
+                      className="h-40 w-32 border border-gray-300 rounded-lg shadow-md m-4"
+                    // src={profilePic}
+                    // alt="Profile Picture"
                     />
                   </>
                 ) : (
-                  // Edit Mode
-                  <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4 p-6">
+                  <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6 p-6">
                     {/* Title/Position Input */}
                     <div>
                       <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -236,7 +234,7 @@ const page = () => {
                         type="text"
                         id="title"
                         {...register("title", { required: "Title is required" })}
-                        className="mt-1 block w-full p-2 border rounded"
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
                       />
                       {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
                     </div>
@@ -250,7 +248,7 @@ const page = () => {
                         type="text"
                         id="institution"
                         {...register("institution", { required: "Institution is required" })}
-                        className="mt-1 block w-full p-2 border rounded"
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
                       />
                       {errors.institution && <p className="text-red-500 text-sm">{errors.institution.message}</p>}
                     </div>
@@ -264,7 +262,7 @@ const page = () => {
                         type="text"
                         id="contact"
                         {...register("contact", { required: "Contact information is required" })}
-                        className="mt-1 block w-full p-2 border rounded"
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
                       />
                       {errors.contact && <p className="text-red-500 text-sm">{errors.contact.message}</p>}
                     </div>
@@ -278,7 +276,7 @@ const page = () => {
                         id="aboutMe"
                         {...register("aboutMe", { required: "About Me is required" })}
                         rows="4"
-                        className="mt-1 block w-full p-2 border rounded"
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
                       />
                       {errors.aboutMe && <p className="text-red-500 text-sm">{errors.aboutMe.message}</p>}
                     </div>
@@ -291,12 +289,12 @@ const page = () => {
                           <input
                             type="text"
                             {...register(`achievements.${index}.achievement`, { required: "Achievement is required" })}
-                            className="flex-grow p-2 border rounded"
+                            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
                             placeholder={`Achievement ${index + 1}`}
                           />
                           <button
                             type="button"
-                            className="bg-red-500 text-white px-3 py-1 rounded"
+                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
                             onClick={() => remove(index)}
                           >
                             Remove
@@ -308,7 +306,7 @@ const page = () => {
                       <button
                         type="button"
                         onClick={() => append({ achievement: "" })}
-                        className="bg-green-500 text-white px-3 py-1 rounded"
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
                       >
                         + Add Achievement
                       </button>
@@ -316,7 +314,7 @@ const page = () => {
 
                     {/* Submit Button */}
                     <div>
-                      <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
+                      <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
                         Save
                       </button>
                     </div>
@@ -325,21 +323,21 @@ const page = () => {
               </div>
 
               {/* About Me Section */}
-              <div className="my-3">
-                <h1 className="font-extrabold text-3xl">About me</h1>
-                <p className="my-2">{profileData.aboutMe}</p>
+              <div className="my-6">
+                <h1 className="font-bold text-3xl text-gray-800">About Me</h1>
+                <p className="my-2 text-gray-700">{profileData.aboutMe}</p>
               </div>
 
               {/* My Courses Section */}
-              <div className="my-3">
-                <h1 className="font-extrabold text-3xl">My Courses</h1>
+              <div className="my-6">
+                <h1 className="font-bold text-3xl text-gray-800">My Courses</h1>
                 <ul className="py-2">
                   {course_list.length === 0 ? (
-                    <p>No courses available</p>
+                    <p className="text-gray-600">No courses available</p>
                   ) : (
                     course_list.map((course, index) => (
-                      <div key={index}>
-                        <h2>{index + 1}. {course.course_title}</h2>
+                      <div key={index} className="border-b border-gray-300 py-2">
+                        <h2 className="text-lg text-gray-800">{index + 1}. {course.course_title}</h2>
                       </div>
                     ))
                   )}
@@ -347,11 +345,11 @@ const page = () => {
               </div>
 
               {/* Achievements / Certifications Section */}
-              <div className="my-3">
-                <h1 className="font-extrabold text-3xl">Achievements / Certifications</h1>
+              <div className="my-6">
+                <h1 className="font-bold text-3xl text-gray-800">Achievements / Certifications</h1>
                 <ul>
                   {profileData.achievements.map((achievement, index) => (
-                    <li key={index}>{achievement}</li>
+                    <li key={index} className="text-gray-600 py-1">{achievement}</li>
                   ))}
                 </ul>
               </div>
@@ -359,6 +357,7 @@ const page = () => {
           </div>
         </div>
       </div>
+
     </>
   );
 };
