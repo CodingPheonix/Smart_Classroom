@@ -470,7 +470,7 @@ const Page = ({ params }) => {
         const response = await fetch(`http://localhost:5000/getparapagedata/${module_id}`);
         const result = await response.json();
         console.log("Fetched data:", result);
-    
+
         if (result.data && Array.isArray(result.data)) {
             const formattedData = result.data.map(item => ({
                 heading: item.theory_heading,
@@ -478,12 +478,12 @@ const Page = ({ params }) => {
                 id: item._id,
             }));
             setparaPageData(formattedData);
-            
+
         } else {
             console.error("Unexpected data format:", result);
         }
     };
-    
+
 
     const post_files = async (fileList) => {
         const response = await fetch(`http://localhost:5000/post_files/${module_id}`, {
@@ -608,6 +608,19 @@ const Page = ({ params }) => {
         setModule_data(result.data);
     };
 
+    // Post quiz questions to db
+    const post_quiz_data = async (data) => {
+        const responce = await fetch(`http://localhost:5000/post_quiz_data/${module_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        const result = await responce.json()
+        console.log(result);
+    }
+
     //submit Quiz data
     const onSubmit = (data) => {
         console.log(data.questions); // Handle form submission
@@ -633,10 +646,10 @@ const Page = ({ params }) => {
         const fetchData = async () => {
             await get_module_data();
         };
-    
+
         fetchData();
     }, []); // Runs on component mount
-    
+
     useEffect(() => {
         if (module_data.content_type === 'Content') {
             console.log("in content_type");
@@ -646,8 +659,8 @@ const Page = ({ params }) => {
         }
         get_files();
     }, [module_data]); // Runs when `module_data` changes
-    
-    
+
+
 
 
 
@@ -677,7 +690,7 @@ const Page = ({ params }) => {
                             </div>
 
                             {console.log(parapageData)}
-                            
+
                             {/* Render Lesson List */}
                             {parapageData.length > 0 ? (
                                 parapageData.map((data, index) => (
@@ -731,52 +744,56 @@ const Page = ({ params }) => {
                             <button onClick={handle_delete_quiz} className='px-4 py-2 rounded-full border border-green-400 bg-white hover:text-green-500 text-black hover:border-green-600 font-semibold mb-6'>Delete All</button>
                         </div>
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            {questionFields.map((question, qIndex) => (
-                                <div key={question.id} className="mb-8 p-6 bg-white shadow rounded-lg">
-                                    <div className="mb-4">
-                                        <div className='flex justify-between'>
-                                            <label className="block text-green-700 font-medium">Question {qIndex + 1}</label>
-                                            <p className='text-green-300'>Select the correct option</p>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            {...register(`questions.${qIndex}.question`)}
-                                            className="w-full mt-2 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
-                                            placeholder="Enter your question"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        {question.options.map((_, oIndex) => (
-                                            <div key={oIndex} className="flex items-center mb-2">
-                                                <input
-                                                    type="radio"
-                                                    {...register(`questions.${qIndex}.correctAnswer`)}
-                                                    value={oIndex}
-                                                    className="mr-2"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    {...register(`questions.${qIndex}.options.${oIndex}`)}
-                                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
-                                                    placeholder={`Option ${oIndex + 1}`}
-                                                />
+                            {questionFields ? (
+                                questionFields.map((question, qIndex) => (
+                                    <div key={question.id} className="mb-8 p-6 bg-white shadow rounded-lg">
+                                        <div className="mb-4">
+                                            <div className='flex justify-between'>
+                                                <label className="block text-green-700 font-medium">Question {qIndex + 1}</label>
+                                                <p className='text-green-300'>Select the correct option</p>
                                             </div>
-                                        ))}
+                                            <input
+                                                type="text"
+                                                {...register(`questions.${qIndex}.question`)}
+                                                className="w-full mt-2 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+                                                placeholder="Enter your question"
+                                            />
+                                        </div>
 
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                questionFields[qIndex].options.push('');
-                                                reset();
-                                            }}
-                                            className="mt-2 text-green-700 font-medium hover:text-green-900"
-                                        >
-                                            + Add Option
-                                        </button>
+                                        <div>
+                                            {question.options.map((_, oIndex) => (
+                                                <div key={oIndex} className="flex items-center mb-2">
+                                                    <input
+                                                        type="radio"
+                                                        {...register(`questions.${qIndex}.correctAnswer`)}
+                                                        value={oIndex}
+                                                        className="mr-2"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        {...register(`questions.${qIndex}.options.${oIndex}`)}
+                                                        className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+                                                        placeholder={`Option ${oIndex + 1}`}
+                                                    />
+                                                </div>
+                                            ))}
+
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    questionFields[qIndex].options.push('');
+                                                    reset();
+                                                }}
+                                                className="mt-2 text-green-700 font-medium hover:text-green-900"
+                                            >
+                                                + Add Option
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <div className='w-full text-center'> No Questions Added</div>
+                            )}
 
                             <button
                                 type="button"

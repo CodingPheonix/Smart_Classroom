@@ -137,11 +137,10 @@ const page = ({ params }) => {
         <div className='relative h-[calc(100vh-9rem)]'>
             <div className='flex justify-between items-center px-4 h-16 bg-green-200 '>
                 <h1 className='font-bold text-xl'>{title}</h1>
-                <button onClick={() => { setIsAddingCourse(!isAddingCourse) }} className='px-4 py-2 border-green-700 border-2 rounded-full bg-white'>Add Module</button>
             </div>
 
             {/* module  */}
-            <ol className='h-full'>
+            <ol className='h-full flex flex-wrap gap-5 m-2'>
                 {moduleList.length > 0 ? (
                     moduleList.map((module, index) => (
                         <li key={index}>
@@ -155,7 +154,7 @@ const page = ({ params }) => {
                         </li>
                     ))
                 ) : (
-                    <p className='grid place-items-center h-full'>No modules yet</p>
+                    <p className='grid place-items-center w-full h-full'>No modules yet</p>
                 )}
             </ol>
         </div>

@@ -14,22 +14,20 @@ const View_course_details_card = (props) => {
     );
 
     return (
-        <div>
-            <div className='flex justify-between items-center border-2 border-black rounded-xl m-3 px-4 py-2'>
-                <div>
-                    <h2 className='font-bold text-lg'>{props.module_title}</h2>
-                    <p className='text-sm'>{props.module_description} . {props.content_type}</p>
-                </div>
-                <div className='flex gap-3'>
-                    <Link href={`/View_Modules/${props.module_id}@${props.course_id}`}>
-                        <button className='flex gap-1'>
-                            <Book02Icon />
-                            Read
-                        </button>
-                    </Link>
-                </div>
+        <div className="w-[14rem] h-[16rem] mx-auto border-2 border-black rounded-xl shadow-lg m-3 p-4 bg-white transition-transform duration-300 hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-lg">
+            <div className="flex flex-col justify-center items-center h-full">
+                <h2 className="font-extrabold text-2xl text-center text-green-700 mb-2">
+                    {props.module_title}
+                </h2>
+                <p className="text-gray-600 text-base text-center mb-2">
+                    {props.module_description}
+                </p>
+                <p className="text-sm text-gray-500 italic text-center">
+                    {props.content_type}
+                </p>
             </div>
         </div>
+
     )
 }
 
