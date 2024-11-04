@@ -1,6 +1,8 @@
 "use client"
 import React from 'react'
 import Link from 'next/link';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const I_course_card = (props) => {
 
@@ -17,6 +19,10 @@ const I_course_card = (props) => {
         })
         const result = await response.json()
         console.log(result);
+        toast("Course Deleted", {
+            position: "top-right",
+            autoClose: 3000,
+        })
     }
 
     const PencilEdit01Icon = (props) => (
@@ -44,6 +50,7 @@ const I_course_card = (props) => {
 
     return (
         <div>
+            <ToastContainer />
             <ul className='overflow-x-auto whitespace-normal m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
                 <li className=' w-1/4 grid place-items-center'>{props.courseTitle}</li>
                 <li className=' w-1/4 grid place-items-center'>{props.courseCategory}</li>

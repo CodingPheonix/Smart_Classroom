@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import Instructor_nav from '../Components/Instructor_nav'
 import I_course_card from '../Components/I_course_card'
 import { useSelector, useDispatch } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import { setText, clearText } from "./redux/counter/counterSlice";
 
 const Page = () => {
@@ -34,6 +36,10 @@ const Page = () => {
         await getCourse()
         reset()
         setIsCreate(!isCreate)
+        // toast("New Course created successfully", {
+        //     position: "top-right",
+        //     autoClose: 5000,
+        // })
     }
 
     useEffect(() => {
