@@ -117,23 +117,23 @@ const Learner_nav = () => {
             </div>
 
             {/* Sidebar Menu for Small Screens */}
-            <div className={`absolute top-0 left-0 h-[calc(100vh-10rem)] bg-white w-64 shadow-lg transition-transform transform ${is_hamburgered ? 'translate-x-0' : '-translate-x-full'} lg:hidden`}>
+            <div className={`absolute top-0 left-0 h-[calc(100vh-10rem)] bg-white w-64 shadow-lg transition-transform transform ${is_hamburgered ? 'translate-x-0' : '-translate-x-[20rem]'} lg:hidden`}>
                 <div className='flex flex-col h-full'>
                     <ul className='text-lg p-4 flex-grow'>
                         <Link href="/Learner">
-                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>About Me</li>
+                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-1 rounded-2xl hover:bg-green-100'>About Me</li>
                         </Link>
                         <Link href="Learner_courses">
-                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Courses</li>
+                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-1 rounded-2xl hover:bg-green-100'>Courses</li>
                         </Link>
                         <Link href="Learner_Mycourses">
-                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>My Courses</li>
+                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-1 rounded-2xl hover:bg-green-100'>My Courses</li>
                         </Link>
                         <Link href="Learner_dashboard">
-                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Dashboard</li>
+                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-1 rounded-2xl hover:bg-green-100'>Dashboard</li>
                         </Link>
                         <Link href="Learner_notice">
-                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Notice Board</li>
+                            <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-1 rounded-2xl hover:bg-green-100'>Notice Board</li>
                         </Link>
                     </ul>
                     {/* Sign Out Button in Sidebar */}

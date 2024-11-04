@@ -125,24 +125,21 @@ const Page = () => {
 
   return (
     <>
-      <div className='flex bg-green-200'>
-        {/* Sidebar Navigation */}
-        <div className={`fixed lg:relative h-full w-64 border border-gray-300 rounded-xl m-4 bg-white shadow-md transition-transform transform ${isHamburgerOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:w-1/5`}>
+      <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
+        <div className="h-auto lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
           <Learner_nav />
         </div>
-
-        {/* Main Profile Section */}
-        <div className='flex-grow h-[calc(100vh-7rem)] border border-gray-300 rounded-xl m-4 bg-white shadow-md flex flex-col'>
+        <div className="h-[calc(100vh-225px)] lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
           {/* Header Section */}
           <div className='flex justify-between items-center p-6 border-b border-gray-300'>
             <h1 className='font-extrabold text-3xl text-gray-800'>My Profile</h1>
-            <button 
+            {/* <button
               onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
               className='lg:hidden py-2 px-6 border border-green-600 rounded-full font-bold text-xl text-green-600 hover:bg-green-600 hover:text-white transition-all ease-in-out'
             >
               {isHamburgerOpen ? 'Close Menu' : 'Open Menu'}
-            </button>
-            <button className='hidden lg:block py-2 px-6 border border-green-600 rounded-full font-bold text-xl text-green-600 hover:bg-green-600 hover:text-white transition-all ease-in-out'>
+            </button> */}
+            <button className='block py-2 px-6 border border-green-600 rounded-full font-bold text-xl text-green-600 hover:bg-green-600 hover:text-white transition-all ease-in-out'>
               Edit
             </button>
           </div>
@@ -161,8 +158,8 @@ const Page = () => {
             {/* Profile Image */}
             <Image
               className='h-40 w-32 border border-gray-300 rounded-lg shadow-md'
-              // src={profilePic}
-              // alt="Profile Picture"
+            // src={profilePic}
+            // alt="Profile Picture"
             />
           </div>
         </div>

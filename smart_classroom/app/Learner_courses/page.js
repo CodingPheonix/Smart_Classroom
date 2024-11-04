@@ -33,11 +33,11 @@ const page = () => {
 
 
     return (
-        <div className='flex h-full bg-green-200'>
-            <div className='h-full w-1/5 border border-black rounded-xl p-2 bg-white'>
+        <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
+            <div className="h-auto lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
                 <Learner_nav />
             </div>
-            <div className='h-full w-4/5 border border-black rounded-xl m-2 bg-white'>
+            <div className="h-[calc(100vh-225px)] lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
                 <div className="flex justify-between m-4 h-1/6 items-center">
                     <h1 className='font-extrabold text-3xl'>All Courses</h1>
                     <button className='py-2 px-6 border border-green-600 rounded-full font-bold text-xl  hover:border-green-700 transition-all ease-in-out'>Add Courses</button>
@@ -51,12 +51,12 @@ const page = () => {
                 {/* Course List */}
                 {CourseList.length > 0 ? (
                     CourseList.map((course, index) => (
-                            <L_course_card
-                                key={index}
-                                id={course.course_id}
-                                courseTitle={course.course_title}
-                                courseCategory={course.course_category}
-                                courseDuration={course.course_duration} />
+                        <L_course_card
+                            key={index}
+                            id={course.course_id}
+                            courseTitle={course.course_title}
+                            courseCategory={course.course_category}
+                            courseDuration={course.course_duration} />
                     ))
                 ) : (
                     <p className='grid place-items-center'>No courses available</p>

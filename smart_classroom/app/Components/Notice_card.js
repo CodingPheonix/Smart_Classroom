@@ -113,7 +113,10 @@ const NoticeCard = ({ heading, description, id, notice_id }) => {
         <div className="m-2 p-4 border border-gray-300 rounded-xl hover:border-green-500 transition-all ease-in-out duration-150 flex flex-col">
             <div className="flex justify-between items-start">
                 <div className="w-5/6">
-                    <h3 className="font-semibold text-xl py-2">{heading}</h3>
+                    <h3 className="font-semibold text-[clamp(1.25rem, 1.2vw + 0.75rem, 2rem)] py-2 w-3/5">
+                        {heading}
+                    </h3>
+
                     <p className={`text-base ${isExpanded ? 'whitespace-normal' : 'whitespace-nowrap overflow-hidden text-ellipsis'}`}>
                         {description}
                     </p>

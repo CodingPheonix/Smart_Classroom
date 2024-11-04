@@ -23,7 +23,7 @@ const page = () => {
             })
             const data = await response.json()
             console.log(data);
-            
+
             setCourseList(data.data)
             // setCourseList(data)
         } catch (error) {
@@ -39,11 +39,11 @@ const page = () => {
 
 
     return (
-        <div className='flex h-full bg-green-200'>
-            <div className='h-full w-1/5 border border-black rounded-xl m-2 bg-white'>
+        <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
+            <div className="h-auto lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
                 <Learner_nav />
             </div>
-            <div className='h-full w-4/5 border border-black rounded-xl m-2 bg-white p-2'>
+            <div className="h-[calc(100vh-225px)] lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
                 <h1 className='font-extrabold text-3xl p-5'>My Courses</h1>
                 <ul className='m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
                     <li className='w-1/4 grid place-items-center'>Course Name</li>
