@@ -44,7 +44,7 @@ const I_course_card = (props) => {
 
     return (
         <div>
-            <ul className='m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
+            <ul className='overflow-x-auto whitespace-normal m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
                 <li className=' w-1/4 grid place-items-center'>{props.courseTitle}</li>
                 <li className=' w-1/4 grid place-items-center'>{props.courseCategory}</li>
                 <li className=' w-1/4 grid place-items-center'>{props.courseDuration}</li>

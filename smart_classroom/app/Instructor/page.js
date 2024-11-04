@@ -187,11 +187,11 @@ const page = () => {
 
   return (
     <>
-      <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row">
-        <div className="h-auto lg:h-[calc(100vh-7rem)] w-full lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
+      <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
+        <div className="h-auto lg:h-[calc(100vh-112px)] w-full lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
           <Instructor_nav />
         </div>
-        <div className="h-auto lg:h-[calc(100vh-7rem)] w-full lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
+        <div className="h-auto lg:h-[calc(100vh-112px)] w-full lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
           <div className="h-full flex flex-col justify-between">
             {/* Header Section */}
             <div className="w-full flex justify-between items-center mb-6">
