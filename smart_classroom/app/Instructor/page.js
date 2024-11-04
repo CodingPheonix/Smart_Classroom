@@ -85,7 +85,7 @@ const page = () => {
         <div className="h-auto lg:h-[calc(100vh-112px)] w-full lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
           <Instructor_nav />
         </div>
-        <div className="h-auto lg:h-[calc(100vh-112px)] w-full lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
+        <div className="min-h-[calc(100vh-230px)] lg:h-[calc(100vh-112px)] w-full lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
           <div className="h-full flex flex-col justify-between">
             {/* Header Section */}
             <div className="w-full flex justify-between items-center mb-6">

@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import L_Para_courses from '../../Components/L_Para_courses';
 import File_card from '../../Components/File_card';
@@ -131,16 +133,23 @@ const Page = ({ params }) => {
         };
 
         upload_result_data(final_data);
-        alert('Quiz result uploaded')
+        toast("Quiz Result Uploaded", {
+            position: "top-right",
+            autoClose: 3000,
+        })
     };
 
     const handle_content_submit = async () => {
         handle_content_data({ content_type: module_data.content_type });
-        alert('default data uploaded')
+        toast("Data Updated", {
+            position: "top-right",
+            autoClose: 3000,
+        })
     }
 
     return (
         <div className='min-h-screen w-full flex justify-center'>
+            <ToastContainer/>
             {module_data.content_type === "Content" ? (
                 // Content Section
                 <div className='w-4/5 bg-slate-100 p-4'>

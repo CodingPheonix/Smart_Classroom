@@ -1,6 +1,9 @@
 import React from 'react'
 import Link from 'next/link';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Course_details_card = (props) => {
 
     const Book02Icon = (props) => (
@@ -31,11 +34,16 @@ const Course_details_card = (props) => {
         })
         const result = await responce.json()
         console.log(result)
+        toast("Module Deleted", {
+            position: "top-right",
+            autoClose: 3000,
+        })
         // reload()
     }
 
     return (
         <div>
+            <ToastContainer />
             <div className='flex justify-between items-center border-2 border-black rounded-xl m-3 px-4 py-2'>
                 <div>
                     <h2 className='font-bold text-lg'>{props.module_title}</h2>

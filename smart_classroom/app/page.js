@@ -349,26 +349,6 @@ export default function Home() {
   return (
     <>
       <div className="h-full relative">
-        {/* <div className="first_section flex flex-col justify-evenly items-center h-[calc(100vh-5rem)] bg-green-200">
-          <div className="text-5xl">
-            <Web_logo />
-          </div>
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, reprehenderit?
-          </div>
-          <div className="buttons flex justify-around items-center gap-3">
-            <button onClick={() => { setIsInstructorlogin(!IsInstructorlogin) }} className="px-4 py-2 bg-green-600 text-white font-bold rounded-full hover:bg-green-700 active:bg-green-800">Instructor's Login</button>
-            <button onClick={() => { setIslearnerlogin(!islearnerlogin) }} className="px-4 py-2 bg-green-600 text-white font-bold rounded-full hover:bg-green-700 active:bg-green-800">Learner's Login</button>
-          </div>
-        </div>
-        <div className="partition h-1 bg-green-400"></div>
-        <div className="second_section flex flex-col justify-evenly items-center h-2/3 bg-green-200">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ipsa!
-        </div>
-        <div className="partition h-1 bg-green-400"></div>
-        <div className="third_section flex flex-col justify-evenly items-center h-2/3 bg-green-200">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, ipsa!
-        </div> */}
 
         <div className="flex flex-col-reverse md:flex-row justify-around items-center overflow-hidden h-[calc(100vh-5rem)] relative">
           <div className="relative z-10 flex flex-col gap-11">

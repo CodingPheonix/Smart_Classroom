@@ -1,6 +1,10 @@
 import React from 'react'
 import Link from 'next/link';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const L_mycourse_card = (props) => {
 
     //State list
@@ -26,17 +30,21 @@ const L_mycourse_card = (props) => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({})
-          })
-          const data = await responce.json()
-          console.log(data)
-        alert("Target course deleted!")
+            },
+            body: JSON.stringify({})
+        })
+        const data = await responce.json()
+        console.log(data)
+        toast("Target Course Deleted", {
+            position: "top-right",
+            autoClose: 3000,
+        })
     }
-    
+
 
     return (
         <div>
+            <ToastContainer/>
             <ul className='m-4 p-2 flex justify-around items-center border border-green-700 rounded-full font-bold'>
                 <li className='w-1/4 grid place-items-center'>{props.courseTitle}</li>
                 <li className='w-1/4 grid place-items-center'>{props.courseCategory}</li>

@@ -435,6 +435,9 @@ import Link from 'next/link';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { analytics } from '../../Firebase/firebase-config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import Para_courses from '../../Components/Para_courses';
 import File_card from '../../Components/File_card.js';
@@ -541,6 +544,10 @@ const Page = ({ params }) => {
         console.log(result);
 
         await post_files(fileList);
+        toast("Module Submitted", {
+            position: "top-right",
+            autoClose: 3000,
+        })
     }
 
     const get_files = async (data) => {
@@ -564,6 +571,10 @@ const Page = ({ params }) => {
         })
         const result = await response.json()
         console.log(result);
+        toast("Quiz data deleted", {
+            position: "top-right",
+            autoClose: 3000,
+        })
     }
 
     //get quiz details
@@ -625,6 +636,10 @@ const Page = ({ params }) => {
     const onSubmit = (data) => {
         console.log(data.questions); // Handle form submission
         post_quiz_data(data.questions)
+        toast("Quiz date Submitted", {
+            position: "top-right",
+            autoClose: 3000,
+        })
         // reset()
     };
 
@@ -666,6 +681,7 @@ const Page = ({ params }) => {
 
     return (
         <div>
+            <ToastContainer />
             <div className="max-w-5xl min-h-[calc(100vh-7rem)] mx-auto mt-5 p-6 bg-gray-100 rounded-lg shadow-md">
                 {module_data.content_type === "Content" ? (
                     <div>
@@ -795,20 +811,23 @@ const Page = ({ params }) => {
                                 <div className='w-full text-center'> No Questions Added</div>
                             )}
 
-                            <button
-                                type="button"
-                                onClick={() => appendQuestion({ question: '', options: ['', '', '', ''], correctAnswer: '' })}
-                                className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
-                            >
-                                + Add Question
-                            </button>
+                            <div className='w-full flex justify-around items-center'>
 
-                            <button
-                                type="submit"
-                                className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                            >
-                                Submit Quiz
-                            </button>
+                                <button
+                                    type="button"
+                                    onClick={() => appendQuestion({ question: '', options: ['', '', '', ''], correctAnswer: '' })}
+                                    className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
+                                >
+                                    + Add Question
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                >
+                                    Submit Quiz
+                                </button>
+                            </div>
                         </form>
                     </div>
                 )}
