@@ -25,14 +25,14 @@ const File_card = ({ fileName }) => {
     };
 
     return (
-        <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-md w-48">
+        <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-md w-48 mx-auto">
             {/* File icon */}
             <Image
                 src={getFileIcon()}
                 width={100}
                 height={100}
                 alt={`${fileName} icon`}
-                className="w-16 h-16 mb-4"
+                className="w-16 h-16 mb-4 mx-auto"
             />
 
             {/* File name */}
