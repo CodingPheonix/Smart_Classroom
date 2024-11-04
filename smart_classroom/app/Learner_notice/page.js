@@ -56,12 +56,11 @@ const page = () => {
   }, [])
 
   return (
-    <div className='flex min-h-screen bg-green-200'>
-      <div className='w-1/5 border border-black rounded-xl m-2 bg-white'>
+    <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
+      <div className="h-auto lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
         <Learner_nav />
       </div>
-
-      <div className='w-4/5 border border-black rounded-xl m-2 bg-white flex flex-col gap-3'>
+      <div className="h-[calc(100vh-225px)] lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
         <div className='min-h-[calc(100vh-5rem)] border-2 border-black rounded-3xl m-3'>
           <h2 className='text-center font-bold text-3xl py-2'>NOTICE BOARD</h2>
           <div className='h-[1px] bg-black mt-3'></div>

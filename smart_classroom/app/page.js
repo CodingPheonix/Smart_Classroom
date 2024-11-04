@@ -382,7 +382,7 @@ export default function Home() {
               </div>
               <p className="logo_text relative z-20 px-4">Where Learning Connects....</p>
             </div>
-            <div className="relative z-20 flex gap-4">
+            <div className="relative z-20 flex lg:flex-row flex-col gap-4">
               <button onClick={() => { setIsInstructorlogin(!IsInstructorlogin) }} className="buttons px-6 py-3 rounded-full border-2 border-white text-white font-bold bg-green-600 hover:bg-green-700 shadow-lg transform hover:scale-105 transition-all ease-in-out duration-300">
                 Instructor's Login
               </button>
@@ -395,13 +395,13 @@ export default function Home() {
           <Image src={logo} height={300} width={300} alt="Picture of the author" className="logo_image1 relative md:-right-20 z-20 shadow-2xl shadow-slate-500 rotate-3" />
         </div>
 
-        <div className="h-[60vh] flex justify-center items-center bg-green-500 text-white text-3xl font-bold shadow-md">
+        <div className="h-[60vh] p-3 text-center flex justify-center items-center bg-green-500 text-white text-3xl font-bold shadow-md">
           Empower Learning Anytime, Anywhere!
         </div>
-        <div className="h-[60vh] flex justify-center items-center bg-green-600 text-white text-3xl font-bold shadow-md">
+        <div className="h-[60vh] p-3 text-center flex justify-center items-center bg-green-600 text-white text-3xl font-bold shadow-md">
           Streamline Collaboration for a Brighter Future!
         </div>
-        <div className="h-[60vh] flex justify-center items-center bg-green-700 text-white text-3xl font-bold shadow-md">
+        <div className="h-[60vh] p-3 text-center flex justify-center items-center bg-green-700 text-white text-3xl font-bold shadow-md">
           Organize, Engage, Succeed!
         </div>
 
@@ -409,7 +409,7 @@ export default function Home() {
 
         {/* Login form for LEARNER */}
         {islearnerlogin && (
-          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
+          <div className='absolute lg:w-1/2 w-3/4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
               {isLogin ? 'Learner Login' : 'Learner Sign Up'}
             </h1>
@@ -470,7 +470,7 @@ export default function Home() {
 
         {/* Login form for Instructor */}
         {IsInstructorlogin && (
-          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
+          <div className='absolute lg:w-1/2 w-3/4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
               {isLogin ? 'Instructor Login' : 'Instructor Sign Up'}
             </h1>

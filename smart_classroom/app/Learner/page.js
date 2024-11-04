@@ -145,7 +145,7 @@ const Page = () => {
           </div>
 
           {/* Profile Details Section */}
-          <div className='flex-grow flex justify-between items-start p-6 overflow-auto'>
+          <div className='flex-grow flex flex-col-reverse sm:flex-row justify-between items-start p-6 overflow-auto'>
             {/* Profile Information */}
             <div className="flex-grow">
               <ul className='space-y-4'>
@@ -157,7 +157,7 @@ const Page = () => {
             </div>
             {/* Profile Image */}
             <Image
-              className='h-40 w-32 border border-gray-300 rounded-lg shadow-md'
+              className='h-40 w-32 border border-gray-300 rounded-lg shadow-md mx-auto'
             // src={profilePic}
             // alt="Profile Picture"
             />

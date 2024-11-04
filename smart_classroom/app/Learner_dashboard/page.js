@@ -71,35 +71,34 @@ const Page = () => {
     }, [])  // Empty dependency array to run once on mount
 
     return (
-        <div className='flex min-h-screen bg-green-200'>
-            <div className='w-1/5 border border-black rounded-xl m-2 bg-white'>
+        <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
+            <div className="h-auto lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
                 <Learner_nav />
             </div>
-
-            <div className='w-4/5 border border-black rounded-xl m-2 bg-white flex flex-col gap-3'>
+            <div className="h-[calc(100vh-225px)] lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
                 <h1 className='font-extrabold text-2xl h-28 flex items-center p-4'>Dashboard</h1>
 
-                <div className='flex w-full justify-around items-center'>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
+                <div className='flex lg:flex-row flex-col gap-2 w-full justify-around items-center'>
+                    <div className='lg:w-44 w-3/4 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Total quizzes attempted</div>
                         <div className='h-5/6 grid place-items-center text-2xl'>{total_quiz}</div>
                     </div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
+                    <div className='lg:w-44 w-3/4 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Percentage score achieved</div>
                         <div className='h-5/6 grid place-items-center text-2xl'>{per_cent_score}</div>
                     </div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
+                    <div className='lg:w-44 w-3/4 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Modules Completed</div>
                         <div className='h-5/6 grid place-items-center text-2xl'>{modules_completed}</div>
                     </div>
-                    <div className='w-44 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
+                    <div className='lg:w-44 w-3/4 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Overall Rank</div>
                         <div className='h-5/6 grid place-items-center text-2xl'>5th</div>
                     </div>
                 </div>
 
-                <div className='w-full flex justify-center items-start'>
-                    <div className='w-1/2 h-72 border border-black rounded-xl m-2 p-2 flex flex-col items-center'>
+                <div className='w-full flex lg:flex-row flex-col gap-2 justify-center items-start'>
+                    <div className='lg:w-1/2 w-full h-72 border mx-auto border-black rounded-xl m-2 p-2 flex flex-col items-center'>
                         <h3 className='w-full text-center font-bold'>ACTIVITIES</h3>
                         <div className='w-full flex justify-around items-center'>
                             <div className='font-semibold'>Sl no.</div>
@@ -118,7 +117,7 @@ const Page = () => {
                         </div>
                     </div>
 
-                    <div className='w-1/2 h-72 border border-black rounded-xl m-2 p-2'>
+                    <div className='lg:w-1/2 w-full h-72 mx-auto border border-black rounded-xl m-2 p-2'>
                         <h3 className='w-full text-center font-bold'>ANALYSIS</h3>
                         <div className='w-full grid grid-cols-2 gap-4 p-4'>
                             <div>
