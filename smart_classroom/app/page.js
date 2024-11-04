@@ -409,7 +409,7 @@ export default function Home() {
 
         {/* Login form for LEARNER */}
         {islearnerlogin && (
-          <div className='absolute lg:w-1/2 w-3/4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
+          <div className='absolute lg:w-1/3 w-3/4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
               {isLogin ? 'Learner Login' : 'Learner Sign Up'}
             </h1>
@@ -470,7 +470,7 @@ export default function Home() {
 
         {/* Login form for Instructor */}
         {IsInstructorlogin && (
-          <div className='absolute lg:w-1/2 w-3/4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
+          <div className='absolute lg:w-1/3 w-3/4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-around items-center border-white bg-green-400 px-8 py-6 rounded-lg shadow-lg z-30'>
             <h1 className='px-4 py-2 font-bold text-2xl mb-4 text-white'>
               {isLogin ? 'Instructor Login' : 'Instructor Sign Up'}
             </h1>

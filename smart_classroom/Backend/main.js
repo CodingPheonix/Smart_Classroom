@@ -797,6 +797,23 @@ app.post('/post_files/:Module', async (req, res) => {
   }
 })
 
+//Delete paras in modules
+app.delete('/handleParadelete', async (req, res) => {
+  try {
+    const { id, module_id } = req.query
+    const target_module = await module_data.findOne({module_id: module_id})
+    if (target_module) {
+      target_module.module_theory = target_module.module_theory.filter(para => para._id.toString()!== id);
+      await target_module.save();
+      res.status(200).send({ message: "Paragraph deleted successfully", data: target_module });
+    } else {
+      res.status(404).json({ message: 'Module not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

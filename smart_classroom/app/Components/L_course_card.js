@@ -44,7 +44,7 @@ const L_course_card = (props) => {
                     <button onClick={handleAddCourse}>
                         <PlusSignIcon />
                     </button>
-                    <Link href={`/Courses/${props.id}`}>
+                    <Link href={`/View_Courses/${props.id}`}>
                         <button>
                             <ArrowUpRight03Icon />
                         </button>

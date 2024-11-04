@@ -18,6 +18,19 @@ const Para_courses = (props) => {
         </svg>
     );
 
+    const handleDelete = async () => {
+        const response = await fetch(`http://localhost:5000/handleParadelete?id=${encodeURIComponent(props.id)}&module_id=${encodeURIComponent(props.module_id)}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(),
+        })
+        const result = await response.json()
+        console.log(result)
+    };
+    
+
     return (
         <div className="card_para my-6 border-green-400 hover:border-2 rounded-xl px-1 py-1 transition-all group">
             <div className="flex justify-between items-center">
@@ -26,7 +39,7 @@ const Para_courses = (props) => {
                     <button>
                         <FileEditIcon />
                     </button>
-                    <button>
+                    <button onClick={handleDelete}>
                         <Delete03Icon />
                     </button>
                 </div>
