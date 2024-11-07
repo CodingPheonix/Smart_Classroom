@@ -1,14 +1,17 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import Learner_nav from '../Components/Learner_nav'
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard_activities from '../Components/Dashboard_activities'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
+import { setText, clearText } from '../redux/counter/counterSlice'
 import Set_star from '../Components/Set_star.js'
 import { ftotal_quiz, fper_cent_score, fmodules_completed, favg_score, ftotal_lessons, fmax_score } from "../../Backend/operations.js"
 
 const Page = () => {
-    const user_id = useSelector(state => state.counter.text)
+    const dispatch = useDispatch();
+
+    // Store the id of the current user
+    const user_id = useSelector(state => state.counter.text);
 
     //State list
     const [activity_list, setActivity_list] = useState([])
@@ -61,6 +64,19 @@ const Page = () => {
         }
     }
 
+    const get_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/get_current_user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        return result
+    };
+
+    //useEffects
     useEffect(() => {
         // Define an async function within useEffect
         const fetchData = async () => {
@@ -68,7 +84,22 @@ const Page = () => {
             await get_dashboard()
         }
         fetchData()
-    }, [])  // Empty dependency array to run once on mount
+    }, [user_id])  // Empty dependency array to run once on mount
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await get_current_user();
+                if (result.data && result.data.length !== 0) {
+                    dispatch(setText(result.data[0].user_id));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
@@ -107,12 +138,14 @@ const Page = () => {
                         </div>
                         <div className='w-5/6 h-[1px] bg-black my-1'></div>
                         <div className='overflow-y-auto w-full h-[40vh]'>
-                            {(activity_list.length === 0 && activity_list) ? (
-                                <div className='text-center'>No Activities Recorded</div>
-                            ) : (
-                                activity_list.map((activity, index) => (
-                                    <Dashboard_activities key={index} slno={index + 1} activity={activity.name} score={activity.data} />
-                                ))
+                            {activity_list && (
+                                (activity_list.length === 0 && activity_list) ? (
+                                    <div className='text-center'>No Activities Recorded</div>
+                                ) : (
+                                    activity_list.map((activity, index) => (
+                                        <Dashboard_activities key={index} slno={index + 1} activity={activity.name} score={activity.data} />
+                                    ))
+                                )
                             )}
                         </div>
                     </div>

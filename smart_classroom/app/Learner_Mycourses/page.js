@@ -4,10 +4,14 @@ import React from 'react'
 import Link from 'next/link'
 import L_mycourse_card from '../Components/L_mycourse_card'
 import Learner_nav from '../Components/Learner_nav'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 const page = () => {
-    const user_id = useSelector(state => state.counter.text)
+    const dispatch = useDispatch();
+
+    // Store the id of the current user
+    const user_id = useSelector(state => state.counter.text);
 
     //States declaration
     const [CourseList, setCourseList] = useState([])
@@ -31,10 +35,39 @@ const page = () => {
         }
     }
 
+    const get_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/get_current_user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        return result
+    };
+
     //useEffects
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await get_current_user();
+                if (result.data && result.data.length !== 0) {
+                    dispatch(setText(result.data[0].user_id));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     useEffect(() => {
         getCourseList()
-    }, [])
+    }, [user_id])
 
 
 

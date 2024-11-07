@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 import { useSelector, useDispatch } from 'react-redux'
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 import Notice_card from '../Components/notice_card'
 import Instructor_nav from '../Components/Instructor_nav'
 
 const page = () => {
 
+    const dispatch = useDispatch()
     const user_id = useSelector(state => state.counter.text)
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
 
@@ -47,7 +49,22 @@ const page = () => {
 
     useEffect(() => {
       get_notices()
-    }, [])
+    }, [user_id])
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const result = await get_current_user(); 
+            if (result.data && result.data.length !== 0) {
+              dispatch(setText(result.data[0].user_id));
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        };
+      
+        fetchData();
+      }, []);
     // useEffect(() => {
     //   get_notices()
     // }, [notice_list])

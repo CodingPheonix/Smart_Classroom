@@ -3,7 +3,7 @@ import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import cors from "cors"
 
-import { course, login } from "./Models/ins-course-schema.js"
+import { course, login, user } from "./Models/ins-course-schema.js"
 import { module_data } from "./Models/ins-course-schema.js"
 import { quiz_data } from "./Models/ins-course-schema.js"
 import { learner_course } from "./Models/ins-course-schema.js"
@@ -14,7 +14,9 @@ const app = express()
 const port = 5000
 
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000', // Specify your frontend URL
+}));
 
 // Connect to MongoDB
 await mongoose.connect('mongodb://localhost:27017/classroom')
@@ -548,7 +550,18 @@ app.post('/upload_login_details', async (req, res) => {
         candidate_email: email,
         candidate_password: password,
         candidate_position: position,
-        candidate_courses: []
+        candidate_courses: [],
+
+        candidate_ename: "",
+        candidate_dob: "",
+        candidate_age: 0,
+        candidate_address: "",
+        candidate_phone: "",
+
+        candidate_title: "",
+        candidate_department: "",
+        candidate_about: "",
+        candidate_certifications: [],
       })
 
       await new_login.save()
@@ -575,7 +588,7 @@ app.post('/verify_user_auth', async (req, res) => {
       if (target_account.candidate_password !== password) {
         res.status(401).send({ message: "Incorrect Password", status: "500" });
       } else {
-        res.status(200).send({ message: "Login successful", account: target_account, status: "200" });
+        res.status(200).send({ message: "Login successful", data: target_account, status: "200" });
       }
     }
   } catch (error) {
@@ -784,12 +797,12 @@ app.post('/post_files/:Module', async (req, res) => {
     const { Module } = req.params
     const files = req.body
     console.log(files)
-    const target_module = await module_data.findOne({module_id: Module})
+    const target_module = await module_data.findOne({ module_id: Module })
     if (target_module) {
       target_module.module_attachments = files
       await target_module.save()
       res.status(200).send({ message: "Files uploaded successfully", data: target_module })
-    }else{
+    } else {
       res.status(404).json({ message: 'Module not found' });
     }
   } catch (error) {
@@ -801,13 +814,153 @@ app.post('/post_files/:Module', async (req, res) => {
 app.delete('/handleParadelete', async (req, res) => {
   try {
     const { id, module_id } = req.query
-    const target_module = await module_data.findOne({module_id: module_id})
+    const target_module = await module_data.findOne({ module_id: module_id })
     if (target_module) {
-      target_module.module_theory = target_module.module_theory.filter(para => para._id.toString()!== id);
+      target_module.module_theory = target_module.module_theory.filter(para => para._id.toString() !== id);
       await target_module.save();
       res.status(200).send({ message: "Paragraph deleted successfully", data: target_module });
     } else {
       res.status(404).json({ message: 'Module not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+//set current user
+app.post('/set_current_user', async (req, res) => {
+  try {
+    const { id, position } = req.body;
+    console.log(id)
+
+    // Check if there is already an active user
+    const currentUser = await user.findOne({});
+    if (currentUser) {
+      return res.json({ message: "Active user already set" });
+    }
+
+    // Create a new user entry
+    const newUser = new user({
+      user_id: id,
+      position: position
+    });
+    await newUser.save();
+
+    res.status(200).json({ message: "Current user set successfully", data: newUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+//get current user
+app.get('/get_current_user', async (req, res) => {
+  try {
+    const users = await user.find({})
+    console.log(users)
+    if (users) {
+      res.status(200).json({ message: "Fetched current user successfully", data: users });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+app.delete('/delete_current_user', async (req, res) => {
+  try {
+    await user.deleteMany({});
+    res.status(200).json({ message: "Current user deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+// Update user profile
+app.put('/upload_user_profile_data/:id', async (req, res) => {
+  try {
+    const { address, age, date_of_birth, name, phone } = req.body;
+    const { id } = req.params;
+    console.log(req.body)
+    console.log(id)
+    const user = await login.findOne({ candidate_id: id })
+    if (user) {
+      user.candidate_address = address;
+      user.candidate_age = age;
+      user.candidate_dob = date_of_birth;
+      user.candidate_ename = name;
+      user.candidate_phone = phone;
+      await user.save();
+      res.status(200).json({ message: "Profile updated successfully", data: user });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+app.get('/fetch_user_profile_data/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const target_user = await login.findOne({ candidate_id: id })
+    if (target_user) {
+      const result = {
+        user_address: target_user.candidate_address,
+        user_name: target_user.candidate_ename,
+        user_phone: target_user.candidate_phone,
+        user_age: target_user.candidate_age,
+        user_dob: target_user.candidate_dob
+      }
+      res.status(200).json({ message: "user details fetched", data: result })
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+// upload instructor profile
+app.put('/upload_instructor_profile/:id', async (req, res) => {
+  try {
+    const { name, title, institution, contact, aboutMe, achievements } = req.body
+    const { id } = req.params;
+
+    const target_instructor = await login.findOne({ candidate_id: id })
+    if (target_instructor) {
+      target_instructor.candidate_ename = name;
+      target_instructor.candidate_title = title;
+      target_instructor.candidate_department = institution;
+      target_instructor.candidate_phone = contact;
+      target_instructor.candidate_about = aboutMe;
+      target_instructor.candidate_certifications = achievements;
+      await target_instructor.save();
+      res.status(200).json({ message: "Profile updated successfully", data: target_instructor });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+//fetch instrctor profile
+app.get('/fetch_instructor_data/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const target_user = await login.findOne({ candidate_id: id })
+    if (target_user) {
+      const result = {
+        title: target_user.candidate_title,
+        name: target_user.candidate_ename,
+        contact: target_user.candidate_phone,
+        institution: target_user.candidate_department,
+        aboutMe: target_user.candidate_about,
+        achievements: target_user.candidate_certifications
+      }
+      res.status(200).json({ message: "user details fetched", data: result })
+    } else {
+      res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });

@@ -1,14 +1,19 @@
 "use client"
 import React from 'react'
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 const L_course_card = (props) => {
 
-    const user_id = useSelector(state => state.counter.text)
+    const dispatch = useDispatch();
+
+    // Store the id of the current user
+    const user_id = useSelector(state => state.counter.text);
 
     const PlusSignIcon = (props) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
@@ -39,6 +44,34 @@ const L_course_card = (props) => {
             autoClose: 3000,
         })
     }
+
+    const get_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/get_current_user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        return result
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await get_current_user();
+                if (result.data && result.data.length !== 0) {
+                    dispatch(setText(result.data[0].user_id));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
     return (
         <div>

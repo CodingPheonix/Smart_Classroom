@@ -7,9 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Instructor_nav from '../Components/Instructor_nav'
 import I_course_card from '../Components/I_course_card'
 import { useSelector, useDispatch } from 'react-redux'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-// import { setText, clearText } from "./redux/counter/counterSlice";
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 const Page = () => {
 
@@ -47,7 +45,22 @@ const Page = () => {
             await getCourse();
         };
         fetchData();
-    }, []);
+    }, [user_id]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const result = await get_current_user(); 
+            if (result.data && result.data.length !== 0) {
+              dispatch(setText(result.data[0].user_id));
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        };
+      
+        fetchData();
+      }, []);
 
     // Get Course
     const getCourse = async () => {
@@ -82,6 +95,18 @@ const Page = () => {
             console.error('Failed to post course', error.message);
         }
     }
+
+    const get_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/get_current_user`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const result = await response.json()
+        console.log(result)
+        return result
+      };
 
     return (
         <div className="flex mx-auto bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px]">

@@ -1,74 +1,10 @@
-// import React from 'react'
-// import { useState, useEffect } from 'react'
-// import Link from 'next/link'
-// import { useSelector, useDispatch } from 'react-redux'
-
-// const Learner_nav = () => {
-
-//     const Menu01Icon = (props) => (
-//         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
-//             <path d="M4 5L20 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-//             <path d="M4 12L20 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-//             <path d="M4 19L20 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-//         </svg>
-//     );
-
-//     const Cancel01Icon = (props) => (
-//         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
-//             <path d="M19.0005 4.99988L5.00049 18.9999M5.00049 4.99988L19.0005 18.9999" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-//         </svg>
-//     );
-
-//     const user_id = useSelector(state => state.counter.text)
-
-//     const [name, setName] = useState("")
-//     const [is_hamburgered, setIs_hamburgered] = useState(false);
-
-//     const get_Learner_details = async (data) => {
-//         const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
-//           method: 'GET',
-//           headers: {
-//               'Content-Type': 'application/json',
-//           }
-//         })
-//         const result = await response.json()
-//         console.log(result)
-//         setName(result.data.candidate_name)
-//       }
-      
-//       useEffect(() => {
-//         get_Learner_details()
-//       }, [])
-
-//     return (
-//         <div className='h-full p-2 flex flex-col justify-around'>
-//             <h1 className='font-bold text-2xl h-1/5 grid place-items-center'>
-//                 Hi {name},
-//             </h1>
-//             <div className='flex justify-start h-3/5'>
-//                 <ul className='text-lg p-2 '>
-//                     <Link href="/Learner"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>About Me</li></Link>
-//                     <Link href="Learner_courses"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Courses</li></Link>
-//                     <Link href="Learner_Mycourses"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>My Courses</li></Link>
-//                     <Link href="Learner_dashboard"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Dashboard</li></Link>
-//                     <Link href="Learner_notice"><li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Notice Board</li></Link>
-//                 </ul>
-//             </div>
-//             <div className='h-1/5 grid place-items-center'>
-//                 <button className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default Learner_nav
-
-
-
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 const Learner_nav = () => {
     const Menu01Icon = (props) => (
@@ -85,7 +21,11 @@ const Learner_nav = () => {
         </svg>
     );
 
-    const user_id = useSelector(state => state.counter.text);
+    const dispatch = useDispatch()
+    const router = useRouter()
+
+    // store the id of the current user
+    const user_id = useSelector(state => state.counter.text)
     const [name, setName] = useState("");
     const [is_hamburgered, setIs_hamburgered] = useState(false);
 
@@ -100,16 +40,61 @@ const Learner_nav = () => {
         setName(result.data.candidate_name);
     };
 
+    const get_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/get_current_user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        return result
+    };
+
+    const delete_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/delete_current_user`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await get_current_user();
+                if (result.data && result.data.length !== 0) {
+                    dispatch(setText(result.data[0].user_id));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     useEffect(() => {
         get_Learner_details();
-    }, []);
+    }, [user_id]);
+
+    const handleSignout = async () => {
+        console.log("Signing out")
+        dispatch(clearText());
+        delete_current_user();
+        router.push('/');
+    }
 
     return (
         <div className='relative p-2 flex flex-col h-full'>
             {/* Header Section */}
             <div className='flex justify-between items-center'>
                 <h1 className='font-bold text-2xl'>
-                    Hi {name},
+                    Hi, {name}
                 </h1>
                 <button onClick={() => setIs_hamburgered(!is_hamburgered)} className='lg:hidden'>
                     {is_hamburgered ? <Cancel01Icon /> : <Menu01Icon />}
@@ -138,7 +123,9 @@ const Learner_nav = () => {
                     </ul>
                     {/* Sign Out Button in Sidebar */}
                     <div className='p-4'>
-                        <button className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
+                        <button
+                            onClick={handleSignout}
+                            className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
                     </div>
                 </div>
             </div>
@@ -164,7 +151,9 @@ const Learner_nav = () => {
                 </ul>
                 {/* Sign Out Button for Larger Screens */}
                 <div className='mt-4'>
-                    <button className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
+                    <button
+                        onClick={handleSignout}
+                        className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
                 </div>
             </nav>
         </div>

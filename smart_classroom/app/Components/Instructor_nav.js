@@ -1,9 +1,13 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation'
+
+import { useSelector, useDispatch } from 'react-redux'
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 const Instructor_nav = () => {
+
     const Menu01Icon = (props) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>
             <path d="M4 5L20 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -18,9 +22,12 @@ const Instructor_nav = () => {
         </svg>
     );
 
+    const dispatch = useDispatch()
     const user_id = useSelector(state => state.counter.text);
     const [name, setName] = useState("");
     const [is_hamburgered, setIs_hamburgered] = useState(false);
+
+    const router = useRouter()
 
     const get_instructor_details = async () => {
         const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
@@ -33,9 +40,54 @@ const Instructor_nav = () => {
         setName(result.data.candidate_name);
     };
 
+    const get_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/get_current_user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        return result
+    };
+
+    const delete_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/delete_current_user`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+    };
+
+
     useEffect(() => {
         get_instructor_details();
+    }, [user_id]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await get_current_user();
+                if (result.data && result.data.length !== 0) {
+                    dispatch(setText(result.data[0].user_id));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchData();
     }, []);
+
+    const handleSignout = async () => {
+        dispatch(clearText());
+        delete_current_user();
+        router.push('/');
+    }
 
     return (
         <div className='relative p-2 flex flex-col'>
@@ -65,7 +117,9 @@ const Instructor_nav = () => {
                     </ul>
                     {/* Sign Out Button in Sidebar */}
                     <div className='p-4'>
-                        <button className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
+                        <button 
+                        onClick={handleSignout}
+                        className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
                     </div>
                 </div>
             </div>
@@ -85,7 +139,9 @@ const Instructor_nav = () => {
                 </ul>
                 {/* Sign Out Button for Larger Screens */}
                 <div className='mt-4'>
-                    <button className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
+                    <button
+                        onClick={handleSignout}
+                        className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
                 </div>
             </nav>
         </div>

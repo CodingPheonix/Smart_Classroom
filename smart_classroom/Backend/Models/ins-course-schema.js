@@ -85,6 +85,18 @@ const login_schema = new mongoose.Schema({
     candidate_position: String,
     candidate_name: String,
     candidate_id: String,
+
+    candidate_ename: String,
+    candidate_dob: String,
+    candidate_age: Number,
+    candidate_address: String,
+    candidate_phone: String,
+
+    candidate_title: String,
+    candidate_department: String,
+    candidate_about: String,
+    candidate_certifications: [String],
+
     candidate_email: String,
     candidate_password: String,
     candidate_courses: [String],
@@ -102,6 +114,7 @@ const notices = new mongoose.Schema({
 
 const current_user = new mongoose.Schema({
     user_id: String,
+    position: String,
 })
 
 export const course = mongoose.model('course', course_schema)

@@ -3,23 +3,28 @@ import React, { useEffect, useState } from "react";
 import Instructor_nav from "../Components/Instructor_nav";
 import Image from "next/image";
 import { useForm, useFieldArray } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
+import { setText, clearText } from '../redux/counter/counterSlice'
 
 
 const page = () => {
-  const user_id = useSelector((state) => state.counter.text);
+  const dispatch = useDispatch();
 
-  const [name, setName] = useState('')
+  // Store the id of the current user
+  const user_id = useSelector(state => state.counter.text);
+
+  const [name, setName] = useState('[NAME]')
+  const [title, setTitle] = useState("[TITLE]")
+  const [Department, setDepartment] = useState("[DEPARTMENT]")
+  const [contact, setContact] = useState(9999999999)
+  const [aboutMe, setAboutMe] = useState("")
+  const [achievements, setAchievements] = useState([])
   const [course_list, setCourse_list] = useState([]);
-  const [isEditing, setIsEditing] = useState(false); // Toggle between view and edit mode
-  const [profileData, setProfileData] = useState({
-    title: "Professor",
-    institution: "University ABC, Dept. of Computer Science",
-    contact: "john.doe@universityabc.edu",
-    aboutMe: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-    achievements: ["Achievement 1", "Achievement 2"],
-  });
+  const [isEditing, setIsEditing] = useState(false);
 
+  const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
+
+  //API methods
   const get_courses = async () => {
     const response = await fetch(`http://localhost:5000/courses/getCourses/${user_id}`, {
       method: "GET",
@@ -31,57 +36,103 @@ const page = () => {
     setCourse_list(data.data);
   };
 
-  const get_instructor_details = async (data) => {
-    const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
+  const get_current_user = async () => {
+    const response = await fetch(`http://localhost:5000/get_current_user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     })
     const result = await response.json()
     console.log(result)
-    setName(result.data.candidate_name)
-  }
+    return result
+  };
+
+  const upload_instructor_profile = async (data) => {
+    const response = await fetch(`http://localhost:5000/upload_instructor_profile/${user_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    const result = await response.json()
+    console.log(result)
+  };
+
+  const fetch_instructor_profile = async (data) => {
+    const response = await fetch(`http://localhost:5000/fetch_instructor_data/${user_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const result = await response.json()
+    console.log(result)
+    // setProfileData(result)
+    setName(result.data.name)
+    setAboutMe(result.data.aboutMe)
+    setTitle(result.data.title)
+    setDepartment(result.data.institution)
+    setContact(result.data.contact)
+    setAchievements(result.data.achievements)
+    // console.log(profileData)
+  };
+
+
+  // UseEffects
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await get_current_user();
+        if (result.data && result.data.length !== 0) {
+          dispatch(setText(result.data[0].user_id));
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     get_courses();
-    get_instructor_details();
-  }, []);
-
-  const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
-    defaultValues: {
-      title: profileData.title,
-      institution: profileData.institution,
-      contact: profileData.contact,
-      aboutMe: profileData.aboutMe,
-      achievements: profileData.achievements.map((achievement) => ({ achievement })),
-    },
-  });
+    fetch_instructor_profile()
+  }, [user_id]);
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "achievements",
   });
 
-  const onSubmit = (data) => {
-    // Update the profile data state
-    setProfileData({
-      ...profileData,
-      title: data.title,
-      institution: data.institution,
-      contact: data.contact,
-      aboutMe: data.aboutMe,
-      achievements: data.achievements.map((ach) => ach.achievement),
-    });
-    console.log(profileData)
-    // Toggle back to view mode
-    setIsEditing(false);
-    reset();
+  const onSubmit = async (data) => {
+    try {
+      const profileData = {
+        name: data.name,
+        title: data.title,
+        institution: data.institution,
+        contact: data.contact,
+        aboutMe: data.aboutMe,
+        achievements: data.achievements.map((ach) => ach.achievement),
+      };
+      await upload_instructor_profile(profileData);
+      setName(data.name);
+      setTitle(data.title);
+      setDepartment(data.institution);
+      setContact(data.contact);
+      setAboutMe(data.aboutMe);
+      setAchievements(data.achievements.map((ach) => ach.achievement));
+      setIsEditing(false);
+      reset();
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
     <>
-      <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
+      <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto relative">
         <div className="h-auto lg:h-[calc(100vh-112px)] w-full lg:w-1/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4">
           <Instructor_nav />
         </div>
@@ -92,7 +143,7 @@ const page = () => {
               <h1 className="font-bold text-4xl text-gray-800">My Profile</h1>
               <button
                 className="py-2 px-6 border border-green-600 rounded-full font-bold text-xl text-green-600 hover:bg-green-600 hover:text-white transition-all ease-in-out duration-200 shadow-md"
-                onClick={() => setIsEditing(!isEditing)} // Toggle between view and edit mode
+                onClick={() => setIsEditing(!isEditing)}
               >
                 {isEditing ? "Cancel" : "Edit"}
               </button>
@@ -101,125 +152,23 @@ const page = () => {
             <div className="flex-grow overflow-y-auto">
               {/* Profile Section */}
               <div className="flex flex-col lg:flex-row justify-between mb-6">
-                {!isEditing ? (
-                  <>
-                    <div className="flex-grow p-4">
-                      <ul className="list-disc list-inside">
-                        <li className="py-2"><strong>Name:</strong> {name}</li>
-                        <li className="py-2"><strong>Title / Position:</strong> {profileData.title}</li>
-                        <li className="py-2"><strong>Institution / Department:</strong> {profileData.institution}</li>
-                        <li className="py-2"><strong>Contact Information:</strong> {profileData.contact}</li>
-                      </ul>
-                    </div>
-                    <Image
-                      className="h-40 w-32 border border-gray-300 rounded-lg shadow-md m-4"
-                    // src={profilePic}
-                    // alt="Profile Picture"
-                    />
-                  </>
-                ) : (
-                  <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6 p-6">
-                    {/* Title/Position Input */}
-                    <div>
-                      <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                        Title/Position
-                      </label>
-                      <input
-                        type="text"
-                        id="title"
-                        {...register("title", { required: "Title is required" })}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
-                      />
-                      {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
-                    </div>
-
-                    {/* Institution/Department Input */}
-                    <div>
-                      <label htmlFor="institution" className="block text-sm font-medium text-gray-700">
-                        Institution/Department
-                      </label>
-                      <input
-                        type="text"
-                        id="institution"
-                        {...register("institution", { required: "Institution is required" })}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
-                      />
-                      {errors.institution && <p className="text-red-500 text-sm">{errors.institution.message}</p>}
-                    </div>
-
-                    {/* Contact Information Input */}
-                    <div>
-                      <label htmlFor="contact" className="block text-sm font-medium text-gray-700">
-                        Contact Information
-                      </label>
-                      <input
-                        type="text"
-                        id="contact"
-                        {...register("contact", { required: "Contact information is required" })}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
-                      />
-                      {errors.contact && <p className="text-red-500 text-sm">{errors.contact.message}</p>}
-                    </div>
-
-                    {/* About Me Textarea */}
-                    <div>
-                      <label htmlFor="aboutMe" className="block text-sm font-medium text-gray-700">
-                        About Me
-                      </label>
-                      <textarea
-                        id="aboutMe"
-                        {...register("aboutMe", { required: "About Me is required" })}
-                        rows="4"
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
-                      />
-                      {errors.aboutMe && <p className="text-red-500 text-sm">{errors.aboutMe.message}</p>}
-                    </div>
-
-                    {/* Achievements Section */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Achievements</label>
-                      {fields.map((field, index) => (
-                        <div key={field.id} className="mb-2 flex items-center space-x-2">
-                          <input
-                            type="text"
-                            {...register(`achievements.${index}.achievement`, { required: "Achievement is required" })}
-                            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
-                            placeholder={`Achievement ${index + 1}`}
-                          />
-                          <button
-                            type="button"
-                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
-                            onClick={() => remove(index)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      ))}
-
-                      {/* Add Achievement Button */}
-                      <button
-                        type="button"
-                        onClick={() => append({ achievement: "" })}
-                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
-                      >
-                        + Add Achievement
-                      </button>
-                    </div>
-
-                    {/* Submit Button */}
-                    <div>
-                      <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                        Save
-                      </button>
-                    </div>
-                  </form>
-                )}
+                <div className="flex-grow p-4">
+                  <ul className="list-disc list-inside">
+                    <li className="py-2"><strong>Name:</strong> {name}</li>
+                    <li className="py-2"><strong>Title / Position:</strong> {title}</li>
+                    <li className="py-2"><strong>Institution / Department:</strong> {Department}</li>
+                    <li className="py-2"><strong>Contact Information:</strong> {contact}</li>
+                  </ul>
+                </div>
+                <Image
+                  className="h-40 w-32 border border-gray-300 rounded-lg shadow-md m-4"
+                />
               </div>
 
               {/* About Me Section */}
               <div className="my-6">
                 <h1 className="font-bold text-3xl text-gray-800">About Me</h1>
-                <p className="my-2 text-gray-700">{profileData.aboutMe}</p>
+                <p className="my-2 text-gray-700">{aboutMe}</p>
               </div>
 
               {/* My Courses Section */}
@@ -242,17 +191,136 @@ const page = () => {
               <div className="my-6">
                 <h1 className="font-bold text-3xl text-gray-800">Achievements / Certifications</h1>
                 <ul>
-                  {profileData.achievements.map((achievement, index) => (
-                    <li key={index} className="text-gray-600 py-1">{achievement}</li>
-                  ))}
+                  {achievements ? (
+                    achievements.map((achievement, index) => (
+                      <li key={index} className="text-gray-600 py-1">{achievement}</li>
+                    ))
+                  ) : (
+                    <p className="text-center">No Achievements available</p>
+                  )}
                 </ul>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
+        {/* Edit Profile Form */}
+        {isEditing && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg mx-4 space-y-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Profile</h2>
+
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter name"
+                  {...register("name", { required: "Name is required" })}
+                  className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
+                />
+                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+              </div>
+
+              {/* Title/Position Input */}
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                  Title/Position
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  {...register("title", { required: "Title is required" })}
+                  className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
+                />
+                {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
+              </div>
+
+              {/* Institution/Department Input */}
+              <div>
+                <label htmlFor="institution" className="block text-sm font-medium text-gray-700">
+                  Institution/Department
+                </label>
+                <input
+                  type="text"
+                  id="institution"
+                  {...register("institution", { required: "Institution is required" })}
+                  className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
+                />
+                {errors.institution && <p className="text-red-500 text-sm">{errors.institution.message}</p>}
+              </div>
+
+              {/* Contact Information Input */}
+              <div>
+                <label htmlFor="contact" className="block text-sm font-medium text-gray-700">
+                  Contact Information
+                </label>
+                <input
+                  type="text"
+                  id="contact"
+                  {...register("contact", { required: "Contact information is required" })}
+                  className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
+                />
+                {errors.contact && <p className="text-red-500 text-sm">{errors.contact.message}</p>}
+              </div>
+
+              {/* About Me Textarea */}
+              <div>
+                <label htmlFor="aboutMe" className="block text-sm font-medium text-gray-700">
+                  About Me
+                </label>
+                <textarea
+                  id="aboutMe"
+                  {...register("aboutMe", { required: "About Me is required" })}
+                  rows="4"
+                  className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
+                />
+                {errors.aboutMe && <p className="text-red-500 text-sm">{errors.aboutMe.message}</p>}
+              </div>
+
+              {/* Achievements Section */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Achievements</label>
+                {fields.map((field, index) => (
+                  <div key={field.id} className="mb-2 flex items-center space-x-2">
+                    <input
+                      type="text"
+                      {...register(`achievements.${index}.achievement`, { required: "Achievement is required" })}
+                      className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-400 transition duration-150"
+                      placeholder={`Achievement ${index + 1}`}
+                    />
+                    <button
+                      type="button"
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                      onClick={() => remove(index)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => append({ achievement: "" })}
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  + Add Achievement
+                </button>
+              </div>
+
+              {/* Submit Button */}
+              <div>
+                <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
     </>
+
   );
 };
 
