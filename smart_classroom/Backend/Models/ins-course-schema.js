@@ -99,6 +99,7 @@ const login_schema = new mongoose.Schema({
 
     candidate_email: String,
     candidate_password: String,
+    candidate_imageURL: String,
     candidate_courses: [String],
 })
 

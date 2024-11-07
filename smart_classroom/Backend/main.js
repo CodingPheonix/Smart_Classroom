@@ -923,7 +923,7 @@ app.get('/fetch_user_profile_data/:id', async (req, res) => {
 // upload instructor profile
 app.put('/upload_instructor_profile/:id', async (req, res) => {
   try {
-    const { name, title, institution, contact, aboutMe, achievements } = req.body
+    const { name, title, institution, contact, aboutMe, achievements, image } = req.body
     const { id } = req.params;
 
     const target_instructor = await login.findOne({ candidate_id: id })
@@ -934,6 +934,7 @@ app.put('/upload_instructor_profile/:id', async (req, res) => {
       target_instructor.candidate_phone = contact;
       target_instructor.candidate_about = aboutMe;
       target_instructor.candidate_certifications = achievements;
+      target_instructor.candidate_imageURL = image;
       await target_instructor.save();
       res.status(200).json({ message: "Profile updated successfully", data: target_instructor });
     } else {
@@ -956,7 +957,8 @@ app.get('/fetch_instructor_data/:id', async (req, res) => {
         contact: target_user.candidate_phone,
         institution: target_user.candidate_department,
         aboutMe: target_user.candidate_about,
-        achievements: target_user.candidate_certifications
+        achievements: target_user.candidate_certifications,
+        image: target_user.candidate_imageURL
       }
       res.status(200).json({ message: "user details fetched", data: result })
     } else {

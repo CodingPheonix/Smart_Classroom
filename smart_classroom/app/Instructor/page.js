@@ -5,7 +5,8 @@ import Image from "next/image";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useSelector, useDispatch } from 'react-redux';
 import { setText, clearText } from '../redux/counter/counterSlice'
-
+import { analytics } from "../Firebase/firebase-config";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const page = () => {
   const dispatch = useDispatch();
@@ -19,10 +20,12 @@ const page = () => {
   const [contact, setContact] = useState(9999999999)
   const [aboutMe, setAboutMe] = useState("")
   const [achievements, setAchievements] = useState([])
+  const [imageURL, setImageURL] = useState("")
+  const [fileList, setFileList] = useState(null)
   const [course_list, setCourse_list] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm();
 
   //API methods
   const get_courses = async () => {
@@ -76,6 +79,7 @@ const page = () => {
     setDepartment(result.data.institution)
     setContact(result.data.contact)
     setAchievements(result.data.achievements)
+    setImageURL(result.data.image)
     // console.log(profileData)
   };
 
@@ -106,17 +110,35 @@ const page = () => {
     name: "achievements",
   });
 
-  const onSubmit = async (data) => {
+  const handleImageUpload = async (file) => {
     try {
-      const profileData = {
-        name: data.name,
-        title: data.title,
-        institution: data.institution,
-        contact: data.contact,
-        aboutMe: data.aboutMe,
-        achievements: data.achievements.map((ach) => ach.achievement),
-      };
-      await upload_instructor_profile(profileData);
+      const storageRef = ref(analytics, `SmartSkill_courses/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      setImageURL(downloadURL);
+      return downloadURL // Set the image URL to be saved in the form
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data)
+    try {
+      if (fileList) {
+        const url = await handleImageUpload(fileList);
+        const profileData = {
+          name: data.name,
+          title: data.title,
+          institution: data.institution,
+          contact: data.contact,
+          aboutMe: data.aboutMe,
+          achievements: data.achievements.map((ach) => ach.achievement),
+          image: url
+        };
+        console.log(profileData)
+        await upload_instructor_profile(profileData);
+      }
       setName(data.name);
       setTitle(data.title);
       setDepartment(data.institution);
@@ -161,6 +183,10 @@ const page = () => {
                   </ul>
                 </div>
                 <Image
+                  src={imageURL}
+                  width={600}
+                  height={800}
+                  alt="user image"
                   className="h-40 w-32 border border-gray-300 rounded-lg shadow-md m-4"
                 />
               </div>
@@ -206,8 +232,11 @@ const page = () => {
 
         {/* Edit Profile Form */}
         {isEditing && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg mx-4 space-y-6">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-5">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg mx-4 space-y-6 overflow-y-auto max-h-[90vh]"
+            >
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Profile</h2>
 
               <div>
@@ -308,6 +337,22 @@ const page = () => {
                   + Add Achievement
                 </button>
               </div>
+
+              {/* Image Upload Field */}
+              <div className="flex flex-col">
+                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="image">Image</label>
+                <input
+                  type="file"
+                  {...register("file", {
+                    onChange: (e) => {
+                      const file = e.target.files[0];
+                      if (file) setFileList(file);
+                    },
+                  })}
+                />
+                {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
+              </div>
+
 
               {/* Submit Button */}
               <div>
