@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { analytics } from "../Firebase/firebase-config";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { setText, clearText } from '../redux/counter/counterSlice'
 import Learner_nav from '../Components/Learner_nav';
@@ -14,7 +16,6 @@ const Page = () => {
 
   // Store the id of the current user
   const user_id = useSelector(state => state.counter.text);
-  console.log("user_id: ", user_id);
 
   // State List
   const [name, setName] = useState("");
@@ -22,23 +23,14 @@ const Page = () => {
   const [age, setAge] = useState(0);
   const [address, setaddress] = useState("")
   const [Phone, setPhone] = useState(0)
+  const [imageURL, setImageURL] = useState("")
+  const [fileList, setFileList] = useState(null)
   const [Registered_courses, setRegistered_courses] = useState([])
   const [isEditing, setIsEditing] = useState(false)
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
 
-  // const get_Learner_details = async () => {
-  //   const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     }
-  //   });
-  //   const result = await response.json();
-  //   console.log(result);
-  //   setName(result.data.candidate_name);
-  // };
-
+  // API Methods
   const get_current_user = async () => {
     const response = await fetch(`http://localhost:5000/get_current_user`, {
       method: 'GET',
@@ -80,24 +72,24 @@ const Page = () => {
   };
 
   const fetch_user_profile_data = async () => {
-      const response = await fetch(`http://localhost:5000/fetch_user_profile_data/${user_id}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          }
-      })
-      const result = await response.json()
-      console.log(result)
-      setName(result.data.user_name)
-      setDate_of_birth(result.data.user_dob)      
-      setAge(result.data.user_age)
-      setaddress(result.data.user_address)
-      setPhone(result.data.user_phone)
+    const response = await fetch(`http://localhost:5000/fetch_user_profile_data/${user_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    const result = await response.json()
+    console.log(result)
+    setName(result.data.user_name)
+    setDate_of_birth(result.data.user_dob)
+    setAge(result.data.user_age)
+    setaddress(result.data.user_address)
+    setPhone(result.data.user_phone)
+    setImageURL(result.data.user_image)
   };
 
   //UseEffects
   useEffect(() => {
-    // get_Learner_details();
     getCourseList();
     fetch_user_profile_data()
   }, [user_id]);
@@ -117,15 +109,32 @@ const Page = () => {
     fetchData();
   }, []);
 
+  // Functions
+  const handleImageUpload = async (file) => {
+    try {
+      const storageRef = ref(analytics, `SmartSkill_courses/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      setImageURL(downloadURL);  // Store the image URL
+      return downloadURL;        // Return for use in form submission
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
   // Form Submits
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    if (fileList) {
+      const downloadURL = await handleImageUpload(fileList);  // Use the first file from array
+      console.log(downloadURL);
+      setImageURL(downloadURL);
+      upload_user_profile_data({ ...data, image: downloadURL });
+    }
     setName(data.name);
     setAge(data.age);
     setDate_of_birth(data.date_of_birth);
     setaddress(data.address);
     setPhone(data.phone);
-    upload_user_profile_data(data)
     reset()
     setIsEditing(!isEditing)
   };
@@ -151,13 +160,22 @@ const Page = () => {
 
           {/* Profile Details Section */}
           <div className='flex-grow'>
-            <ul className='px-10 space-y-4'>
-              <li className='text-lg'><strong>Name:</strong> {name || '[Name]'}</li>
-              <li className='text-lg'><strong>Date of Birth:</strong> {date_of_birth || '[Date]'}</li>
-              <li className='text-lg'><strong>Age:</strong> {age || '[Age]'} </li>
-              <li className='text-lg'><strong>Address:</strong> {address || '[Address]'} </li>
-              <li className='text-lg'><strong>Phone no:</strong> {Phone || '[Phone no]'} </li>
-            </ul>
+            <div className='flex justify-between items-center'>
+              <ul className='px-10 space-y-4'>
+                <li className='text-lg'><strong>Name:</strong> {name || '[Name]'}</li>
+                <li className='text-lg'><strong>Date of Birth:</strong> {date_of_birth || '[Date]'}</li>
+                <li className='text-lg'><strong>Age:</strong> {age || '[Age]'} </li>
+                <li className='text-lg'><strong>Address:</strong> {address || '[Address]'} </li>
+                <li className='text-lg'><strong>Phone no:</strong> {Phone || '[Phone no]'} </li>
+              </ul>
+              <Image
+                src={imageURL}
+                width={200}
+                height={200}
+                alt="Picture of the author"
+                className=''
+              />
+            </div>
 
             <h3 className='mt-6 mb-2 text-2xl font-semibold px-6'>Registered Courses</h3>
             <div className='space-y-2 px-6'>
@@ -178,8 +196,12 @@ const Page = () => {
 
         </div>
         {isEditing && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-            <form onSubmit={handleSubmit(onSubmit)} className="px-10 space-y-4 bg-white h-auto w-1/2 p-6 border border-gray-300 rounded-lg shadow-lg">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-5">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg mx-4 space-y-6 overflow-y-auto max-h-[90vh]"
+          >
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Profile</h2>
               {/* Name Field */}
               <div>
                 <label className="block text-lg font-semibold" htmlFor="name">Name:</label>
@@ -243,6 +265,22 @@ const Page = () => {
                   placeholder="Enter phone number"
                 />
                 {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+              </div>
+
+              {/* Image Upload Field */}
+              <div className="flex flex-col">
+                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="image">Image</label>
+                <input
+                  type="file"
+                  {...register("file", {
+                    onChange: async (e) => {
+                      const file = e.target.files[0];
+                      console.log(file)
+                      if (file) setFileList(file);
+                    },
+                  })}
+                />
+                {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
               </div>
 
               {/* Submit Button */}

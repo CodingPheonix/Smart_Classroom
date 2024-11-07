@@ -880,7 +880,7 @@ app.delete('/delete_current_user', async (req, res) => {
 // Update user profile
 app.put('/upload_user_profile_data/:id', async (req, res) => {
   try {
-    const { address, age, date_of_birth, name, phone } = req.body;
+    const { address, age, date_of_birth, name, phone, image } = req.body;
     const { id } = req.params;
     console.log(req.body)
     console.log(id)
@@ -891,6 +891,7 @@ app.put('/upload_user_profile_data/:id', async (req, res) => {
       user.candidate_dob = date_of_birth;
       user.candidate_ename = name;
       user.candidate_phone = phone;
+      user.candidate_imageURL = image;
       await user.save();
       res.status(200).json({ message: "Profile updated successfully", data: user });
     }
@@ -909,7 +910,8 @@ app.get('/fetch_user_profile_data/:id', async (req, res) => {
         user_name: target_user.candidate_ename,
         user_phone: target_user.candidate_phone,
         user_age: target_user.candidate_age,
-        user_dob: target_user.candidate_dob
+        user_dob: target_user.candidate_dob,
+        user_image:target_user.candidate_imageURL,
       }
       res.status(200).json({ message: "user details fetched", data: result })
     } else {

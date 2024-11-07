@@ -113,7 +113,7 @@ export default function Home() {
 
     const result = await response.json();
     console.log(result);
-    console.log(result.account.candidate_id)
+    console.log(result.data.candidate_id)
     if (response.status === 200) {
       setIslearnerlogin(!islearnerlogin);
       reset();
