@@ -400,8 +400,8 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
     // Set up the student dashboard default settings
     const target_course = await course.findOne({ course_id: id })
     if (target_course) {
-      if(target_course.course_details){
-        target_course.course_details.map( async (modules, index) => {
+      if (target_course.course_details) {
+        target_course.course_details.map(async (modules, index) => {
           const new_module = new student_dashboard({
             student_id: learner_id,
             module_id: modules.module_id,
@@ -414,12 +414,12 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
           });
           await new_module.save();
         })
-        res.status(200).send({message: "Successfully created default dashboard"})
-      }else{
-        res.send({message: "Target Course details not found"})
+        res.status(200).send({ message: "Successfully created default dashboard" })
+      } else {
+        res.send({ message: "Target Course details not found" })
       }
-    }else{
-      res.send({message: "Target Course not found"})
+    } else {
+      res.send({ message: "Target Course not found" })
     }
 
   } catch (error) {
@@ -477,7 +477,7 @@ app.delete('/delete_from_mycourses/:id/:user', async (req, res) => {
 
 
 //post student marks
-app.post('/post_student_marks/:Course/:Module', async (req, res) => {
+app.put('/post_student_marks/:Course/:Module', async (req, res) => {
   try {
     const { Course, Module } = req.params;
     const { result, score, id, total, content_type } = req.body;
@@ -487,10 +487,12 @@ app.post('/post_student_marks/:Course/:Module', async (req, res) => {
     if (existing_data) {
       existing_data.quiz_result = result
       existing_data.quiz_score = score
+      existing_data.total_score = result.length
+      existing_data.is_complete = true
 
       await existing_data.save()
 
-      res.status(200).send({ message: "Student result uploaded", data: existing_data });
+      res.status(200).send({ message: "Student result updated", data: existing_data });
     } else {
       // Create a new instance of the model
       const new_data = new student_dashboard({
@@ -523,20 +525,29 @@ app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
     const { content_type } = req.body
     const { user, Course, Module } = req.params
 
-    const new_data = new student_dashboard({
-      student_id: user,
-      module_id: Module,
-      course_id: Course,
-      content_type: content_type, // Should match the schema (array or object)
-      quiz_result: [], // Should match the schema (array or object)
-      quiz_score: 0, // Ensure score is a number in the schema
-      total_score: 0,
-      is_complete: false
-    });
+    const existing_data = await student_dashboard.findOne({ student_id: user, module_id: Module, course_id: Course })
 
-    const savedData = await new_data.save();
+    if (existing_data) {
+      existing_data.is_complete = true
+      await existing_data.save()
 
-    res.status(200).send({ message: "Content data uploaded", data: savedData });
+      res.status(200).send({ message: "Student result updated", data: existing_data });
+    } else {
+      const new_data = new student_dashboard({
+        student_id: user,
+        module_id: Module,
+        course_id: Course,
+        content_type: content_type, // Should match the schema (array or object)
+        quiz_result: [], // Should match the schema (array or object)
+        quiz_score: 0, // Ensure score is a number in the schema
+        total_score: 0,
+        is_complete: false
+      });
+
+      const savedData = await new_data.save();
+
+      res.status(200).send({ message: "Content data uploaded", data: savedData });
+    }
   } catch (error) {
 
   }

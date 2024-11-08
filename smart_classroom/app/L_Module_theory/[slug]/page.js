@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import { useForm } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
+import { setText, clearText } from '../../redux/counter/counterSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,7 +16,10 @@ const Page = ({ params }) => {
     const course_id = params.slug.split('%40')[1];
     console.log(module_id + '+' + course_id);
 
-    const user_id = useSelector(state => state.counter.text)
+    const dispatch = useDispatch();
+
+    // Store the id of the current user
+    const user_id = useSelector(state => state.counter.text);
     console.log(user_id);
 
 
@@ -70,7 +74,7 @@ const Page = ({ params }) => {
 
     const upload_result_data = async (data) => {
         const response = await fetch(`http://localhost:5000/post_student_marks/${course_id}/${module_id}`, {
-            method: 'POST',
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
@@ -100,6 +104,18 @@ const Page = ({ params }) => {
         setFileList(result.data)
     };
 
+    const get_current_user = async () => {
+        const response = await fetch(`http://localhost:5000/get_current_user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        return result
+    };
+
     // UseEffects
     useEffect(() => {
         get_module_data();
@@ -109,7 +125,22 @@ const Page = ({ params }) => {
         } else {
             get_quiz_details();
         }
-    }, [module_data.content_type]);
+    }, [module_data.content_type, user_id]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await get_current_user();
+                if (result.data && result.data.length !== 0) {
+                    dispatch(setText(result.data[0].user_id));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // Submit function
     const onSubmit = (data) => {
