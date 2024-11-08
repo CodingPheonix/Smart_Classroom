@@ -388,6 +388,7 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
     const { id, learner_id } = req.params
     const target_candidate = await login.findOne({ candidate_id: learner_id });
 
+    // Add target course to Mycourses inventory
     if (target_candidate) {
       target_candidate.candidate_courses.push(id)
       await target_candidate.save()
@@ -396,22 +397,30 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
       res.status(404).json({ message: 'target course not found' });
     }
 
-
-    // if (target_course) {
-    //   const saved_course = new learner_course({
-    //     course_id: target_course.course_id,
-    //     course_title: target_course.course_title,
-    //     course_description: target_course.course_description,
-    //     course_category: target_course.course_category,
-    //     course_duration: target_course.course_duration,
-    //     course_details: target_course.course_details
-    //   })
-    //   await saved_course.save()
-    //   res.status(200).send({ message: "Course is saved" })
-    // } else {
-    //   res.status(404).json({ message: 'target course not found' });
-    // }
-
+    // Set up the student dashboard default settings
+    const target_course = await course.findOne({ course_id: id })
+    if (target_course) {
+      if(target_course.course_details){
+        target_course.course_details.map( async (modules, index) => {
+          const new_module = new student_dashboard({
+            student_id: learner_id,
+            module_id: modules.module_id,
+            course_id: id,
+            content_type: modules.content_type,
+            quiz_result: [],
+            quiz_score: 0,
+            total_score: 0,
+            is_complete: false
+          });
+          await new_module.save();
+        })
+        res.status(200).send({message: "Successfully created default dashboard"})
+      }else{
+        res.send({message: "Target Course details not found"})
+      }
+    }else{
+      res.send({message: "Target Course not found"})
+    }
 
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
@@ -911,7 +920,7 @@ app.get('/fetch_user_profile_data/:id', async (req, res) => {
         user_phone: target_user.candidate_phone,
         user_age: target_user.candidate_age,
         user_dob: target_user.candidate_dob,
-        user_image:target_user.candidate_imageURL,
+        user_image: target_user.candidate_imageURL,
       }
       res.status(200).json({ message: "user details fetched", data: result })
     } else {
@@ -963,6 +972,27 @@ app.get('/fetch_instructor_data/:id', async (req, res) => {
         image: target_user.candidate_imageURL
       }
       res.status(200).json({ message: "user details fetched", data: result })
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+//get pending assignments
+app.get('/get_pending_assignments/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    let count = 0;
+    const target_user = await student_dashboard.find({ student_id: id })
+    if (target_user) {
+      target_user.map((e, i) => {
+        if (e.content_type === 'quiz' && e.is_complete === false) {
+          count += 1;
+        }
+      })
+      res.status(200).send({ message: "Pending assignments found", data: count });
     } else {
       res.status(404).json({ message: 'User not found' });
     }

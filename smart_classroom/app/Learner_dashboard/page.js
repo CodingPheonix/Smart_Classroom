@@ -21,6 +21,7 @@ const Page = () => {
     const [modules_completed, setModules_completed] = useState(0)
     const [total_lessons, setTotal_lessons] = useState(0)
     const [max_quiz_score, setMax_quiz_score] = useState(0)
+    const [pending_assignments, setPending_assignments] = useState(0)
     const [req_arr, setReq_arr] = useState([])
 
     //Api calls
@@ -76,15 +77,28 @@ const Page = () => {
         return result
     };
 
+    const get_pending_assignments = async () => {
+        const response = await fetch(`http://localhost:5000/get_pending_assignments/${user_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        console.log(result)
+        setPending_assignments(result.data)
+    };
+
+
     //useEffects
     useEffect(() => {
-        // Define an async function within useEffect
         const fetchData = async () => {
             await get_activities()
             await get_dashboard()
+            await get_pending_assignments()
         }
         fetchData()
-    }, [user_id])  // Empty dependency array to run once on mount
+    }, [user_id])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -107,7 +121,7 @@ const Page = () => {
                 <Learner_nav />
             </div>
             <div className="h-[calc(100vh-225px)] lg:h-[calc(100vh-112px)] w-[calc(100vw-2rem)] lg:w-4/5 border border-gray-300 shadow-lg rounded-lg p-4 bg-white m-4 overflow-auto">
-                <h1 className='font-extrabold text-2xl h-28 flex items-center p-4'>Dashboard</h1>
+                <h1 className='font-extrabold text-3xl h-24 flex items-center p-4'>Dashboard</h1>
 
                 <div className='flex lg:flex-row flex-col gap-2 w-full justify-around items-center'>
                     <div className='lg:w-44 w-3/4 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
@@ -173,12 +187,10 @@ const Page = () => {
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total assignments submitted:</div>
                                 <div className='w-full text-center'>{total_quiz}</div>
                             </div>
-                            {/* This is for Extra assignments given by Instructor in separate sections */}
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Pending assignments:</div>
-                                <div className='w-full text-center'>3</div>
+                                <div className='w-full text-center'>{pending_assignments || 0}</div>
                             </div>
-                            {/* ..... */}
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total reading time:</div>
                                 <div className='w-full text-center'>12 hours</div>
