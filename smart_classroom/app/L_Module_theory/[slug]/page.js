@@ -250,7 +250,7 @@ const Page = ({ params }) => {
 
             {/* Modal Section */}
             {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed h-full inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-8 rounded-lg w-4/5 max-w-3xl">
                         <h2 className="text-xl font-bold mb-4">Quiz Results</h2>
                         {submittedAnswers.map((answer, index) => (
