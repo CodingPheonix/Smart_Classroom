@@ -410,7 +410,8 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
             quiz_result: [],
             quiz_score: 0,
             total_score: 0,
-            is_complete: false
+            is_complete: false,
+            most_recent: false,
           });
           await new_module.save();
         })
@@ -489,8 +490,21 @@ app.put('/post_student_marks/:Course/:Module', async (req, res) => {
       existing_data.quiz_score = score
       existing_data.total_score = result.length
       existing_data.is_complete = true
-
+      existing_data.most_recent = true
       await existing_data.save()
+
+      // Modify other quiz's most recent
+      const all_data = await student_dashboard.find({ student_id: id, content_type: "quiz", course_id: Course });
+
+      if (all_data) {
+        const filtered_data = all_data.filter(data => data.module_id !== Module);
+
+        for (const data of filtered_data) {
+          data.most_recent = false;
+          await data.save();
+        }
+      }
+
 
       res.status(200).send({ message: "Student result updated", data: existing_data });
     } else {
@@ -503,7 +517,8 @@ app.put('/post_student_marks/:Course/:Module', async (req, res) => {
         quiz_result: result, // Should match the schema (array or object)
         quiz_score: score, // Ensure score is a number in the schema
         total_score: total,
-        is_complete: false
+        is_complete: false,
+        most_recent: true,
       });
 
       // Save the new instance and await the operation
@@ -541,7 +556,8 @@ app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
         quiz_result: [], // Should match the schema (array or object)
         quiz_score: 0, // Ensure score is a number in the schema
         total_score: 0,
-        is_complete: false
+        is_complete: false,
+        most_recent: false,
       });
 
       const savedData = await new_data.save();

@@ -79,6 +79,7 @@ const dashboard = new mongoose.Schema({
     quiz_score: { type: Number, required: true },
     total_score: { type: Number, required: true },
     is_complete: { type: Boolean, required: true },
+    most_recent: { type: Boolean, required: true},
 });
 
 const login_schema = new mongoose.Schema({

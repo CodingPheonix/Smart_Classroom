@@ -22,6 +22,7 @@ const Page = () => {
     const [total_lessons, setTotal_lessons] = useState(0)
     const [max_quiz_score, setMax_quiz_score] = useState(0)
     const [pending_assignments, setPending_assignments] = useState(0)
+    const [most_recent, setMost_recent] = useState(0)
     const [req_arr, setReq_arr] = useState([])
 
     //Api calls
@@ -59,6 +60,10 @@ const Page = () => {
             setModules_completed(fmodules_completed(result.data));
             setTotal_lessons(ftotal_lessons(result.data))
             setMax_quiz_score(fmax_score(result.data))
+
+            const target = result.data.find(data => data.most_recent === true);
+            console.log(target)
+            setMost_recent(target?.quiz_score || 0);
 
         } catch (error) {
             console.error('Error fetching activities:', error)
@@ -169,23 +174,23 @@ const Page = () => {
                         <div className='w-full grid grid-cols-2 gap-4 p-4'>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total Lessons Viewed:</div>
-                                <div className='w-full text-center'>{total_lessons}</div>
+                                <div className='w-full text-center'>{total_lessons || 0}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Average Assignment Score:</div>
-                                <div className='w-full text-center'>{avg_score}</div>
+                                <div className='w-full text-center'>{avg_score || 0.00}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Most Recent Quiz Score:</div>
-                                <div className='w-full text-center'>25</div>
+                                <div className='w-full text-center'>{most_recent || 0}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Max quiz score:</div>
-                                <div className='w-full text-center'>{max_quiz_score}</div>
+                                <div className='w-full text-center'>{max_quiz_score || 0}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total assignments submitted:</div>
-                                <div className='w-full text-center'>{total_quiz}</div>
+                                <div className='w-full text-center'>{total_quiz || 0}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Pending assignments:</div>

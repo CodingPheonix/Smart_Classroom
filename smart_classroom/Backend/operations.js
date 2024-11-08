@@ -22,7 +22,7 @@ export function favg_score(arr) {
     let marks = 0
     let count = 0
     arr.map((e, index) => {
-        if (e.content_type === "quiz") {
+        if (e.content_type === "quiz" && e.is_complete === true) {
             marks = marks + e.quiz_score
             count = count + 1
         }
@@ -83,7 +83,7 @@ export function per_cent_in5(arr) {
     let count = 0;
 
     arr.forEach((e) => {
-        if (e.content_type === "quiz") {
+        if (e.content_type === "quiz" && e.is_complete === true) {
             marks += e.quiz_score;
             count += 1;
         }
