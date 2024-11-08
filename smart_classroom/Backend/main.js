@@ -458,19 +458,16 @@ app.delete('/delete_from_mycourses/:id/:user', async (req, res) => {
   try {
     const { id, user } = req.params;
 
-    // Use `findOne` to get a single document instead of an array
     const target_user = await login.findOne({ candidate_id: user });
     if (!target_user) {
       return res.status(404).send({ message: "User not found" });
     }
-
-    // Filter out the course ID from `candidate_courses`
     target_user.candidate_courses = target_user.candidate_courses.filter(courseId => courseId !== id);
-
-    // Save the updated user document
     await target_user.save();
 
-    res.status(200).send({ message: "Target course deleted" });
+    const result = await student_dashboard.deleteMany({ student_id: user, course_id: id });
+
+    res.status(200).send({ message: "Target course deleted and data from dashboard deleted" });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
