@@ -180,7 +180,7 @@ const Page = ({ params }) => {
 
     return (
         <div className='min-h-screen w-full flex justify-center'>
-            <ToastContainer/>
+            <ToastContainer />
             {module_data.content_type === "Content" ? (
                 // Content Section
                 <div className='w-4/5 bg-slate-100 p-4'>
@@ -250,9 +250,9 @@ const Page = ({ params }) => {
 
             {/* Modal Section */}
             {showModal && (
-                <div className="fixed h-full inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-8 rounded-lg w-4/5 max-w-3xl">
-                        <h2 className="text-xl font-bold mb-4">Quiz Results</h2>
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-8 rounded-lg w-4/5 max-w-3xl max-h-[90vh] overflow-y-auto">
+                        <h2 className="text-xl font-bold mb-4 text-center">Quiz Results</h2>
                         {submittedAnswers.map((answer, index) => (
                             <div key={index} className="mb-4">
                                 <h3 className="font-semibold">{index + 1}. {answer.question}</h3>
@@ -262,16 +262,17 @@ const Page = ({ params }) => {
                                 </p>
                             </div>
                         ))}
-                        <h3 className="text-lg font-bold">Your score: {score} / {quizData.length}</h3>
+                        <h3 className="text-lg font-bold text-center">Your score: {score} / {quizData.length}</h3>
                         <button
                             onClick={() => setShowModal(false)}
-                            className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg"
+                            className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg block mx-auto"
                         >
                             Close
                         </button>
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
