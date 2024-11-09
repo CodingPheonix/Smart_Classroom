@@ -454,6 +454,7 @@ const Page = ({ params }) => {
     const [file_upload, setFile_upload] = useState(null)
     const [fileList, setFileList] = useState([])
     const [deletefile, setDeletefile] = useState(false)
+    const [isuploading, setIsuploading] = useState(false);
     const [questions, setQuestions] = useState([
         { question: '', options: ['', '', '', ''], correctAnswer: '' }
     ]);
@@ -503,10 +504,13 @@ const Page = ({ params }) => {
     //submit file
     const onFileSubmit = async (event) => {
         event.preventDefault();  // Prevent form submission default behavior
+
         if (!file_upload) {
             console.log("No file selected.");
             return;
         }
+
+        setIsuploading(true)
         console.log(file_upload);
 
         const result = await Promise.all(
@@ -528,7 +532,9 @@ const Page = ({ params }) => {
         });
 
         setAddFile(false);  // Close the file upload modal after submission
+        setIsuploading(false);  // Stop loader here
     };
+
 
     const handleModuleSubmit = async (data) => {
         console.log(data);
@@ -882,9 +888,15 @@ const Page = ({ params }) => {
                                 onChange={(event) => setFile_upload(event.target.files)}
                                 className="border border-gray-300 rounded-md p-2 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
+                            {isuploading && (
+                                <div className=' w-full flex justify-center items-center p-2'>
+                                    <div className="loader"></div>
+                                </div>
+                            )}
                             <input
                                 type="submit"
                                 value="Upload"
+                                onClick={() => { setIsuploading(true); }}
                                 className="w-full bg-green-600 text-white font-semibold py-2 rounded-md hover:bg-green-700 transition duration-200"
                             />
                         </form>
