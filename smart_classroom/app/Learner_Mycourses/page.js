@@ -9,6 +9,8 @@ import { setText, clearText } from '../redux/counter/counterSlice'
 
 const page = () => {
     const dispatch = useDispatch();
+    console.log("this is learner mycourses");
+    
 
     // Store the id of the current user
     const user_id = useSelector(state => state.counter.text);

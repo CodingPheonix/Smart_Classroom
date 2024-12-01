@@ -4,8 +4,16 @@ import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// import { useSelector, useDispatch } from 'react-redux';
+// import { setText, clearText } from '../redux/counter/counterSlice'
+
 
 const L_mycourse_card = (props) => {
+
+    // const dispatch = useDispatch();    
+
+    // // Store the id of the current user
+    // const user_id = useSelector(state => state.counter.text);
 
     //State list
 
@@ -25,6 +33,7 @@ const L_mycourse_card = (props) => {
         </svg>
     );
 
+    // API calls
     const handleDeleteCourse = async (params) => {
         const responce = await fetch(`http://localhost:5000/delete_from_mycourses/${props.id}/${props.user}`, {
             method: 'DELETE',
@@ -40,6 +49,34 @@ const L_mycourse_card = (props) => {
             autoClose: 3000,
         })
     }
+
+    // const get_current_user = async () => {
+    //     const response = await fetch(`http://localhost:5000/get_current_user`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     })
+    //     const result = await response.json()
+    //     console.log(result)
+    //     return result
+    // };
+
+    // // UseEffects
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const result = await get_current_user();
+    //             if (result.data && result.data.length !== 0) {
+    //                 dispatch(setText(result.data[0].user_id));
+    //             }
+    //         } catch (error) {
+    //             console.error("Error fetching user data:", error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
 
 
     return (

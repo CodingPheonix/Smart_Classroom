@@ -14,6 +14,8 @@ import File_card from '../../Components/File_card';
 const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
     const course_id = params.slug.split('%40')[1];
+    console.log("this is l_module_theory");
+
     console.log(module_id + '+' + course_id);
 
     const dispatch = useDispatch();
@@ -33,6 +35,8 @@ const Page = ({ params }) => {
     const [showModal, setShowModal] = useState(false);
     const [score, setScore] = useState(0);
     const [fileList, setFileList] = useState([])
+    const [start_time, setStart_time] = useState({})
+    const [end_time, setEnd_time] = useState({})
 
     console.log(module_data)
     console.log(paraPageData);
@@ -127,6 +131,7 @@ const Page = ({ params }) => {
         }
     }, [module_data.content_type, user_id]);
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -140,6 +145,12 @@ const Page = ({ params }) => {
         };
 
         fetchData();
+
+        if (module_data.content_type === "Content") {
+            const currentTime = current_time(); // Capture time immediately
+            setStart_time(currentTime); // Update state asynchronously
+            console.log("Captured Start Time:", currentTime); // Log immediately
+        }
     }, []);
 
     // Submit function
@@ -175,7 +186,35 @@ const Page = ({ params }) => {
         toast("Data Updated", {
             position: "top-right",
             autoClose: 3000,
-        })
+        });
+    
+        const time2 = current_time()
+    
+        const toSeconds = (t) => t.h * 3600 + t.m * 60 + t.s;
+        let seconds1 = toSeconds(start_time);
+        let seconds2 = toSeconds(time2);
+    
+        // If `end_time` is earlier in the day than `start_time`, adjust for day rollover
+        if (seconds2 < seconds1) {
+            seconds2 += 24 * 3600; // Add 24 hours in seconds
+        }
+    
+        const diffInSeconds = seconds2 - seconds1;
+    
+        const hours = Math.floor(diffInSeconds / 3600);
+        const minutes = Math.floor((diffInSeconds % 3600) / 60);
+        const seconds = diffInSeconds % 60;
+    
+        console.log(`Time Difference: ${hours}h ${minutes}m ${seconds}s`);
+    };
+    
+
+    // Time calculations
+    const current_time = () => {
+        const time = new Date()
+        console.log({ h: time.getHours(), m: time.getMinutes(), s: time.getSeconds() });
+        
+        return { h: time.getHours(), m: time.getMinutes(), s: time.getSeconds() };
     }
 
     return (

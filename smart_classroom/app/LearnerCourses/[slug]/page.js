@@ -1,11 +1,17 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import L_Course_details_card from '../../Components/L_Course_details_card'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
+import { setText, clearText } from '../../redux/counter/counterSlice';
 
 const page = ({ params }) => {
 
-  const user_id = useSelector(state => state.counter.text)
+  console.log("this is Learner courses")
+
+  const dispatch = useDispatch();   
+
+    // Store the id of the current user
+    const user_id = useSelector(state => state.counter.text);
 
   const [title, setTitle] = useState('')
   const [moduleList, setModuleList] = useState([])
@@ -32,13 +38,28 @@ const page = ({ params }) => {
   console.log(moduleList)
 
   useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const result = await get_current_user();
+            if (result.data && result.data.length !== 0) {
+                dispatch(setText(result.data[0].user_id));
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    };
+
+    fetchData();
+}, []);
+
+  useEffect(() => {
     const fetchTitle = async () => {
       const response = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`);
       const data = await response.json();
       setTitle(data.data.course_title);
     };
     fetchTitle();
-  }, []);
+  }, [user_id]);
 
   const getModule = async () => {
     try {
@@ -61,6 +82,18 @@ const page = ({ params }) => {
       return false;
     }
   };
+
+  const get_current_user = async () => {
+    const response = await fetch(`http://localhost:5000/get_current_user`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+};
 
   return (
     <div className='relative h-[calc(100vh-9rem)]'>
