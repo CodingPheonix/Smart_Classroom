@@ -101,6 +101,7 @@ export default function Home() {
 
   const { register, handleSubmit, reset } = useForm()
   console.log(isLogin)
+
   // Form submits for learners
   const LearnerOnSubmit = async (data) => {
     let response;
@@ -110,7 +111,7 @@ export default function Home() {
     } else {
       response = await upload_login_details({ ...data, id: uuidv4(), position: "Learner" });
     }
-
+    console.log(response)
     const result = await response.json();
     console.log(result);
     console.log(result.data.candidate_id)
