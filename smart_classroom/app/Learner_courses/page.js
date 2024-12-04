@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Learner_nav from '../Components/Learner_nav'
 import L_course_card from '../Components/L_course_card'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const page = () => {
 
@@ -12,7 +15,7 @@ const page = () => {
     //API calls
     const getCourse = async () => {
         try {
-            const response = await fetch('http://localhost:5000/courses/getCourses', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

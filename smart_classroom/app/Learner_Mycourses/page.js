@@ -6,6 +6,9 @@ import L_mycourse_card from '../Components/L_mycourse_card'
 import Learner_nav from '../Components/Learner_nav'
 import { useSelector, useDispatch } from 'react-redux';
 import { setText, clearText } from '../redux/counter/counterSlice'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const page = () => {
     const dispatch = useDispatch();
@@ -21,7 +24,7 @@ const page = () => {
     //API calls
     const getCourseList = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/getMyCourseList/${user_id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getMyCourseList/${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +41,7 @@ const page = () => {
     }
 
     const get_current_user = async () => {
-        const response = await fetch(`http://localhost:5000/get_current_user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

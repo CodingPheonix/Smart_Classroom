@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import Learner_nav from '../Components/Learner_nav'
 import L_notice_card from '../Components/L_notice_card'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const page = () => {
 
@@ -10,7 +13,7 @@ const page = () => {
 
   //API calls
   const get_notices = async (data) => {
-    const response = await fetch(`http://localhost:5000/get_all_notices`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_all_notices`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +41,7 @@ const page = () => {
 
   const get_instructor = async (data) => {
     console.log(data)
-    const response = await fetch(`http://localhost:5000/get_instructor/${data}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_instructor/${data}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -7,6 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setText, clearText } from '../redux/counter/counterSlice'
 import { analytics } from "../Firebase/firebase-config";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const page = () => {
   const dispatch = useDispatch();
@@ -29,7 +32,7 @@ const page = () => {
 
   //API methods
   const get_courses = async () => {
-    const response = await fetch(`http://localhost:5000/courses/getCourses/${user_id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses/${user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +43,7 @@ const page = () => {
   };
 
   const get_current_user = async () => {
-    const response = await fetch(`http://localhost:5000/get_current_user`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +55,7 @@ const page = () => {
   };
 
   const upload_instructor_profile = async (data) => {
-    const response = await fetch(`http://localhost:5000/upload_instructor_profile/${user_id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_instructor_profile/${user_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +67,7 @@ const page = () => {
   };
 
   const fetch_instructor_profile = async (data) => {
-    const response = await fetch(`http://localhost:5000/fetch_instructor_data/${user_id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_instructor_data/${user_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

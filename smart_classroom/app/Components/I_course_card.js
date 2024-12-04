@@ -3,6 +3,9 @@ import React from 'react'
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const I_course_card = (props) => {
 
@@ -11,7 +14,7 @@ const I_course_card = (props) => {
     }
 
     const handleDeleteClick = async () => {
-        const response = await fetch(`http://localhost:5000/delete_I_courses/${props.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_I_courses/${props.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

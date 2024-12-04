@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react'
 import L_Course_details_card from '../../Components/L_Course_details_card'
 import { useSelector, useDispatch } from 'react-redux';
 import { setText, clearText } from '../../redux/counter/counterSlice';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const page = ({ params }) => {
 
@@ -54,7 +57,7 @@ const page = ({ params }) => {
 
   useEffect(() => {
     const fetchTitle = async () => {
-      const response = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`);
       const data = await response.json();
       setTitle(data.data.course_title);
     };
@@ -63,7 +66,7 @@ const page = ({ params }) => {
 
   const getModule = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`);
       const result = await response.json();
       return result.data.course_details;
     } catch (error) {
@@ -74,7 +77,7 @@ const page = ({ params }) => {
 
   const getMark = async (module_id) => {
     try {
-      const response = await fetch(`http://localhost:5000/get_mark/${user_id}/${module_id}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_mark/${user_id}/${module_id}`);
       const result = await response.json();
       return result.data;
     } catch (error) {
@@ -84,7 +87,7 @@ const page = ({ params }) => {
   };
 
   const get_current_user = async () => {
-    const response = await fetch(`http://localhost:5000/get_current_user`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

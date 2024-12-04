@@ -87,6 +87,9 @@
 import React, { useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import { MdDeleteForever } from 'react-icons/md';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const NoticeCard = ({ heading, description, id, notice_id }) => {
     // State for controlling the expanded/collapsed view
@@ -95,7 +98,7 @@ const NoticeCard = ({ heading, description, id, notice_id }) => {
     // API call to delete the notice
     const delete_notice = async (id, notice_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/delete_notice?id=${id}&notice_id=${notice_id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_notice?id=${id}&notice_id=${notice_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +106,6 @@ const NoticeCard = ({ heading, description, id, notice_id }) => {
             });
             const result = await response.json();
             console.log(result);
-            // Optional: Add logic to update the UI after deletion
         } catch (error) {
             console.error("Failed to delete notice:", error);
         }

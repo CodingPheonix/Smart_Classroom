@@ -7,6 +7,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { setText, clearText } from '../redux/counter/counterSlice'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const L_course_card = (props) => {
 
@@ -30,7 +33,7 @@ const L_course_card = (props) => {
 
     // Api calls
     const handleAddCourse = async () => {
-        const responce = await fetch(`http://localhost:5000/get_to_mycourses/${props.id}/${user_id}`, {
+        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_to_mycourses/${props.id}/${user_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +49,7 @@ const L_course_card = (props) => {
     }
 
     const get_current_user = async () => {
-        const response = await fetch(`http://localhost:5000/get_current_user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { setText, clearText } from '../redux/counter/counterSlice'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Learner_nav = () => {
     const Menu01Icon = (props) => (
@@ -30,7 +33,7 @@ const Learner_nav = () => {
     const [is_hamburgered, setIs_hamburgered] = useState(false);
 
     const get_Learner_details = async () => {
-        const response = await fetch(`http://localhost:5000/get_user_details/${user_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,7 +44,7 @@ const Learner_nav = () => {
     };
 
     const get_current_user = async () => {
-        const response = await fetch(`http://localhost:5000/get_current_user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +56,7 @@ const Learner_nav = () => {
     };
 
     const delete_current_user = async () => {
-        const response = await fetch(`http://localhost:5000/delete_current_user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_current_user`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

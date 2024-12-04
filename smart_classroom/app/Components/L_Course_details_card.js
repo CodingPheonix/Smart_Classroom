@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const L_Course_details_card = (props) => {
 
@@ -17,7 +20,7 @@ const L_Course_details_card = (props) => {
 
     //API Calls
     const set_is_done = async (updatedMark) => {
-        const response = await fetch(`http://localhost:5000/set_is_done/${user_id}/${props.module_id}/${props.course_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/set_is_done/${user_id}/${props.module_id}/${props.course_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

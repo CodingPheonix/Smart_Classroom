@@ -5,7 +5,10 @@ import Dashboard_activities from '../Components/Dashboard_activities'
 import { useSelector, useDispatch } from 'react-redux';
 import { setText, clearText } from '../redux/counter/counterSlice'
 import Set_star from '../Components/Set_star.js'
-import { ftotal_quiz, fper_cent_score, fmodules_completed, favg_score, ftotal_lessons, fmax_score } from "../../Backend/operations.js"
+import { ftotal_quiz, fper_cent_score, fmodules_completed, favg_score, ftotal_lessons, fmax_score } from "../operations.js"
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Page = () => {
     const dispatch = useDispatch();
@@ -28,7 +31,7 @@ const Page = () => {
     //Api calls
     const get_activities = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/get_activities/${user_id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_activities/${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +47,7 @@ const Page = () => {
 
     const get_dashboard = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/fetch_student_dashboard_data/${user_id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_student_dashboard_data/${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +74,7 @@ const Page = () => {
     }
 
     const get_current_user = async () => {
-        const response = await fetch(`http://localhost:5000/get_current_user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +86,7 @@ const Page = () => {
     };
 
     const get_pending_assignments = async () => {
-        const response = await fetch(`http://localhost:5000/get_pending_assignments/${user_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_pending_assignments/${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

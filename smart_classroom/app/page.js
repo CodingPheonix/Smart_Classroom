@@ -12,6 +12,9 @@ import { BiSolidHide } from "react-icons/bi"; // hide password
 import { setText } from "./redux/counter/counterSlice";
 import Web_logo from "./Components/Web_logo";
 import logo from './Images/a logo for a web-based classroom app where students and teachers come together to study.png'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default function Home() {
   const [islearnerlogin, setIslearnerlogin] = useState(false)
@@ -30,7 +33,7 @@ export default function Home() {
 
   // API Routes
   const upload_login_details = async (data) => {
-    const response = await fetch('http://localhost:5000/upload_login_details', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_login_details`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -39,7 +42,7 @@ export default function Home() {
   }
 
   const verify_user_auth = async (data) => {
-    const response = await fetch('http://localhost:5000/verify_user_auth', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/verify_user_auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -49,7 +52,7 @@ export default function Home() {
 
   const set_current_user = async (data) => {
     try {
-      const response = await fetch(`http://localhost:5000/set_current_user`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/set_current_user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +74,7 @@ export default function Home() {
 
 
   const get_current_user = async () => {
-    const response = await fetch(`http://localhost:5000/get_current_user`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -148,18 +151,20 @@ export default function Home() {
       setMessage(result.message || "An error occurred");
     }
   }
-
-  // This will run after the page loads
-  window.addEventListener("load", () => {
-    document.querySelector(".logo").classList.add("show");
-    document.querySelector(".logo_text").classList.add("show");
-    document.querySelector(".logo_image1").classList.add("show");
-
-    document.querySelectorAll(".buttons").forEach(button => {
-      button.classList.add("show");
+  {
+    "use client"
+    // This will run after the page loads
+    window.addEventListener("load", () => {
+      document.querySelector(".logo").classList.add("show");
+      document.querySelector(".logo_text").classList.add("show");
+      document.querySelector(".logo_image1").classList.add("show");
+      
+      document.querySelectorAll(".buttons").forEach(button => {
+        button.classList.add("show");
+      });
     });
-  });
-
+  }
+    
 
 
   return (

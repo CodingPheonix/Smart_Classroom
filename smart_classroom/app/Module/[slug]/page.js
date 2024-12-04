@@ -39,7 +39,7 @@
 
 // //     // Fetch List
 // //     const get_module_data = async () => {
-// //         const response = await fetch(`http://localhost:5000/courses/course/module/${course_id}/${module_id}`, {
+// //         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${course_id}/${module_id}`, {
 // //             method: 'GET',
 // //             headers: {
 // //                 'Content-Type': 'application/json',
@@ -53,7 +53,7 @@
 
 
 // //     // const get_parapagedata = async () => {
-// //     //     const responce = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
+// //     //     const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`, {
 // //     //         method: 'GET',
 // //     //         headers: {
 // //     //             'Content-Type': 'application/json',
@@ -75,7 +75,7 @@
 
 // //     const get_parapagedata = async () => {
 // //         try {
-// //             const response = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
+// //             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`, {
 // //                 method: 'GET',
 // //                 headers: {
 // //                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@
 
 // //     // Post quiz questions to db
 // //     const post_quiz_data = async (data) => {
-// //         const responce = await fetch(`http://localhost:5000/post_quiz_data/${module_id}`, {
+// //         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_quiz_data/${module_id}`, {
 // //             method: 'PUT',
 // //             headers: {
 // //                 'Content-Type': 'application/json',
@@ -119,7 +119,7 @@
 
 // //     //get quiz details
 // //     const get_quiz_details = async (data) => {
-// //         const responce = await fetch(`http://localhost:5000/get_quiz_data/${module_id}`, {
+// //         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
 // //             method: 'GET',
 // //             headers: {
 // //                 'Content-Type': 'application/json',
@@ -142,7 +142,7 @@
 // //     }
 
 // //     const handle_delete_quiz = async () => {
-// //         const response = await fetch(`http://localhost:5000/handle_delete_quiz/${module_id}`, {
+// //         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_delete_quiz/${module_id}`, {
 // //             method: 'PUT',
 // //             headers: {
 // //                 'Content-Type': 'application/json',
@@ -155,7 +155,7 @@
 
 
 // //     const get_files = async (data) => {
-// //         const response = await fetch(`http://localhost:5000/get_files/${module_id}`, {
+// //         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_files/${module_id}`, {
 // //             method: 'GET',
 // //             headers: {
 // //                 'Content-Type': 'application/json',
@@ -441,6 +441,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Para_courses from '../../Components/Para_courses';
 import File_card from '../../Components/File_card.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
@@ -471,7 +474,7 @@ const Page = ({ params }) => {
     });
 
     const get_parapagedata = async () => {
-        const response = await fetch(`http://localhost:5000/getparapagedata/${module_id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`);
         const result = await response.json();
         console.log("Fetched data:", result);
 
@@ -490,7 +493,7 @@ const Page = ({ params }) => {
 
 
     const post_files = async (fileList) => {
-        const response = await fetch(`http://localhost:5000/post_files/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_files/${module_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -539,7 +542,7 @@ const Page = ({ params }) => {
     const handleModuleSubmit = async (data) => {
         console.log(data);
 
-        const responce = await fetch(`http://localhost:5000/courses/course/module/${module_id}`, {
+        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${module_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -557,7 +560,7 @@ const Page = ({ params }) => {
     }
 
     const get_files = async (data) => {
-        const response = await fetch(`http://localhost:5000/get_files/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_files/${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -569,7 +572,7 @@ const Page = ({ params }) => {
     };
 
     const handle_delete_quiz = async () => {
-        const response = await fetch(`http://localhost:5000/handle_delete_quiz/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_delete_quiz/${module_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -585,7 +588,7 @@ const Page = ({ params }) => {
 
     //get quiz details
     const get_quiz_details = async (data) => {
-        const responce = await fetch(`http://localhost:5000/get_quiz_data/${module_id}`, {
+        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -615,7 +618,7 @@ const Page = ({ params }) => {
 
     // Fetch List
     const get_module_data = async () => {
-        const response = await fetch(`http://localhost:5000/courses/course/module/${course_id}/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${course_id}/${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -627,7 +630,7 @@ const Page = ({ params }) => {
 
     // Post quiz questions to db
     const post_quiz_data = async (data) => {
-        const responce = await fetch(`http://localhost:5000/post_quiz_data/${module_id}`, {
+        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_quiz_data/${module_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -948,7 +951,7 @@ export default Page;
 
 //     // Fetch List
 //     const get_module_data = async () => {
-//         const response = await fetch(`http://localhost:5000/courses/course/module/${course_id}/${module_id}`, {
+//         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${course_id}/${module_id}`, {
 //             method: 'GET',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -962,7 +965,7 @@ export default Page;
 //     const handleModuleSubmit = async (data) => {
 //         console.log(data);
 
-//         const responce = await fetch(`http://localhost:5000/courses/course/module/${module_id}`, {
+//         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${module_id}`, {
 //             method: 'PUT',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -974,7 +977,7 @@ export default Page;
 //     }
 
 //     const get_parapagedata = async () => {
-//         const responce = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
+//         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`, {
 //             method: 'GET',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -996,7 +999,7 @@ export default Page;
 
 //     // Post quiz questions to db
 //     const post_quiz_data = async (data) => {
-//         const responce = await fetch(`http://localhost:5000/post_quiz_data/${module_id}`, {
+//         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_quiz_data/${module_id}`, {
 //             method: 'PUT',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -1009,7 +1012,7 @@ export default Page;
 
 //     //get quiz details
 //     const get_quiz_details = async (data) => {
-//         const responce = await fetch(`http://localhost:5000/get_quiz_data/${module_id}`, {
+//         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
 //             method: 'GET',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -1032,7 +1035,7 @@ export default Page;
 //     }
 
 //     const handle_delete_quiz = async () => {
-//         const response = await fetch(`http://localhost:5000/handle_delete_quiz/${module_id}`, {
+//         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_delete_quiz/${module_id}`, {
 //             method: 'PUT',
 //             headers: {
 //                 'Content-Type': 'application/json',

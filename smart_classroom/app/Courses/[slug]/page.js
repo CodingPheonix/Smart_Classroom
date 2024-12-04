@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 import Course_details_card from '../../Components/Course_details_card'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 
 const page = ({ params }) => {
@@ -54,7 +57,7 @@ const page = ({ params }) => {
 
   const getModule = async () => {
     try {
-      const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {
+      const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +76,7 @@ const page = ({ params }) => {
 
   const createModule = async (data) => {
     try {
-      const result = await fetch(`http://localhost:5000/courses/course/createModule/${params.slug}`, {
+      const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/createModule/${params.slug}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +92,7 @@ const page = ({ params }) => {
 
   const set_default_moduleData = async (data) => {
     try {
-      const responce = await fetch(`http://localhost:5000/courses/course/setModule`, {
+      const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/setModule`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +108,7 @@ const page = ({ params }) => {
 
   const default_post_quiz_data = async (data) => {
     try {
-      const responce = await fetch(`http://localhost:5000/post_quiz_data`, {
+      const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_quiz_data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -120,7 +123,7 @@ const page = ({ params }) => {
   }
 
   const getTitle = async () => {
-    const responce = await fetch(`http://localhost:5000/courses/course/get-title/${params.slug}`, {
+    const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

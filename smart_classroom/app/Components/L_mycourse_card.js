@@ -7,6 +7,10 @@ import 'react-toastify/dist/ReactToastify.css';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { setText, clearText } from '../redux/counter/counterSlice'
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const L_mycourse_card = (props) => {
 
@@ -35,7 +39,7 @@ const L_mycourse_card = (props) => {
 
     // API calls
     const handleDeleteCourse = async (params) => {
-        const responce = await fetch(`http://localhost:5000/delete_from_mycourses/${props.id}/${props.user}`, {
+        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_from_mycourses/${props.id}/${props.user}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

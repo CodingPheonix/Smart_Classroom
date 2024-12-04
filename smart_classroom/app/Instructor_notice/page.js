@@ -5,8 +5,12 @@ import { useForm } from 'react-hook-form'
 import { useSelector, useDispatch } from 'react-redux'
 import { setText, clearText } from '../redux/counter/counterSlice'
 
-import Notice_card from '../Components/notice_card'
+import NoticeCard from '../Components/Notice_card'
 import Instructor_nav from '../Components/Instructor_nav'
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const page = () => {
 
@@ -21,7 +25,7 @@ const page = () => {
 
     // API calls
     const send_notice = async (data) => {
-        const response = await fetch(`http://localhost:5000/send_notice/${user_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/send_notice/${user_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +37,7 @@ const page = () => {
     }
 
     const get_notices = async () => {
-        const response = await fetch(`http://localhost:5000/get_notices/${user_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_notices/${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

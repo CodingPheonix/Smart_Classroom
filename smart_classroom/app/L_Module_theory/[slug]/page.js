@@ -10,6 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import L_Para_courses from '../../Components/L_Para_courses';
 import File_card from '../../Components/File_card';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
@@ -44,7 +47,7 @@ const Page = ({ params }) => {
 
     // Fetch module data
     const get_module_data = async () => {
-        const response = await fetch(`http://localhost:5000/courses/course/module/${course_id}/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${course_id}/${module_id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -54,7 +57,7 @@ const Page = ({ params }) => {
     };
 
     const get_parapagedata = async () => {
-        const response = await fetch(`http://localhost:5000/getparapagedata/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -67,7 +70,7 @@ const Page = ({ params }) => {
     };
 
     const get_quiz_details = async () => {
-        const response = await fetch(`http://localhost:5000/get_quiz_data/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -77,7 +80,7 @@ const Page = ({ params }) => {
     };
 
     const upload_result_data = async (data) => {
-        const response = await fetch(`http://localhost:5000/post_student_marks/${course_id}/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_student_marks/${course_id}/${module_id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -87,7 +90,7 @@ const Page = ({ params }) => {
     };
 
     const handle_content_data = async (data) => {
-        const response = await fetch(`http://localhost:5000/handle_content_data/${user_id}/${course_id}/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_content_data/${user_id}/${course_id}/${module_id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -97,7 +100,7 @@ const Page = ({ params }) => {
     }
 
     const get_files = async (data) => {
-        const response = await fetch(`http://localhost:5000/get_files/${module_id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_files/${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +112,7 @@ const Page = ({ params }) => {
     };
 
     const get_current_user = async () => {
-        const response = await fetch(`http://localhost:5000/get_current_user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

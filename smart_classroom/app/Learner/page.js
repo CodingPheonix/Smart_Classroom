@@ -10,6 +10,9 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { setText, clearText } from '../redux/counter/counterSlice'
 import Learner_nav from '../Components/Learner_nav';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Page = () => {
   const dispatch = useDispatch();
@@ -32,7 +35,7 @@ const Page = () => {
 
   // API Methods
   const get_current_user = async () => {
-    const response = await fetch(`http://localhost:5000/get_current_user`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +48,7 @@ const Page = () => {
 
   const getCourseList = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/getMyCourseList/${user_id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getMyCourseList/${user_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +63,7 @@ const Page = () => {
   }
 
   const upload_user_profile_data = async (data) => {
-    const response = await fetch(`http://localhost:5000/upload_user_profile_data/${user_id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_user_profile_data/${user_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +75,7 @@ const Page = () => {
   };
 
   const fetch_user_profile_data = async () => {
-    const response = await fetch(`http://localhost:5000/fetch_user_profile_data/${user_id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_user_profile_data/${user_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

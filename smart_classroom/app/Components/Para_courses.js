@@ -1,4 +1,7 @@
 import React from 'react'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Para_courses = (props) => {
 
@@ -19,7 +22,7 @@ const Para_courses = (props) => {
     );
 
     const handleDelete = async () => {
-        const response = await fetch(`http://localhost:5000/handleParadelete?id=${encodeURIComponent(props.id)}&module_id=${encodeURIComponent(props.module_id)}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handleParadelete?id=${encodeURIComponent(props.id)}&module_id=${encodeURIComponent(props.module_id)}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -8,6 +8,9 @@ import Instructor_nav from '../Components/Instructor_nav'
 import I_course_card from '../Components/I_course_card'
 import { useSelector, useDispatch } from 'react-redux'
 import { setText, clearText } from '../redux/counter/counterSlice'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Page = () => {
 
@@ -65,7 +68,7 @@ const Page = () => {
     // Get Course
     const getCourse = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/courses/getCourses/${user_id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses/${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +85,7 @@ const Page = () => {
     // Post Course
     const post_course = async (data) => {
         try {
-            const response = await fetch(`http://localhost:5000/courses/postCourses`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/postCourses`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,7 +100,7 @@ const Page = () => {
     }
 
     const get_current_user = async () => {
-        const response = await fetch(`http://localhost:5000/get_current_user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
