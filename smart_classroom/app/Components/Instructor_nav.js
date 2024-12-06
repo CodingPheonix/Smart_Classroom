@@ -68,7 +68,7 @@ const Instructor_nav = () => {
     useEffect(() => {
         get_instructor_details();
     }, [get_instructor_details]);
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -81,10 +81,10 @@ const Instructor_nav = () => {
                 console.error("Error fetching user data:", error);
             }
         };
-    
+
         fetchData();
     }, [dispatch]);
-    
+
 
     const handleSignout = async () => {
         dispatch(clearText());
@@ -97,7 +97,7 @@ const Instructor_nav = () => {
             {/* Header Section */}
             <div className='flex justify-between items-center'>
                 <h1 className='font-bold text-2xl'>
-                    Hi "{name}",
+                    Hi &quot;{name}&quot;,
                 </h1>
                 <button onClick={() => setIs_hamburgered(!is_hamburgered)} className='lg:hidden'>
                     {is_hamburgered ? <Cancel01Icon /> : <Menu01Icon />}
@@ -120,9 +120,9 @@ const Instructor_nav = () => {
                     </ul>
                     {/* Sign Out Button in Sidebar */}
                     <div className='p-4'>
-                        <button 
-                        onClick={handleSignout}
-                        className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
+                        <button
+                            onClick={handleSignout}
+                            className='w-full text-lg font-bold py-2 px-4 rounded-full bg-green-200 hover:cursor-pointer active:bg-green-300 hover:border-green-600 hover:border transition-all ease-in-out'>Sign out</button>
                     </div>
                 </div>
             </div>

@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const [isAddingCourse, setIsAddingCourse] = useState(false)
   const [contentType, setContentType] = useState('')
   const [title, settitle] = useState('')
@@ -29,7 +29,7 @@ const page = ({ params }) => {
       await getTitle();
     };
     fetchTitle();
-  }, []);
+  });
 
   const {
     register,
@@ -231,4 +231,4 @@ const page = ({ params }) => {
   )
 }
 
-export default page
+export default Page
