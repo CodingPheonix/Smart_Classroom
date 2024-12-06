@@ -47,7 +47,7 @@ const Page = () => {
             setId(result.data._id)
             setNotice_list(result.data.notices)
         }
-    }, []);
+    }, [user_id]);
 
     useEffect(() => {
       get_notices()

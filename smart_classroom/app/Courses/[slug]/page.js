@@ -19,7 +19,7 @@ const Page = ({ params }) => {
   const getModules = useCallback(async () => {
     const modules = await getModule();
     setModuleList(modules);
-  }, []);
+  }, [getModule]);
 
   useEffect(() => {
     getModules();

@@ -44,7 +44,7 @@ const Page = () => {
         } catch (error) {
             console.error('Error fetching activities:', error)
         }
-    }, [])
+    }, [user_id])
 
     const get_dashboard = useCallback(async () => {
         try {
@@ -70,7 +70,7 @@ const Page = () => {
         } catch (error) {
             console.error('Error fetching activities:', error)
         }
-    }, [])
+    }, [user_id])
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
@@ -92,7 +92,7 @@ const Page = () => {
         })
         const result = await response.json()
         setPending_assignments(result.data)
-    }, []);
+    }, [user_id]);
 
     const get_total_time = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_total_time/${user_id}`, {
@@ -104,7 +104,7 @@ const Page = () => {
         })
         const result = await response.json()
         setTotal_time(result.data)
-    }, []);
+    }, [user_id]);
     
     const get_rank = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_rank/${user_id}`, {
@@ -124,7 +124,7 @@ const Page = () => {
         }else{
             setRank(`${result.data}th`)
         }
-    }, []);
+    }, [user_id]);
     
 
     //useEffects

@@ -36,7 +36,7 @@ const Page = () => {
         } catch (error) {
             console.error(error)
         }
-    }, [])
+    }, [user_id])
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
