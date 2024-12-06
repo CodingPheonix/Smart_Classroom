@@ -102,6 +102,20 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const logo = document.querySelector(".logo");
+    const logoText = document.querySelector(".logo_text");
+    const logoImage = document.querySelector(".logo_image1");
+
+    if (logo) logo.classList.add("show");
+    if (logoText) logoText.classList.add("show");
+    if (logoImage) logoImage.classList.add("show");
+    document.querySelectorAll(".buttons").forEach(button => {
+      button.classList.add("show");
+    });
+  }, []);
+
+
   const { register, handleSubmit, reset } = useForm()
   console.log(isLogin)
 
@@ -151,21 +165,7 @@ export default function Home() {
       setMessage(result.message || "An error occurred");
     }
   }
-  {
-    "use client"
-    // This will run after the page loads
-    window.addEventListener("load", () => {
-      document.querySelector(".logo").classList.add("show");
-      document.querySelector(".logo_text").classList.add("show");
-      document.querySelector(".logo_image1").classList.add("show");
-      
-      document.querySelectorAll(".buttons").forEach(button => {
-        button.classList.add("show");
-      });
-    });
-  }
-    
-
+ 
 
   return (
     <>

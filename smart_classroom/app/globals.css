@@ -16,13 +16,13 @@
 }
 
 .bg1{
-    animation: bg1_animation 1s ease-in-out;;
+    animation: bg1_animation 1s ease-in-out;
 }
 .bg2{
-    animation: bg2_animation 2s ease-in-out;;
+    animation: bg2_animation 2s ease-in-out;
 }
 .bg3{
-    animation: bg3_animation 3s ease-in-out;;
+    animation: bg3_animation 3s ease-in-out;
 }
 /* Base styles for logo and logo text */
 .logo {
