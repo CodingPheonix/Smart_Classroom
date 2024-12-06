@@ -9,6 +9,7 @@ import { quiz_data } from "./Models/ins-course-schema.js"
 import { learner_course } from "./Models/ins-course-schema.js"
 import { student_dashboard } from "./Models/ins-course-schema.js"
 import { notice_data } from "./Models/ins-course-schema.js"
+import { addTimes, add_all_durations } from "./operations.js"
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -517,13 +518,14 @@ app.put('/post_student_marks/:Course/:Module', async (req, res) => {
 //post content data
 app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
   try {
-    const { content_type } = req.body
+    const { content_type, time_diff } = req.body
     const { user, Course, Module } = req.params
 
     const existing_data = await student_dashboard.findOne({ student_id: user, module_id: Module, course_id: Course })
 
     if (existing_data) {
       existing_data.is_complete = true
+      existing_data.time_taken = addTimes(existing_data.time_taken, time_diff)
       await existing_data.save()
 
       res.status(200).send({ message: "Student result updated", data: existing_data });
@@ -536,6 +538,7 @@ app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
         quiz_result: [], // Should match the schema (array or object)
         quiz_score: 0, // Ensure score is a number in the schema
         total_score: 0,
+        time_taken: `${time_diff.split(":")[0]}:${time_diff.split(":")[1]}:${time_diff.split(":")[2]}`,
         is_complete: false,
         most_recent: false,
       });
@@ -996,6 +999,21 @@ app.get('/get_pending_assignments/:id', async (req, res) => {
       res.status(200).send({ message: "Pending assignments found", data: count });
     } else {
       res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+app.get('/get_total_time/:User', async (req, res) => {
+  try {
+    const { User } = req.params
+    const target_modules = await student_dashboard.find({ student_id: User, content_type: "Content" })
+
+    if (target_modules) {
+      const time_arr = target_modules.map((module) => module.time_taken);
+      const total_time = add_all_durations(time_arr)
+      res.send({message: "Total reading time fetched", data: total_time})
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
