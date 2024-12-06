@@ -7,7 +7,6 @@ import default_img from '../Images/default.png'
 import ppt from '../Images/ppt_logo.jpg'
 
 const File_card = ({ fileName }) => {
-    console.log(fileName)
     // Determine file type based on extension
     const getFileIcon = () => {
         const extension = fileName.split('.').pop().toLowerCase();

@@ -476,7 +476,6 @@ const Page = ({ params }) => {
     const get_parapagedata = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`);
         const result = await response.json();
-        console.log("Fetched data:", result);
 
         if (result.data && Array.isArray(result.data)) {
             const formattedData = result.data.map(item => ({
@@ -501,7 +500,6 @@ const Page = ({ params }) => {
             body: JSON.stringify(fileList),
         })
         const result = await response.json()
-        console.log(result)
     };
 
     //submit file
@@ -509,12 +507,10 @@ const Page = ({ params }) => {
         event.preventDefault();  // Prevent form submission default behavior
 
         if (!file_upload) {
-            console.log("No file selected.");
             return;
         }
 
         setIsuploading(true)
-        console.log(file_upload);
 
         const result = await Promise.all(
             Array.from(file_upload).map((file, index) => {  // Convert FileList to Array
@@ -527,7 +523,6 @@ const Page = ({ params }) => {
             })
         );
 
-        console.log(result);
         setFileList((prev) => {
             const final_list = [...prev, ...result];
             // post_files(final_list);
@@ -540,7 +535,6 @@ const Page = ({ params }) => {
 
 
     const handleModuleSubmit = async (data) => {
-        console.log(data);
 
         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${module_id}`, {
             method: 'PUT',
@@ -550,7 +544,6 @@ const Page = ({ params }) => {
             body: JSON.stringify(data)
         })
         const result = await responce.json()
-        console.log(result);
 
         await post_files(fileList);
         toast("Module Submitted", {
@@ -567,7 +560,6 @@ const Page = ({ params }) => {
             },
         })
         const result = await response.json()
-        console.log(result)
         setFileList(result.data)
     };
 
@@ -579,7 +571,6 @@ const Page = ({ params }) => {
             }
         })
         const result = await response.json()
-        console.log(result);
         toast("Quiz data deleted", {
             position: "top-right",
             autoClose: 3000,
@@ -595,7 +586,6 @@ const Page = ({ params }) => {
             },
         })
         const result = await responce.json()
-        console.log(result);
 
         if (result.data) {
             const formattedQuestions = result.data.map((q) => ({
@@ -638,12 +628,10 @@ const Page = ({ params }) => {
             body: JSON.stringify(data)
         })
         const result = await responce.json()
-        console.log(result);
     }
 
     //submit Quiz data
     const onSubmit = (data) => {
-        console.log(data.questions); // Handle form submission
         post_quiz_data(data.questions)
         toast("Quiz date Submitted", {
             position: "top-right",
@@ -653,18 +641,15 @@ const Page = ({ params }) => {
     };
 
     const paragraphSubmit = (data) => {
-        console.log(data);
         setparaPageData((prev) => [
             ...prev,
             { type: 'paragraph', heading: data.heading, explanation: data.explanation }
         ]);
-        console.log(parapageData);
 
         reset();
         setAddParagraph(false);
     };
 
-    console.log(module_data)
     // UseEffects
     useEffect(() => {
         const fetchData = async () => {
@@ -676,7 +661,6 @@ const Page = ({ params }) => {
 
     useEffect(() => {
         if (module_data.content_type === 'Content') {
-            console.log("in content_type");
             get_parapagedata();
         } else if (module_data.content_type) {
             get_quiz_details();
@@ -714,7 +698,6 @@ const Page = ({ params }) => {
                                 <button onClick={() => handleModuleSubmit(parapageData)} className="py-2 px-4 rounded-full bg-green-400 text-white">Submit</button>
                             </div>
 
-                            {console.log(parapageData)}
 
                             {/* Render Lesson List */}
                             {parapageData.length > 0 ? (

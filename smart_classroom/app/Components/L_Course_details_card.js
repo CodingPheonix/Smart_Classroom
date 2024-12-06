@@ -19,18 +19,6 @@ const L_Course_details_card = (props) => {
     
 
     //API Calls
-    // const set_is_done = async (updatedMark) => {
-    //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/set_is_done/${user_id}/${props.module_id}/${props.course_id}`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ is_done: updatedMark })
-    //     });
-    //     const result = await response.json();
-    //     console.log(result);
-    // };
-
     // const get_mark = async () => {
     //     const response = await fetch(`http://localhost:5000/get_mark/${user_id}/${props.module_id}`, {
     //       method: 'GET',
@@ -81,11 +69,6 @@ const L_Course_details_card = (props) => {
                         </button>
                     </Link>
                     <button
-                        // onClick={async () => {
-                        //     const updatedMark = !isMark;  // Toggle the state locally
-                        //     setIsMark(updatedMark);       // Update the state
-                        //     await set_is_done(updatedMark); // Pass the new value to the API call
-                        // }}
                         className="flex gap-1"
                     >
                         {isMark ? <CheckmarkSquare03Icon /> : <SquareIcon />}

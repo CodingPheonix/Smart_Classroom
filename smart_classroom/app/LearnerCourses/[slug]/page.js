@@ -9,8 +9,6 @@ dotenv.config();
 
 const page = ({ params }) => {
 
-  console.log("this is Learner courses")
-
   const dispatch = useDispatch();   
 
     // Store the id of the current user
@@ -38,7 +36,6 @@ const page = ({ params }) => {
     fetchModulesWithMarks();
   }, []);
 
-  console.log(moduleList)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,7 +91,6 @@ const page = ({ params }) => {
         },
     })
     const result = await response.json()
-    console.log(result)
     return result
 };
 

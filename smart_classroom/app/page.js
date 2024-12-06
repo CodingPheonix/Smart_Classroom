@@ -66,7 +66,6 @@ export default function Home() {
       }
 
       const result = await response.json();
-      console.log(result);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -81,7 +80,6 @@ export default function Home() {
       },
     })
     const result = await response.json()
-    console.log(result)
     return result
   };
 
@@ -117,7 +115,6 @@ export default function Home() {
 
 
   const { register, handleSubmit, reset } = useForm()
-  console.log(isLogin)
 
   // Form submits for learners
   const LearnerOnSubmit = async (data) => {
@@ -128,10 +125,7 @@ export default function Home() {
     } else {
       response = await upload_login_details({ ...data, id: uuidv4(), position: "Learner" });
     }
-    console.log(response)
     const result = await response.json();
-    console.log(result);
-    console.log(result.data.candidate_id)
     if (response.status === 200) {
       setIslearnerlogin(!islearnerlogin);
       reset();
@@ -154,7 +148,6 @@ export default function Home() {
     }
 
     const result = await response.json();
-    console.log(result);
     if (response.status === 200) {
       setIsInstructorlogin(!IsInstructorlogin);
       reset();

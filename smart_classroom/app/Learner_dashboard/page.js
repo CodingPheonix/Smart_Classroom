@@ -39,8 +39,7 @@ const Page = () => {
                     'Content-Type': 'application/json',
                 }
             })
-            const result = await response.json()  // Add 'await' here
-            console.log(result)
+            const result = await response.json() 
             setActivity_list(result.data)
         } catch (error) {
             console.error('Error fetching activities:', error)
@@ -56,7 +55,6 @@ const Page = () => {
                 }
             })
             const result = await response.json()
-            console.log(result.data)
 
             setReq_arr(result.data)
             setTotal_quiz(ftotal_quiz(result.data));
@@ -67,7 +65,6 @@ const Page = () => {
             setMax_quiz_score(fmax_score(result.data))
 
             const target = result.data.find(data => data.most_recent === true);
-            console.log(target)
             setMost_recent(target?.quiz_score || 0);
 
         } catch (error) {
@@ -83,7 +80,6 @@ const Page = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
         return result
     };
 
@@ -95,7 +91,6 @@ const Page = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
         setPending_assignments(result.data)
     };
 
@@ -108,7 +103,6 @@ const Page = () => {
             body: JSON.stringify(),
         })
         const result = await response.json()
-        console.log(result)
         setTotal_time(result.data)
     };
     
@@ -121,7 +115,6 @@ const Page = () => {
             body: JSON.stringify(),
         })
         const result = await response.json()
-        console.log(result)
         if (result.data == 1) {
             setRank("1st")
         }else if (result.data == 2) {

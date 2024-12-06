@@ -51,7 +51,6 @@ const Instructor_nav = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
         return result
     };
 
@@ -63,7 +62,6 @@ const Instructor_nav = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
     };
 
 

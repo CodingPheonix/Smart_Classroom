@@ -22,7 +22,6 @@ const page = () => {
                 }
             })
             const result = await response.json()
-            console.log(result.data)
             setCourseList(result.data)
         } catch (error) {
             console.error('Failed to fetch courses', error.message);

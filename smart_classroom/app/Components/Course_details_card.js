@@ -36,7 +36,6 @@ const Course_details_card = (props) => {
             },
         })
         const result = await responce.json()
-        console.log(result)
         toast("Module Deleted", {
             position: "top-right",
             autoClose: 3000,

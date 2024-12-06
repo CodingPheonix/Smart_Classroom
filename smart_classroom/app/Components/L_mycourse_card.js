@@ -47,41 +47,11 @@ const L_mycourse_card = (props) => {
             body: JSON.stringify({})
         })
         const data = await responce.json()
-        console.log(data)
         toast("Target Course Deleted", {
             position: "top-right",
             autoClose: 3000,
         })
     }
-
-    // const get_current_user = async () => {
-    //     const response = await fetch(`http://localhost:5000/get_current_user`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     })
-    //     const result = await response.json()
-    //     console.log(result)
-    //     return result
-    // };
-
-    // // UseEffects
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const result = await get_current_user();
-    //             if (result.data && result.data.length !== 0) {
-    //                 dispatch(setText(result.data[0].user_id));
-    //             }
-    //         } catch (error) {
-    //             console.error("Error fetching user data:", error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
 
     return (
         <div>

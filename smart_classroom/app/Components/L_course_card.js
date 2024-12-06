@@ -41,7 +41,6 @@ const L_course_card = (props) => {
             body: JSON.stringify({})
         })
         const data = await responce.json()
-        console.log(data)
         toast("Course Added", {
             position: "top-right",
             autoClose: 3000,
@@ -56,7 +55,6 @@ const L_course_card = (props) => {
             },
         })
         const result = await response.json()
-        console.log(result)
         return result
     };
 

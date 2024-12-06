@@ -6,7 +6,6 @@ import { CiStar } from "react-icons/ci";
 
 const Set_star = ({ arr }) => {
     const { star_full, star_half, star_empty } = set_star_parameters(arr);
-    console.log({ star_full, star_half, star_empty })
     const stars = [];
 
     function per_cent_in5(arr) {

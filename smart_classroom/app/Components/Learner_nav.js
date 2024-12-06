@@ -51,7 +51,6 @@ const Learner_nav = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
         return result
     };
 
@@ -63,7 +62,6 @@ const Learner_nav = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
     };
 
     useEffect(() => {
@@ -86,7 +84,6 @@ const Learner_nav = () => {
     }, [user_id]);
 
     const handleSignout = async () => {
-        console.log("Signing out")
         dispatch(clearText());
         delete_current_user();
         router.push('/');

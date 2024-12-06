@@ -15,7 +15,6 @@ const CreateQuiz = () => {
     });
 
     const onSubmit = (data) => {
-        console.log(data); // Handle form submission
     };
 
     return (

@@ -42,7 +42,6 @@ const Page = () => {
       },
     })
     const result = await response.json()
-    console.log(result)
     return result
   };
 
@@ -55,7 +54,6 @@ const Page = () => {
         }
       })
       const data = await response.json()
-      console.log(data);
       setRegistered_courses(data.data)
     } catch (error) {
       console.error(error)
@@ -71,7 +69,6 @@ const Page = () => {
       body: JSON.stringify(data),
     })
     const result = await response.json()
-    console.log(result)
   };
 
   const fetch_user_profile_data = async () => {
@@ -82,7 +79,6 @@ const Page = () => {
       }
     })
     const result = await response.json()
-    console.log(result)
     setName(result.data.user_name)
     setDate_of_birth(result.data.user_dob)
     setAge(result.data.user_age)
@@ -128,8 +124,7 @@ const Page = () => {
   // Form Submits
   const onSubmit = async (data) => {
     if (fileList) {
-      const downloadURL = await handleImageUpload(fileList);  // Use the first file from array
-      console.log(downloadURL);
+      const downloadURL = await handleImageUpload(fileList);
       setImageURL(downloadURL);
       upload_user_profile_data({ ...data, image: downloadURL });
     }
@@ -278,7 +273,6 @@ const Page = () => {
                   {...register("file", {
                     onChange: async (e) => {
                       const file = e.target.files[0];
-                      console.log(file)
                       if (file) setFileList(file);
                     },
                   })}

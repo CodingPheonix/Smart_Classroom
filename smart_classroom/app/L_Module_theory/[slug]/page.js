@@ -17,16 +17,13 @@ dotenv.config();
 const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
     const course_id = params.slug.split('%40')[1];
-    console.log("this is l_module_theory");
     const initialTimeRef = useRef(null);
 
-    console.log(module_id + '+' + course_id);
 
     const dispatch = useDispatch();
 
     // Store the id of the current user
     const user_id = useSelector(state => state.counter.text);
-    console.log(user_id);
 
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -42,8 +39,6 @@ const Page = ({ params }) => {
     // const [start_time, setStart_time] = useState({})
     // const [end_time, setEnd_time] = useState({})
 
-    console.log(module_data.content_type)
-    console.log(paraPageData);
 
 
     // Fetch module data
@@ -53,7 +48,6 @@ const Page = ({ params }) => {
             headers: { 'Content-Type': 'application/json' }
         });
         const result = await response.json();
-        console.log(result.data);
         setModule_data(result.data);
     };
 
@@ -76,7 +70,6 @@ const Page = ({ params }) => {
             headers: { 'Content-Type': 'application/json' }
         });
         const result = await response.json();
-        console.log(result.data);
         setQuizData(result.data);
     };
 
@@ -87,7 +80,6 @@ const Page = ({ params }) => {
             body: JSON.stringify(data)
         });
         const result = await response.json();
-        console.log(result);
     };
 
     const handle_content_data = async (data) => {
@@ -97,7 +89,6 @@ const Page = ({ params }) => {
             body: JSON.stringify(data)
         })
         const result = await response.json();
-        console.log(result);
     }
 
     const get_files = async (data) => {
@@ -108,7 +99,6 @@ const Page = ({ params }) => {
             },
         })
         const result = await response.json()
-        console.log(result)
         setFileList(result.data)
     };
 
@@ -120,7 +110,6 @@ const Page = ({ params }) => {
             },
         })
         const result = await response.json()
-        console.log(result)
         return result
     };
 
@@ -183,7 +172,6 @@ const Page = ({ params }) => {
 
     const handle_content_submit = async () => {
         const time_diff = calculateTimeDifference()
-        console.log(time_diff)
         handle_content_data({ content_type: module_data.content_type, time_diff: time_diff });
         toast("Data Updated", {
             position: "top-right",
@@ -231,10 +219,7 @@ const Page = ({ params }) => {
             const m = Math.floor(diffInSeconds / 60);
             const s = diffInSeconds % 60;
 
-            console.log({ h, m, s });
             return `${h}:${m}:${s}`
-        } else {
-            console.log("Initial time not recorded yet.");
         }
     };
 

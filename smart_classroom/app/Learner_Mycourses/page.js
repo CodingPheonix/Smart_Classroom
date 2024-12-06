@@ -12,7 +12,6 @@ dotenv.config();
 
 const page = () => {
     const dispatch = useDispatch();
-    console.log("this is learner mycourses");
     
 
     // Store the id of the current user
@@ -31,7 +30,6 @@ const page = () => {
                 }
             })
             const data = await response.json()
-            console.log(data);
 
             setCourseList(data.data)
             // setCourseList(data)
@@ -48,7 +46,6 @@ const page = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
         return result
     };
 

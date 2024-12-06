@@ -21,7 +21,6 @@ const page = () => {
       body: JSON.stringify(data),
     })
     const result = await response.json()
-    console.log(result)
 
     const list = result.data;
 
@@ -40,7 +39,6 @@ const page = () => {
   };
 
   const get_instructor = async (data) => {
-    console.log(data)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_instructor/${data}`, {
       method: 'GET',
       headers: {
@@ -48,7 +46,6 @@ const page = () => {
       },
     })
     const result = await response.json()
-    console.log(result)
     return result.data
   };
 

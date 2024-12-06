@@ -33,7 +33,6 @@ const page = () => {
             body: JSON.stringify(data),
         })
         const result = await response.json()
-        console.log(result)
     }
 
     const get_notices = async () => {
@@ -44,7 +43,6 @@ const page = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
         if (result.data) {
             setId(result.data._id)
             setNotice_list(result.data.notices)
@@ -78,7 +76,6 @@ const page = () => {
     const onSubmit = (data) => {
         setNotice_list((prev) => {
             const updatedList = [...prev, data];
-            console.log(updatedList)
             send_notice(updatedList); // Send the updated list directly
             return updatedList;
         });

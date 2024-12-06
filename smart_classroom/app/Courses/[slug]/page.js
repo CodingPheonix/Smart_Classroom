@@ -19,7 +19,6 @@ const page = ({ params }) => {
   useEffect(() => {
     const getModules = async () => {
       const modules = await getModule()
-      console.log("modules fetched = ", modules)
       setModuleList(modules)
     }
     getModules()
@@ -41,10 +40,8 @@ const page = ({ params }) => {
   } = useForm()
 
   const onSubmit = (data) => {
-    console.log(data)
     setModuleList([...moduleList, data])
     const newdata = { ...data, id: uuidv4() }
-    console.log(newdata)
     createModule(newdata)
     if (newdata.contentType === "Content") {
       set_default_moduleData(newdata)
@@ -64,10 +61,7 @@ const page = ({ params }) => {
         },
       })
       const result = await responce.json()
-      // console.log(result.data.course_details)
       return result.data.course_details
-      // setModuleList(result.data.course_details)
-      // console.log(moduleList)
     } catch (error) {
       console.error("Failed to fetch course list: ", error.message)
     }
@@ -84,7 +78,6 @@ const page = ({ params }) => {
         body: JSON.stringify(data)
       })
       const response = await result.json()
-      console.log(response)
     } catch (error) {
       console.error('Failed to modify courses', error.message);
     }
@@ -100,7 +93,6 @@ const page = ({ params }) => {
         body: JSON.stringify(data)
       })
       const result = await responce.json()
-      console.log(result)
     } catch (error) {
       throw new Error(error);
     }
@@ -116,7 +108,6 @@ const page = ({ params }) => {
         body: JSON.stringify(data)
       })
       const result = await responce.json()
-      console.log(result)
     } catch (error) {
       throw new Error(error);
     }
@@ -130,7 +121,6 @@ const page = ({ params }) => {
       }
     })
     const data = await responce.json()
-    console.log(data.data)
     settitle(data.data.course_title)
   }
 

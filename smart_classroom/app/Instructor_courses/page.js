@@ -32,7 +32,6 @@ const Page = () => {
 
     const onSubmit = async (data) => {
         const dataid = { ...data, id: uuidv4(), instructor_id: user_id }
-        console.log(dataid)
         await post_course(dataid)
         await getCourse()
         reset()
@@ -75,7 +74,6 @@ const Page = () => {
                 }
             })
             const result = await response.json()
-            console.log(result.data)
             setCourseList(result.data)
         } catch (error) {
             console.error('Failed to fetch courses', error.message);
@@ -93,7 +91,6 @@ const Page = () => {
                 body: JSON.stringify(data)
             })
             const result = await response.json()
-            console.log(result)
         } catch (error) {
             console.error('Failed to post course', error.message);
         }
@@ -107,7 +104,6 @@ const Page = () => {
           },
         })
         const result = await response.json()
-        console.log(result)
         return result
       };
 

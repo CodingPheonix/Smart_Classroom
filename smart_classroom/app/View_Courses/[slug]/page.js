@@ -20,7 +20,6 @@ const page = ({ params }) => {
     useEffect(() => {
         const getModules = async () => {
             const modules = await getModule()
-            console.log("modules fetched = ", modules)
             setModuleList(modules)
         }
         getModules()
@@ -65,7 +64,6 @@ const page = ({ params }) => {
                 },
             })
             const result = await responce.json()
-            console.log(result.data.course_details)
             return result.data.course_details
             // setModuleList(result.data.course_details)
             // console.log(moduleList)
@@ -131,7 +129,6 @@ const page = ({ params }) => {
             }
         })
         const data = await responce.json()
-        console.log(data.data)
         settitle(data.data.course_title)
     }
 

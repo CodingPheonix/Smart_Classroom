@@ -50,7 +50,6 @@ const page = () => {
       },
     })
     const result = await response.json()
-    console.log(result)
     return result
   };
 
@@ -63,7 +62,6 @@ const page = () => {
       body: JSON.stringify(data),
     })
     const result = await response.json()
-    console.log(result)
   };
 
   const fetch_instructor_profile = async (data) => {
@@ -74,7 +72,6 @@ const page = () => {
       },
     })
     const result = await response.json()
-    console.log(result)
     // setProfileData(result)
     setName(result.data.name)
     setAboutMe(result.data.aboutMe)
@@ -83,7 +80,6 @@ const page = () => {
     setContact(result.data.contact)
     setAchievements(result.data.achievements)
     setImageURL(result.data.image)
-    // console.log(profileData)
   };
 
 
@@ -126,7 +122,6 @@ const page = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data)
     try {
       if (fileList) {
         const url = await handleImageUpload(fileList);
@@ -139,7 +134,6 @@ const page = () => {
           achievements: data.achievements.map((ach) => ach.achievement),
           image: url
         };
-        console.log(profileData)
         await upload_instructor_profile(profileData);
       }
       setName(data.name);

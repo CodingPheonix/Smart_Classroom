@@ -21,7 +21,6 @@ const I_course_card = (props) => {
             }
         })
         const result = await response.json()
-        console.log(result);
         toast("Course Deleted", {
             position: "top-right",
             autoClose: 3000,

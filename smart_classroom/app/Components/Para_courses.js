@@ -30,7 +30,6 @@ const Para_courses = (props) => {
             body: JSON.stringify(),
         })
         const result = await response.json()
-        console.log(result)
     };
     
 

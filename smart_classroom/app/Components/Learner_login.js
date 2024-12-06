@@ -8,7 +8,6 @@ const Learner_login = () => {
 
     const { register, handleSubmit, errors } = useForm()
     const onSubmit = async (data) => {
-        console.log(data)
         setResult(data)
     }
 
