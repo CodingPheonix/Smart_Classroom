@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-const page = () => {
+const Page = () => {
 
     const dispatch = useDispatch()
     const user_id = useSelector(state => state.counter.text)
@@ -101,7 +101,7 @@ const page = () => {
                     {notice_list ? (
                         notice_list.map((notice, index) => {
                             return (
-                                <Notice_card key={index} id={id} notice_id={notice._id} heading={notice.heading} description={notice.description} />
+                                <NoticeCard key={index} id={id} notice_id={notice._id} heading={notice.heading} description={notice.description} />
                             )
                         })
                     ) : (
@@ -157,4 +157,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
@@ -65,7 +65,7 @@ const Page = () => {
       }, []);
 
     // Get Course
-    const getCourse = async () => {
+    const getCourse = useCallback (async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses/${user_id}`, {
                 method: 'GET',
@@ -78,7 +78,7 @@ const Page = () => {
         } catch (error) {
             console.error('Failed to fetch courses', error.message);
         }
-    }
+    })
 
     // Post Course
     const post_course = async (data) => {

@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const page = () => {
+const Page = () => {
 
     // State Declarations
     const [CourseList, setCourseList] = useState([])
@@ -68,4 +68,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

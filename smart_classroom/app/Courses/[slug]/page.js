@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 import Course_details_card from '../../Components/Course_details_card'
@@ -17,12 +17,13 @@ const Page = ({ params }) => {
   const [moduleList, setModuleList] = useState([])
 
   useEffect(() => {
-    const getModules = async () => {
-      const modules = await getModule()
-      setModuleList(modules)
-    }
-    getModules()
-  }, [isAddingCourse, moduleList])
+    const getModules = useCallback(async () => {
+      const modules = await getModule();
+      setModuleList(modules);
+    }, []);
+
+    getModules();
+  }, [getModule]); 
 
   useEffect(() => {
     const fetchTitle = async () => {
@@ -154,78 +155,78 @@ const Page = ({ params }) => {
 
       {/* Form for adding courses */}
       {isAddingCourse && (
-       <div className="fixed inset-0 bg-gray-100 bg-opacity-70 flex items-center justify-center z-10">
-       <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4 my-8 max-h-[80vh] overflow-y-auto">
-         <h2 className="text-2xl font-semibold text-gray-700 mb-4">Create a New Module</h2>
-         <form onSubmit={handleSubmit(onSubmit)}>
-     
-           {/* Module Title */}
-           <div className="mb-4">
-             <label className="block text-gray-700 font-medium mb-2" htmlFor="moduleTitle">
-               Module Title
-             </label>
-             <input
-               type="text"
-               id="moduleTitle"
-               {...register('moduleTitle', { required: 'Module title is required' })}
-               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
-               placeholder="Enter module title"
-             />
-             {errors.moduleTitle && (
-               <p className="text-red-500 text-sm mt-1">{errors.moduleTitle.message}</p>
-             )}
-           </div>
-     
-           {/* Module Description */}
-           <div className="mb-4">
-             <label className="block text-gray-700 font-medium mb-2" htmlFor="moduleDescription">
-               Module Description
-             </label>
-             <textarea
-               id="moduleDescription"
-               {...register('moduleDescription', { required: 'Module description is required' })}
-               rows="4"
-               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
-               placeholder="Enter module description"
-             ></textarea>
-             {errors.moduleDescription && (
-               <p className="text-red-500 text-sm mt-1">{errors.moduleDescription.message}</p>
-             )}
-           </div>
-     
-           {/* Content Type */}
-           <div className="mb-4">
-             <label className="block text-gray-700 font-medium mb-2" htmlFor="contentType">
-               Content Type
-             </label>
-             <select
-               id="contentType"
-               {...register('contentType', { required: 'Content type is required' })}
-               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
-               onChange={(e) => setContentType(e.target.value)}
-             >
-               <option value="" disabled>Select content type</option>
-               <option value="Content">Content</option>
-               <option value="quiz">Quiz</option>
-             </select>
-             {errors.contentType && (
-               <p className="text-red-500 text-sm mt-1">{errors.contentType.message}</p>
-             )}
-           </div>
-     
-           {/* Submit Button */}
-           <div className="mt-6">
-             <button
-               type="submit"
-               className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-             >
-               Create Module
-             </button>
-           </div>
-         </form>
-       </div>
-     </div>
-     
+        <div className="fixed inset-0 bg-gray-100 bg-opacity-70 flex items-center justify-center z-10">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4 my-8 max-h-[80vh] overflow-y-auto">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">Create a New Module</h2>
+            <form onSubmit={handleSubmit(onSubmit)}>
+
+              {/* Module Title */}
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2" htmlFor="moduleTitle">
+                  Module Title
+                </label>
+                <input
+                  type="text"
+                  id="moduleTitle"
+                  {...register('moduleTitle', { required: 'Module title is required' })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
+                  placeholder="Enter module title"
+                />
+                {errors.moduleTitle && (
+                  <p className="text-red-500 text-sm mt-1">{errors.moduleTitle.message}</p>
+                )}
+              </div>
+
+              {/* Module Description */}
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2" htmlFor="moduleDescription">
+                  Module Description
+                </label>
+                <textarea
+                  id="moduleDescription"
+                  {...register('moduleDescription', { required: 'Module description is required' })}
+                  rows="4"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
+                  placeholder="Enter module description"
+                ></textarea>
+                {errors.moduleDescription && (
+                  <p className="text-red-500 text-sm mt-1">{errors.moduleDescription.message}</p>
+                )}
+              </div>
+
+              {/* Content Type */}
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2" htmlFor="contentType">
+                  Content Type
+                </label>
+                <select
+                  id="contentType"
+                  {...register('contentType', { required: 'Content type is required' })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-500"
+                  onChange={(e) => setContentType(e.target.value)}
+                >
+                  <option value="" disabled>Select content type</option>
+                  <option value="Content">Content</option>
+                  <option value="quiz">Quiz</option>
+                </select>
+                {errors.contentType && (
+                  <p className="text-red-500 text-sm mt-1">{errors.contentType.message}</p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <div className="mt-6">
+                <button
+                  type="submit"
+                  className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  Create Module
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
       )}
     </div>
   )

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Instructor_nav from "../Components/Instructor_nav";
 import Image from "next/image";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -11,7 +11,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const page = () => {
+const Page = () => {
   const dispatch = useDispatch();
 
   // Store the id of the current user
@@ -31,7 +31,7 @@ const page = () => {
   const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm();
 
   //API methods
-  const get_courses = async () => {
+  const get_courses = useCallback (async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses/${user_id}`, {
       method: "GET",
       headers: {
@@ -40,7 +40,7 @@ const page = () => {
     });
     const data = await response.json();
     setCourse_list(data.data);
-  };
+  });
 
   const get_current_user = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
@@ -53,7 +53,7 @@ const page = () => {
     return result
   };
 
-  const upload_instructor_profile = async (data) => {
+  const upload_instructor_profile = useCallback (async (data) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_instructor_profile/${user_id}`, {
       method: 'PUT',
       headers: {
@@ -62,7 +62,7 @@ const page = () => {
       body: JSON.stringify(data),
     })
     const result = await response.json()
-  };
+  });
 
   const fetch_instructor_profile = async (data) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_instructor_data/${user_id}`, {
@@ -97,12 +97,12 @@ const page = () => {
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     get_courses();
     fetch_instructor_profile()
-  }, [user_id]);
+  }, [user_id, get_courses, fetch_instructor_profile]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -366,4 +366,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const page = () => {
+const Page = () => {
     const dispatch = useDispatch();
     
 
@@ -107,4 +107,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

@@ -195,10 +195,10 @@ export default function Home() {
             </div>
             <div className="relative z-20 flex lg:flex-row flex-col gap-4">
               <button onClick={() => { setIsInstructorlogin(!IsInstructorlogin) }} className="buttons px-6 py-3 rounded-full border-2 border-white text-white font-bold bg-green-600 hover:bg-green-700 shadow-lg transform hover:scale-105 transition-all ease-in-out duration-300">
-                Instructor's Login
+                Instructor&apos;s Login
               </button>
               <button onClick={() => { setIslearnerlogin(!islearnerlogin) }} className="buttons px-6 py-3 rounded-full border-2 border-white text-white font-bold bg-green-600 hover:bg-green-700 shadow-lg transform hover:scale-105 transition-all ease-in-out duration-300">
-                Learner's Login
+                Learner&apos;s Login
               </button>
 
             </div>
