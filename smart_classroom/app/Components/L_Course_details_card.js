@@ -15,7 +15,7 @@ const L_Course_details_card = (props) => {
     // useEffects
     useEffect(() => {
       setIsMark(props.mark)
-    }, [])
+    }, [props.mark])
     
 
     //API Calls

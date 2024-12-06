@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 
@@ -32,16 +32,16 @@ const Instructor_nav = () => {
 
     const router = useRouter()
 
-    const get_instructor_details = async () => {
+    const get_instructor_details = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         });
         const result = await response.json();
         setName(result.data.candidate_name);
-    };
+    }, [user_id]);
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
@@ -67,7 +67,8 @@ const Instructor_nav = () => {
 
     useEffect(() => {
         get_instructor_details();
-    }, [user_id]);
+    }, [get_instructor_details]);
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -80,9 +81,10 @@ const Instructor_nav = () => {
                 console.error("Error fetching user data:", error);
             }
         };
-
+    
         fetchData();
-    }, []);
+    }, [dispatch]);
+    
 
     const handleSignout = async () => {
         dispatch(clearText());

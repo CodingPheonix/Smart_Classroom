@@ -71,7 +71,7 @@ const L_course_card = (props) => {
         };
 
         fetchData();
-    }, []);
+    }, [dispatch]);
 
 
     return (

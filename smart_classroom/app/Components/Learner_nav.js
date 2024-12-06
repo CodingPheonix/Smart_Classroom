@@ -32,16 +32,26 @@ const Learner_nav = () => {
     const [name, setName] = useState("");
     const [is_hamburgered, setIs_hamburgered] = useState(false);
 
-    const get_Learner_details = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        const result = await response.json();
-        setName(result.data.candidate_name);
-    };
+    useEffect(() => {
+        try {
+            const get_Learner_details = async () => {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const result = await response.json();
+                setName(result.data.candidate_name);
+            };
+        } catch (error) {
+            console.error("Error fetching learner details:", error);
+        }
+        if (user_id) {
+            get_Learner_details();
+        }
+    }, [user_id])
+    
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
@@ -77,7 +87,7 @@ const Learner_nav = () => {
         };
 
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         get_Learner_details();
