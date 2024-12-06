@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 import { useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ const Page = ({ params }) => {
     const module_id = params.slug.split('%40')[0];
     const course_id = params.slug.split('%40')[1];
     console.log("this is l_module_theory");
+    const initialTimeRef = useRef(null);
 
     console.log(module_id + '+' + course_id);
 
@@ -41,7 +42,7 @@ const Page = ({ params }) => {
     // const [start_time, setStart_time] = useState({})
     // const [end_time, setEnd_time] = useState({})
 
-    console.log(module_data)
+    console.log(module_data.content_type)
     console.log(paraPageData);
 
 
@@ -149,11 +150,7 @@ const Page = ({ params }) => {
 
         fetchData();
 
-        // if (module_data.content_type === "Content") {
-        //     const currentTime = current_time(); // Capture time immediately
-        //     setStart_time(currentTime); // Update state asynchronously
-        //     console.log("Captured Start Time:", currentTime); // Log immediately
-        // }
+        initialTimeRef.current = get_time();
     }, []);
 
     // Submit function
@@ -185,40 +182,61 @@ const Page = ({ params }) => {
     };
 
     const handle_content_submit = async () => {
-        handle_content_data({ content_type: module_data.content_type });
+        const time_diff = calculateTimeDifference()
+        console.log(time_diff)
+        handle_content_data({ content_type: module_data.content_type, time_diff: time_diff });
         toast("Data Updated", {
             position: "top-right",
             autoClose: 3000,
         });
-    
-        // const time2 = current_time()
-    
-        // const toSeconds = (t) => t.h * 3600 + t.m * 60 + t.s;
-        // let seconds1 = toSeconds(start_time);
-        // let seconds2 = toSeconds(time2);
-    
-        // // If `end_time` is earlier in the day than `start_time`, adjust for day rollover
-        // if (seconds2 < seconds1) {
-        //     seconds2 += 24 * 3600; // Add 24 hours in seconds
-        // }
-    
-        // const diffInSeconds = seconds2 - seconds1;
-    
-        // const hours = Math.floor(diffInSeconds / 3600);
-        // const minutes = Math.floor((diffInSeconds % 3600) / 60);
-        // const seconds = diffInSeconds % 60;
-    
-        // console.log(`Time Difference: ${hours}h ${minutes}m ${seconds}s`);
-    };
-    
 
-    // Time calculations
-    // const current_time = () => {
-    //     const time = new Date()
-    //     console.log({ h: time.getHours(), m: time.getMinutes(), s: time.getSeconds() });
-        
-    //     return { h: time.getHours(), m: time.getMinutes(), s: time.getSeconds() };
-    // }
+    };
+
+
+    // Other functions
+    const get_time = () => {
+        const now = new Date();
+        return {
+            hours: now.getHours(),
+            minutes: now.getMinutes(),
+            seconds: now.getSeconds(),
+        };
+    };
+
+    const calculateTimeDifference = () => {
+        const currentTime = get_time();
+
+        if (initialTimeRef.current) {
+            // Calculate the time difference
+            const start = initialTimeRef.current;
+
+            // Convert times to total seconds
+            const currentInSeconds =
+                currentTime.hours * 3600 +
+                currentTime.minutes * 60 +
+                currentTime.seconds;
+            const startInSeconds =
+                start.hours * 3600 + start.minutes * 60 + start.seconds;
+
+            let diffInSeconds = currentInSeconds - startInSeconds;
+
+            // Handle negative difference (if current time is past midnight)
+            if (diffInSeconds < 0) {
+                diffInSeconds += 24 * 3600; // Add 24 hours in seconds
+            }
+
+            // Convert the difference back to hours, minutes, and seconds
+            const h = Math.floor(diffInSeconds / 3600);
+            diffInSeconds %= 3600;
+            const m = Math.floor(diffInSeconds / 60);
+            const s = diffInSeconds % 60;
+
+            console.log({ h, m, s });
+            return `${h}:${m}:${s}`
+        } else {
+            console.log("Initial time not recorded yet.");
+        }
+    };
 
     return (
         <div className='min-h-screen w-full flex justify-center'>

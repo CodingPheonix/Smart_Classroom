@@ -25,6 +25,7 @@ const Page = () => {
     const [total_lessons, setTotal_lessons] = useState(0)
     const [max_quiz_score, setMax_quiz_score] = useState(0)
     const [pending_assignments, setPending_assignments] = useState(0)
+    const [total_time, setTotal_time] = useState("")
     const [most_recent, setMost_recent] = useState(0)
     const [req_arr, setReq_arr] = useState([])
 
@@ -97,6 +98,20 @@ const Page = () => {
         setPending_assignments(result.data)
     };
 
+    const get_total_time = async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_total_time/${user_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(),
+        })
+        const result = await response.json()
+        console.log(result)
+        setTotal_time(result.data)
+    };
+    
+
 
     //useEffects
     useEffect(() => {
@@ -104,6 +119,7 @@ const Page = () => {
             await get_activities()
             await get_dashboard()
             await get_pending_assignments()
+            await get_total_time()
         }
         fetchData()
     }, [user_id])
@@ -201,7 +217,7 @@ const Page = () => {
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Total reading time:</div>
-                                <div className='w-full text-center'>12 hours</div>
+                                <div className='w-full text-center'>{total_time || "0:0:0"}</div>
                             </div>
                             <div>
                                 <div className='bg-white rounded-lg text-center text-xs font-semibold'>Academic Rating:</div>
