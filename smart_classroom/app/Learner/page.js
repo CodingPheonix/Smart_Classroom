@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useCallback } from 'react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
@@ -45,7 +45,7 @@ const Page = () => {
     return result
   };
 
-  const getCourseList = async () => {
+  const getCourseList = useCallback(async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getMyCourseList/${user_id}`, {
         method: 'GET',
@@ -58,7 +58,7 @@ const Page = () => {
     } catch (error) {
       console.error(error)
     }
-  }
+  })
 
   const upload_user_profile_data = async (data) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_user_profile_data/${user_id}`, {
@@ -71,7 +71,7 @@ const Page = () => {
     const result = await response.json()
   };
 
-  const fetch_user_profile_data = async () => {
+  const fetch_user_profile_data = useCallback(async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_user_profile_data/${user_id}`, {
       method: 'GET',
       headers: {
@@ -85,7 +85,7 @@ const Page = () => {
     setaddress(result.data.user_address)
     setPhone(result.data.user_phone)
     setImageURL(result.data.user_image)
-  };
+  });
 
   //UseEffects
   useEffect(() => {

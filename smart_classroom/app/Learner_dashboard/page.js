@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Learner_nav from '../Components/Learner_nav'
 import Dashboard_activities from '../Components/Dashboard_activities'
 import { useSelector, useDispatch } from 'react-redux';
@@ -31,7 +31,7 @@ const Page = () => {
     const [req_arr, setReq_arr] = useState([])
 
     //Api calls
-    const get_activities = async () => {
+    const get_activities = useCallback(async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_activities/${user_id}`, {
                 method: 'GET',
@@ -44,9 +44,9 @@ const Page = () => {
         } catch (error) {
             console.error('Error fetching activities:', error)
         }
-    }
+    })
 
-    const get_dashboard = async () => {
+    const get_dashboard = useCallback(async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_student_dashboard_data/${user_id}`, {
                 method: 'GET',
@@ -70,7 +70,7 @@ const Page = () => {
         } catch (error) {
             console.error('Error fetching activities:', error)
         }
-    }
+    })
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
@@ -83,7 +83,7 @@ const Page = () => {
         return result
     };
 
-    const get_pending_assignments = async () => {
+    const get_pending_assignments = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_pending_assignments/${user_id}`, {
             method: 'GET',
             headers: {
@@ -92,9 +92,9 @@ const Page = () => {
         })
         const result = await response.json()
         setPending_assignments(result.data)
-    };
+    });
 
-    const get_total_time = async () => {
+    const get_total_time = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_total_time/${user_id}`, {
             method: 'GET',
             headers: {
@@ -104,9 +104,9 @@ const Page = () => {
         })
         const result = await response.json()
         setTotal_time(result.data)
-    };
+    });
     
-    const get_rank = async () => {
+    const get_rank = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_rank/${user_id}`, {
             method: 'GET',
             headers: {
@@ -124,7 +124,7 @@ const Page = () => {
         }else{
             setRank(`${result.data}th`)
         }
-    };
+    });
     
 
     //useEffects

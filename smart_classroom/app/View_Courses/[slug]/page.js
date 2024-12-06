@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useState, useEffect } from 'react'
 // import { useForm } from 'react-hook-form'
 // import { v4 as uuidv4 } from 'uuid'
@@ -55,7 +55,7 @@ const Page = ({ params }) => {
     //     reset()
     // }
 
-    const getModule = async () => {
+    const getModule = useCallback(async () => {
         try {
             const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
                 method: 'GET',
@@ -70,7 +70,7 @@ const Page = ({ params }) => {
         } catch (error) {
             console.error("Failed to fetch course list: ", error.message)
         }
-    }
+    })
 
 
     // const createModule = async (data) => {
@@ -121,7 +121,7 @@ const Page = ({ params }) => {
     //     }
     // }
 
-    const getTitle = async () => {
+    const getTitle = useCallback(async () => {
         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
             method: 'GET',
             headers: {
@@ -130,7 +130,7 @@ const Page = ({ params }) => {
         })
         const data = await responce.json()
         settitle(data.data.course_title)
-    }
+    })
 
 
     return (

@@ -430,7 +430,7 @@
 
 
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { analytics } from '../../Firebase/firebase-config';
@@ -473,7 +473,7 @@ const Page = ({ params }) => {
         name: 'questions'
     });
 
-    const get_parapagedata = async () => {
+    const get_parapagedata = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`);
         const result = await response.json();
 
@@ -488,7 +488,7 @@ const Page = ({ params }) => {
         } else {
             console.error("Unexpected data format:", result);
         }
-    };
+    });
 
 
     const post_files = async (fileList) => {
@@ -552,7 +552,7 @@ const Page = ({ params }) => {
         })
     }
 
-    const get_files = async (data) => {
+    const get_files = useCallback(async (data) => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_files/${module_id}`, {
             method: 'GET',
             headers: {
@@ -561,7 +561,7 @@ const Page = ({ params }) => {
         })
         const result = await response.json()
         setFileList(result.data)
-    };
+    });
 
     const handle_delete_quiz = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_delete_quiz/${module_id}`, {
@@ -578,7 +578,7 @@ const Page = ({ params }) => {
     }
 
     //get quiz details
-    const get_quiz_details = async (data) => {
+    const get_quiz_details = useCallback(async (data) => {
         const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
             method: 'GET',
             headers: {
@@ -598,7 +598,7 @@ const Page = ({ params }) => {
             replaceQuestions(formattedQuestions);
         }
 
-    }
+    })
 
     // Function to delete a specific file
     const handleFileDelete = (index) => {
@@ -607,7 +607,7 @@ const Page = ({ params }) => {
     };
 
     // Fetch List
-    const get_module_data = async () => {
+    const get_module_data = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${course_id}/${module_id}`, {
             method: 'GET',
             headers: {
@@ -616,7 +616,7 @@ const Page = ({ params }) => {
         });
         const result = await response.json();
         setModule_data(result.data);
-    };
+    });
 
     // Post quiz questions to db
     const post_quiz_data = async (data) => {

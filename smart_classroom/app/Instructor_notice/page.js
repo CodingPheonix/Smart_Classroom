@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 import { useSelector, useDispatch } from 'react-redux'
@@ -35,7 +35,7 @@ const Page = () => {
         const result = await response.json()
     }
 
-    const get_notices = async () => {
+    const get_notices = useCallback (async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_notices/${user_id}`, {
             method: 'GET',
             headers: {
@@ -47,7 +47,7 @@ const Page = () => {
             setId(result.data._id)
             setNotice_list(result.data.notices)
         }
-    };
+    });
 
     useEffect(() => {
       get_notices()

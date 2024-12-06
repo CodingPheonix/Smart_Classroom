@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import React from 'react'
 import Link from 'next/link'
 import L_mycourse_card from '../Components/L_mycourse_card'
@@ -21,7 +21,7 @@ const Page = () => {
     const [CourseList, setCourseList] = useState([])
 
     //API calls
-    const getCourseList = async () => {
+    const getCourseList = useCallback(async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getMyCourseList/${user_id}`, {
                 method: 'GET',
@@ -36,7 +36,7 @@ const Page = () => {
         } catch (error) {
             console.error(error)
         }
-    }
+    })
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {

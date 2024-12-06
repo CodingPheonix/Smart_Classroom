@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import L_Course_details_card from '../../Components/L_Course_details_card'
 import { useSelector, useDispatch } from 'react-redux';
 import { setText, clearText } from '../../redux/counter/counterSlice';
@@ -61,7 +61,7 @@ const Page = ({ params }) => {
     fetchTitle();
   }, [user_id, params.slug]);
 
-  const getModule = async () => {
+  const getModule = useCallback(async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`);
       const result = await response.json();
@@ -70,9 +70,9 @@ const Page = ({ params }) => {
       console.error("Failed to fetch course list: ", error.message);
       return [];
     }
-  };
+  });
 
-  const getMark = async (module_id) => {
+  const getMark = useCallback(async (module_id) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_mark/${user_id}/${module_id}`);
       const result = await response.json();
@@ -81,7 +81,7 @@ const Page = ({ params }) => {
       console.error("Failed to fetch mark: ", error.message);
       return false;
     }
-  };
+  });
 
   const get_current_user = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
