@@ -17,49 +17,6 @@ const Page = ({ params }) => {
   const [title, setTitle] = useState('')
   const [moduleList, setModuleList] = useState([])
 
-  useEffect(() => {
-    const fetchModulesWithMarks = async () => {
-      try {
-        const modules = await getModule();
-        const modulesWithMarks = await Promise.all(
-          modules.map(async (module) => {
-            const mark = await getMark(module.module_id);
-            return { ...module, mark };
-          })
-        );
-        setModuleList(modulesWithMarks);
-      } catch (error) {
-        console.error("Error fetching modules or marks: ", error);
-      }
-    };
-
-    fetchModulesWithMarks();
-  }, [getMark, getModule]);
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const result = await get_current_user();
-            if (result.data && result.data.length !== 0) {
-                dispatch(setText(result.data[0].user_id));
-            }
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    };
-
-    fetchData();
-}, [dispatch]);
-
-  useEffect(() => {
-    const fetchTitle = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`);
-      const data = await response.json();
-      setTitle(data.data.course_title);
-    };
-    fetchTitle();
-  }, [user_id, params.slug]);
 
   const getModule = useCallback(async () => {
     try {
@@ -93,6 +50,50 @@ const Page = ({ params }) => {
     const result = await response.json()
     return result
 };
+
+useEffect(() => {
+  const fetchModulesWithMarks = async () => {
+    try {
+      const modules = await getModule();
+      const modulesWithMarks = await Promise.all(
+        modules.map(async (module) => {
+          const mark = await getMark(module.module_id);
+          return { ...module, mark };
+        })
+      );
+      setModuleList(modulesWithMarks);
+    } catch (error) {
+      console.error("Error fetching modules or marks: ", error);
+    }
+  };
+
+  fetchModulesWithMarks();
+}, [getMark, getModule]);
+
+
+useEffect(() => {
+  const fetchData = async () => {
+      try {
+          const result = await get_current_user();
+          if (result.data && result.data.length !== 0) {
+              dispatch(setText(result.data[0].user_id));
+          }
+      } catch (error) {
+          console.error("Error fetching user data:", error);
+      }
+  };
+
+  fetchData();
+}, [dispatch]);
+
+useEffect(() => {
+  const fetchTitle = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`);
+    const data = await response.json();
+    setTitle(data.data.course_title);
+  };
+  fetchTitle();
+}, [user_id, params.slug]);
 
   return (
     <div className='relative h-[calc(100vh-9rem)]'>

@@ -16,22 +16,6 @@ const Page = ({ params }) => {
   const [courseDetails, setCourseDetails] = useState({})
   const [moduleList, setModuleList] = useState([])
 
-  const getModules = useCallback(async () => {
-    const modules = await getModule();
-    setModuleList(modules);
-  }, [getModule]);
-
-  useEffect(() => {
-    getModules();
-  }, [getModule]); 
-
-  useEffect(() => {
-    const fetchTitle = async () => {
-      await getTitle();
-    };
-    fetchTitle();
-  });
-
   const {
     register,
     handleSubmit,
@@ -53,7 +37,7 @@ const Page = ({ params }) => {
     reset()
   }
 
-  const getModule = async () => {
+  const getModule = useCallback(async () => {
     try {
       const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
         method: 'GET',
@@ -66,7 +50,7 @@ const Page = ({ params }) => {
     } catch (error) {
       console.error("Failed to fetch course list: ", error.message)
     }
-  }
+  }, [])
 
 
   const createModule = async (data) => {
@@ -125,6 +109,21 @@ const Page = ({ params }) => {
     settitle(data.data.course_title)
   }
 
+  const getModules = useCallback(async () => {
+    const modules = await getModule();
+    setModuleList(modules);
+  }, [getModule]);
+
+  useEffect(() => {
+    getModules();
+  }, [getModule]); 
+
+  useEffect(() => {
+    const fetchTitle = async () => {
+      await getTitle();
+    };
+    fetchTitle();
+  });
 
   return (
     <div className='relative h-[calc(100vh-9rem)]'>

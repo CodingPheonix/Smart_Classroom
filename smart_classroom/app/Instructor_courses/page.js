@@ -29,42 +29,10 @@ const Page = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = async (data) => {
-        const dataid = { ...data, id: uuidv4(), instructor_id: user_id }
-        await post_course(dataid)
-        await getCourse()
-        reset()
-        setIsCreate(!isCreate)
-        // toast("New Course created successfully", {
-        //     position: "top-right",
-        //     autoClose: 5000,
-        // })
-    }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await getCourse();
-        };
-        fetchData();
-    }, [user_id, getCourse]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const result = await get_current_user(); 
-            if (result.data && result.data.length !== 0) {
-              dispatch(setText(result.data[0].user_id));
-            }
-          } catch (error) {
-            console.error("Error fetching user data:", error);
-          }
-        };
-      
-        fetchData();
-      }, [dispatch]);
 
     // Get Course
-    const getCourse = useCallback (async () => {
+    const getCourse = useCallback(async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses/${user_id}`, {
                 method: 'GET',
@@ -97,14 +65,50 @@ const Page = () => {
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         })
         const result = await response.json()
         return result
-      };
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getCourse();
+        };
+        fetchData();
+    }, [user_id, getCourse]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await get_current_user();
+                if (result.data && result.data.length !== 0) {
+                    dispatch(setText(result.data[0].user_id));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchData();
+    }, [dispatch]);
+
+    const onSubmit = async (data) => {
+        const dataid = { ...data, id: uuidv4(), instructor_id: user_id }
+        await post_course(dataid)
+        await getCourse()
+        reset()
+        setIsCreate(!isCreate)
+        // toast("New Course created successfully", {
+        //     position: "top-right",
+        //     autoClose: 5000,
+        // })
+    }
+
+
 
     return (
         <div className="flex mx-auto bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px]">
