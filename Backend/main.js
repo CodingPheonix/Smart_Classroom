@@ -6,7 +6,6 @@ import cors from "cors"
 import { course, login, user } from "./Models/ins-course-schema.js"
 import { module_data } from "./Models/ins-course-schema.js"
 import { quiz_data } from "./Models/ins-course-schema.js"
-import { learner_course } from "./Models/ins-course-schema.js"
 import { student_dashboard } from "./Models/ins-course-schema.js"
 import { notice_data } from "./Models/ins-course-schema.js"
 import { addTimes, add_all_durations, get_student_rank } from "./operations.js"
@@ -125,35 +124,6 @@ app.put('/courses/course/createModule/:slug', async (req, res) => {
     res.status(500).send({ success: false, message: 'Failed to update course', error: error.message });
   }
 });
-
-//Delete each course
-// app.put('/courses/course/deleteModule/:Course/:Module', async (req, res) => {
-//   const { Course, Module } = req.params;
-//   try {
-//     const target_course = await course.findOne({ course_id: Course });
-//     if (!target_course) {
-//       return res.status(404).send({ success: false, message: 'Course not found' })
-//     }
-//     console.log("target course = "+target_course)
-//     const target_module = target_course.course_details.filter(module => module.module_id === Module)
-//     console.log("target module = "+target_module)
-//     if (target_module.contentType === 'Content') {
-//       console.log("content data found")
-//       await module_data.findOneAndDelete({module_id: target_module.module_id})
-//     }else{
-//       console.log("quiz data found")
-//       await quiz_data.findOneAndDelete({module_id: target_module.module_id})
-//     }
-
-//     target_course.course_details = target_course.course_details.filter(module => module.module_id !== Module);
-//     console.log(target_course.course_details);
-//     await target_course.save()
-
-//     res.json({ success: true, message: "module deleted successfully" })
-//   } catch (error) {
-//     res.status(500).send({ success: false, message: 'Failed to delete module', error: error.message });
-//   }
-// })
 
 app.put('/courses/course/deleteModule/:Course/:Module', async (req, res) => {
   const { Course, Module } = req.params;
