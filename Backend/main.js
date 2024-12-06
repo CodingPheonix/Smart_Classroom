@@ -9,7 +9,7 @@ import { quiz_data } from "./Models/ins-course-schema.js"
 import { learner_course } from "./Models/ins-course-schema.js"
 import { student_dashboard } from "./Models/ins-course-schema.js"
 import { notice_data } from "./Models/ins-course-schema.js"
-import { addTimes, add_all_durations } from "./operations.js"
+import { addTimes, add_all_durations, get_student_rank } from "./operations.js"
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -394,6 +394,7 @@ app.post('/get_to_mycourses/:id/:learner_id', async (req, res) => {
             quiz_result: [],
             quiz_score: 0,
             total_score: 0,
+            time_taken: "0:0:0",
             is_complete: false,
             most_recent: false,
           });
@@ -538,7 +539,7 @@ app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
         quiz_result: [], // Should match the schema (array or object)
         quiz_score: 0, // Ensure score is a number in the schema
         total_score: 0,
-        time_taken: `${time_diff.split(":")[0]}:${time_diff.split(":")[1]}:${time_diff.split(":")[2]}`,
+        time_taken: `${time_diff.split(":")[0]}:${time_diff.split(":")[1]}:${time_diff.split(":")[2]}` || "0:0:0",
         is_complete: false,
         most_recent: false,
       });
@@ -548,7 +549,7 @@ app.post('/handle_content_data/:user/:Course/:Module', async (req, res) => {
       res.status(200).send({ message: "Content data uploaded", data: savedData });
     }
   } catch (error) {
-
+    res.send({ message: "Internal Server error", data: error })
   }
 })
 
@@ -1013,7 +1014,23 @@ app.get('/get_total_time/:User', async (req, res) => {
     if (target_modules) {
       const time_arr = target_modules.map((module) => module.time_taken);
       const total_time = add_all_durations(time_arr)
-      res.send({message: "Total reading time fetched", data: total_time})
+      res.send({ message: "Total reading time fetched", data: total_time })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+app.get('/get_rank/:User', async (req, res) => {
+  try {
+    const { User } = req.params
+    const target_modules = await student_dashboard.find({ content_type: "quiz" })
+
+    if (target_modules) {
+      const rank = get_student_rank(target_modules, User)
+      res.send({ message: "rank for indivisual achieved", data: rank })
+    } else {
+      res.send({ message: "target modules not found" })
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
