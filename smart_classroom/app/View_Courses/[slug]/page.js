@@ -70,7 +70,7 @@ const Page = ({ params }) => {
         } catch (error) {
             console.error("Failed to fetch course list: ", error.message)
         }
-    })
+    }, [])
 
 
     // const createModule = async (data) => {
@@ -130,7 +130,7 @@ const Page = ({ params }) => {
         })
         const data = await responce.json()
         settitle(data.data.course_title)
-    })
+    }, [])
 
 
     return (

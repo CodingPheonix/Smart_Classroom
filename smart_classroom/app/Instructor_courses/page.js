@@ -2,7 +2,6 @@
 import React, { useCallback } from 'react'
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import Link from 'next/link'
 import { v4 as uuidv4 } from 'uuid';
 import Instructor_nav from '../Components/Instructor_nav'
 import I_course_card from '../Components/I_course_card'

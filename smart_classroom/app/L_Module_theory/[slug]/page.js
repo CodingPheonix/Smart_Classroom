@@ -49,7 +49,7 @@ const Page = ({ params }) => {
         });
         const result = await response.json();
         setModule_data(result.data);
-    });
+    }, []);
 
     const get_parapagedata = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`, {
@@ -62,7 +62,7 @@ const Page = ({ params }) => {
             explanation: item.theory_explanation
         }));
         setParaPageData(formattedData);
-    });
+    }, []);
 
     const get_quiz_details = useCallback(async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
@@ -71,7 +71,7 @@ const Page = ({ params }) => {
         });
         const result = await response.json();
         setQuizData(result.data);
-    });
+    }, []);
 
     const upload_result_data = async (data) => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_student_marks/${course_id}/${module_id}`, {
@@ -100,7 +100,7 @@ const Page = ({ params }) => {
         })
         const result = await response.json()
         setFileList(result.data)
-    });
+    }, []);
 
     const get_current_user = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {

@@ -70,7 +70,7 @@ const Page = ({ params }) => {
       console.error("Failed to fetch course list: ", error.message);
       return [];
     }
-  });
+  }, []);
 
   const getMark = useCallback(async (module_id) => {
     try {
@@ -81,7 +81,7 @@ const Page = ({ params }) => {
       console.error("Failed to fetch mark: ", error.message);
       return false;
     }
-  });
+  }, []);
 
   const get_current_user = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {

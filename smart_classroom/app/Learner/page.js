@@ -58,7 +58,7 @@ const Page = () => {
     } catch (error) {
       console.error(error)
     }
-  })
+  }, [])
 
   const upload_user_profile_data = async (data) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_user_profile_data/${user_id}`, {
@@ -85,7 +85,7 @@ const Page = () => {
     setaddress(result.data.user_address)
     setPhone(result.data.user_phone)
     setImageURL(result.data.user_image)
-  });
+  }, []);
 
   //UseEffects
   useEffect(() => {

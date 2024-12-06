@@ -488,7 +488,7 @@ const Page = ({ params }) => {
         } else {
             console.error("Unexpected data format:", result);
         }
-    });
+    }, []);
 
 
     const post_files = async (fileList) => {
@@ -561,7 +561,7 @@ const Page = ({ params }) => {
         })
         const result = await response.json()
         setFileList(result.data)
-    });
+    }, []);
 
     const handle_delete_quiz = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_delete_quiz/${module_id}`, {
@@ -598,7 +598,7 @@ const Page = ({ params }) => {
             replaceQuestions(formattedQuestions);
         }
 
-    })
+    }, [])
 
     // Function to delete a specific file
     const handleFileDelete = (index) => {
@@ -616,7 +616,7 @@ const Page = ({ params }) => {
         });
         const result = await response.json();
         setModule_data(result.data);
-    });
+    }, []);
 
     // Post quiz questions to db
     const post_quiz_data = async (data) => {
