@@ -26,6 +26,7 @@ const Page = () => {
     const [max_quiz_score, setMax_quiz_score] = useState(0)
     const [pending_assignments, setPending_assignments] = useState(0)
     const [total_time, setTotal_time] = useState("")
+    const [Rank, setRank] = useState(0)
     const [most_recent, setMost_recent] = useState(0)
     const [req_arr, setReq_arr] = useState([])
 
@@ -111,7 +112,27 @@ const Page = () => {
         setTotal_time(result.data)
     };
     
-
+    const get_rank = async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_rank/${user_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(),
+        })
+        const result = await response.json()
+        console.log(result)
+        if (result.data == 1) {
+            setRank("1st")
+        }else if (result.data == 2) {
+            setRank("2nd")
+        }else if (result.data == 3) {
+            setRank("3rd")
+        }else{
+            setRank(`${result.data}th`)
+        }
+    };
+    
 
     //useEffects
     useEffect(() => {
@@ -120,6 +141,7 @@ const Page = () => {
             await get_dashboard()
             await get_pending_assignments()
             await get_total_time()
+            await get_rank()
         }
         fetchData()
     }, [user_id])
@@ -162,7 +184,7 @@ const Page = () => {
                     </div>
                     <div className='lg:w-44 w-3/4 p-2 h-28 bg-gradient-to-b from-white to-green-300 font-bold text-xs learner_dashboard_basic'>
                         <div className='h-1/6'>Overall Rank</div>
-                        <div className='h-5/6 grid place-items-center text-2xl'>5th</div>
+                        <div className='h-5/6 grid place-items-center text-2xl'>{Rank}</div>
                     </div>
                 </div>
 
