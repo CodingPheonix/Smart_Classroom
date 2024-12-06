@@ -51,7 +51,7 @@ const Page = () => {
 
     useEffect(() => {
       get_notices()
-    }, [user_id])
+    }, [user_id, get_notices, notice_list])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +66,7 @@ const Page = () => {
         };
       
         fetchData();
-      }, []);
+      }, [dispatch]);
     // useEffect(() => {
     //   get_notices()
     // }, [notice_list])

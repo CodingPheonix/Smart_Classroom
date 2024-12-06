@@ -91,7 +91,7 @@ const Page = () => {
   useEffect(() => {
     getCourseList();
     fetch_user_profile_data()
-  }, [user_id]);
+  }, [user_id, getCourseList, fetch_user_profile_data]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,7 +106,7 @@ const Page = () => {
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   // Functions
   const handleImageUpload = async (file) => {

@@ -64,12 +64,12 @@ const Page = () => {
         };
 
         fetchData();
-    }, []);
+    }, [dispatch]);
 
 
     useEffect(() => {
         getCourseList()
-    }, [user_id])
+    }, [user_id, getCourseList])
 
 
 

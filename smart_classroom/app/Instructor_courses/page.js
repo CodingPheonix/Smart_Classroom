@@ -47,7 +47,7 @@ const Page = () => {
             await getCourse();
         };
         fetchData();
-    }, [user_id]);
+    }, [user_id, getCourse]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,7 +62,7 @@ const Page = () => {
         };
       
         fetchData();
-      }, []);
+      }, [dispatch]);
 
     // Get Course
     const getCourse = useCallback (async () => {
@@ -78,7 +78,7 @@ const Page = () => {
         } catch (error) {
             console.error('Failed to fetch courses', error.message);
         }
-    })
+    }, [user_id])
 
     // Post Course
     const post_course = async (data) => {

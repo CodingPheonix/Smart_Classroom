@@ -122,7 +122,7 @@ const Page = ({ params }) => {
         } else {
             get_quiz_details();
         }
-    }, [module_data.content_type, user_id]);
+    }, [module_data.content_type, user_id, get_module_data, get_parapagedata, get_files, get_quiz_details]);
 
 
     useEffect(() => {
@@ -140,7 +140,7 @@ const Page = ({ params }) => {
         fetchData();
 
         initialTimeRef.current = get_time();
-    }, []);
+    }, [dispatch]);
 
     // Submit function
     const onSubmit = (data) => {

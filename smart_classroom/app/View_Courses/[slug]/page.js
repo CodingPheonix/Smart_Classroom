@@ -23,14 +23,14 @@ const Page = ({ params }) => {
             setModuleList(modules)
         }
         getModules()
-    }, [isAddingCourse])
+    }, [isAddingCourse, getModule])
 
     useEffect(() => {
         const fetchTitle = async () => {
             await getTitle();
         };
         fetchTitle();
-    }, []);
+    }, [getTitle]);
 
     // const {
     //     register,

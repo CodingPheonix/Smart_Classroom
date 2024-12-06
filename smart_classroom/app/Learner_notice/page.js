@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Learner_nav from '../Components/Learner_nav'
 import L_notice_card from '../Components/L_notice_card'
 import dotenv from 'dotenv';
@@ -12,7 +12,7 @@ const Page = () => {
   const [notice_list, setNotice_list] = useState([])
 
   //API calls
-  const get_notices = async (data) => {
+  const get_notices = useCallback (async (data) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_all_notices`, {
       method: 'GET',
       headers: {
@@ -36,7 +36,7 @@ const Page = () => {
     );
     const flattened_list = new_list.flat();
     setNotice_list(flattened_list)
-  };
+  }, []);
 
   const get_instructor = async (data) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_instructor/${data}`, {
@@ -53,7 +53,7 @@ const Page = () => {
   //useEffect
   useEffect(() => {
     get_notices()
-  }, [])
+  }, [get_notices])
 
   return (
     <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">

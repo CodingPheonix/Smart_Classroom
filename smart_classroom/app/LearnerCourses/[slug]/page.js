@@ -34,7 +34,7 @@ const Page = ({ params }) => {
     };
 
     fetchModulesWithMarks();
-  }, []);
+  }, [getMark, getModule]);
 
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const Page = ({ params }) => {
     };
 
     fetchData();
-}, []);
+}, [dispatch]);
 
   useEffect(() => {
     const fetchTitle = async () => {
@@ -59,7 +59,7 @@ const Page = ({ params }) => {
       setTitle(data.data.course_title);
     };
     fetchTitle();
-  }, [user_id]);
+  }, [user_id, params.slug]);
 
   const getModule = async () => {
     try {

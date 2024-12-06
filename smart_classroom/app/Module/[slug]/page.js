@@ -657,7 +657,7 @@ const Page = ({ params }) => {
         };
 
         fetchData();
-    }, []); // Runs on component mount
+    }, [get_module_data]); // Runs on component mount
 
     useEffect(() => {
         if (module_data.content_type === 'Content') {
@@ -666,7 +666,7 @@ const Page = ({ params }) => {
             get_quiz_details();
         }
         get_files();
-    }, [module_data]); // Runs when `module_data` changes
+    }, [module_data, get_parapagedata, get_quiz_details, get_files]); // Runs when `module_data` changes
 
 
 

@@ -16,12 +16,12 @@ const Page = ({ params }) => {
   const [courseDetails, setCourseDetails] = useState({})
   const [moduleList, setModuleList] = useState([])
 
+  const getModules = useCallback(async () => {
+    const modules = await getModule();
+    setModuleList(modules);
+  }, []);
+  
   useEffect(() => {
-    const getModules = useCallback(async () => {
-      const modules = await getModule();
-      setModuleList(modules);
-    }, []);
-
     getModules();
   }, [getModule]); 
 

@@ -137,7 +137,7 @@ const Page = () => {
             await get_rank()
         }
         fetchData()
-    }, [user_id])
+    }, [user_id, get_activities, get_dashboard, get_pending_assignments, get_total_time, get_rank])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -152,7 +152,7 @@ const Page = () => {
         };
 
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="flex bg-gradient-to-r from-green-100 to-white flex-col lg:flex-row max-w-[1860px] mx-auto">
