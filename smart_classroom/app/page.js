@@ -84,6 +84,22 @@ export default function Home() {
   };
 
   //UseEffects
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await get_current_user();
+  //       if (result.data && result.data.length !== 0) {
+  //         dispatch(setText(result.data[0].user_id));
+  //         router.push(`/${result.data[0].position}`);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -96,9 +112,10 @@ export default function Home() {
         console.error("Error fetching user data:", error);
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, [dispatch, router]);
+  
 
   useEffect(() => {
     const logo = document.querySelector(".logo");
