@@ -17,11 +17,11 @@ const app = express()
 const port = 5000
 
 app.use(bodyParser.json())
-// app.use(cors({
-//   origin: process.env.CORS_ORIGIN,
-// }));
+app.use(cors({
+  origin: process.env.CORS_ORIGIN,
+}));
 
-app.use(cors())
+// app.use(cors())
 
 // Connect to MongoDB
 await mongoose.connect(process.env.MONGO_URI)
