@@ -31,6 +31,11 @@ const Page = () => {
             })
             const data = await response.json()
 
+            if (!response.ok) {
+                console.error('API error:', response.status, response.statusText);
+                return;
+            }
+
             setCourseList(data.data)
             // setCourseList(data)
         } catch (error) {
