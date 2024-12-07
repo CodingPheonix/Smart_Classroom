@@ -49,6 +49,19 @@ const Page = () => {
         }
     }, [user_id]);
 
+    const get_current_user = async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        return result
+    };
+
+    //UseEffects
+
     useEffect(() => {
       get_notices()
     }, [user_id, get_notices, notice_list])
