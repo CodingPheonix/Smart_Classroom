@@ -139,6 +139,9 @@ const Instructor_nav = () => {
                     <Link href="Instructor_notice">
                         <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Notice</li>
                     </Link>
+                    <Link href="I_results">
+                        <li className='hover:underline hover:cursor-pointer hover:scale-110 hover:translate-x-5 transition-all ease-in-out py-2 px-3 rounded-2xl hover:bg-green-100'>Student Results</li>
+                    </Link>
                 </ul>
                 {/* Sign Out Button for Larger Screens */}
                 <div className='mt-4'>

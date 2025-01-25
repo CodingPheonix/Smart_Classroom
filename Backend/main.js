@@ -1009,6 +1009,76 @@ app.get('/get_rank/:User', async (req, res) => {
   }
 })
 
+app.get('/get_student_data/:User', async (req, res) => {
+  try {
+    const { User } = req.params;
+    const target_instructor = await login.findOne({ candidate_id: User });
+    let return_data = [];
+
+    if (target_instructor) {
+      const target_courses = target_instructor.candidate_courses;
+
+      for (const course of target_courses) {
+        const student_data = await student_dashboard.find({ course_id: course });
+
+        for (const data of student_data) {
+          const existing_data = return_data.find(each_data => each_data.stud_id === data.student_id);
+
+          if (existing_data) {
+            if (data.quiz_score) {
+              existing_data.achieved_score += data.quiz_score;
+            }
+            if (data.total_score) {
+              existing_data.total_score += data.total_score;
+            }
+          } else {
+            const [imageData, courseTitle] = await Promise.all([
+              get_image_url(data.student_id),
+              get_course(course)
+            ]);
+
+            return_data.push({
+              stud_id: data.student_id,
+              name: imageData.name,
+              image: imageData.image,
+              registered_course: courseTitle,
+              ...data,
+              achieved_score: data.quiz_score || 0,
+              total_score: data.total_score || 0,
+            });
+          }
+        }
+      }
+    }
+
+    res.send({ message: "Data fetched", data: return_data });
+  } catch (error) {
+    console.error("Error fetching student data:", error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const get_image_url = async (student_id) => {
+  try {
+    const student = await login.findOne({ candidate_id: student_id });
+    return { image: student.candidate_imageURL, name: student.candidate_name };
+  } catch (error) {
+    console.error("Error fetching image URL:", error);
+    return { image: null, name: null }; // Return fallback data on error
+  }
+};
+
+const get_course = async (course_id) => {
+  try {
+    const courseData = await course.findOne({ course_id });
+    return courseData?.course_title || "Unknown Course"; // Fallback title if course not found
+  } catch (error) {
+    console.error("Error fetching course:", error);
+    return "Unknown Course";
+  }
+};
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
