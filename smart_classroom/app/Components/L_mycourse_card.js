@@ -39,7 +39,7 @@ const L_mycourse_card = (props) => {
 
     // API calls
     const handleDeleteCourse = async (params) => {
-        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_from_mycourses/${props.id}/${props.user}`, {
+        const responce = await fetch(`/api/components/l_mycourse_card?id=${props.id}&user=${props.user}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,6 +52,20 @@ const L_mycourse_card = (props) => {
             autoClose: 3000,
         })
     }
+    // const handleDeleteCourse = async (params) => {
+    //     const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_from_mycourses/${props.id}/${props.user}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({})
+    //     })
+    //     const data = await responce.json()
+    //     toast("Target Course Deleted", {
+    //         position: "top-right",
+    //         autoClose: 3000,
+    //     })
+    // }
 
     return (
         <div>

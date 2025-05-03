@@ -35,7 +35,7 @@ const Learner_nav = () => {
     useEffect(() => {
         const get_Learner_details = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
+                const response = await fetch(`/api/components/instructor_nav?user_id=${user_id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const Learner_nav = () => {
     
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const Learner_nav = () => {
     };
 
     const delete_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_current_user`, {
+        const response = await fetch(`/api/components/instructor_nav`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
