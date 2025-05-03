@@ -33,7 +33,7 @@ const L_course_card = (props) => {
 
     // Api calls
     const handleAddCourse = async () => {
-        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_to_mycourses/${props.id}/${user_id}`, {
+        const responce = await fetch(`/api/components/l_course_card?id=${props.id}&learner_id=${user_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const L_course_card = (props) => {
     }
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,6 +58,7 @@ const L_course_card = (props) => {
         return result
     };
 
+    // USEEFFECTS
     useEffect(() => {
         const fetchData = async () => {
             try {

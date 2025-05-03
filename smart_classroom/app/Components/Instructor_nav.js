@@ -33,7 +33,7 @@ const Instructor_nav = () => {
     const router = useRouter()
 
     const get_instructor_details = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
+        const response = await fetch(`/api/instructor_nav?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,9 +42,19 @@ const Instructor_nav = () => {
         const result = await response.json();
         setName(result.data.candidate_name);
     }, [user_id]);
+    // const get_instructor_details = useCallback(async () => {
+    //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     });
+    //     const result = await response.json();
+    //     setName(result.data.candidate_name);
+    // }, [user_id]);
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,9 +63,19 @@ const Instructor_nav = () => {
         const result = await response.json()
         return result
     };
+    // const get_current_user = async () => {
+    //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     })
+    //     const result = await response.json()
+    //     return result
+    // };
 
     const delete_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_current_user`, {
+        const response = await fetch(`/api/components/instructor_nav`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,6 +83,15 @@ const Instructor_nav = () => {
         })
         const result = await response.json()
     };
+    // const delete_current_user = async () => {
+    //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_current_user`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     })
+    //     const result = await response.json()
+    // };
 
 
     useEffect(() => {

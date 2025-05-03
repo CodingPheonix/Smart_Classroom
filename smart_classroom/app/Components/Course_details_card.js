@@ -29,7 +29,7 @@ const Course_details_card = (props) => {
     );
 
     const handleDelete = async (course, id) => {
-        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/deleteModule/${course}/${id}`, {
+        const responce = await fetch(`/api/components/course_details_card?course=${course}&id=${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,6 +42,20 @@ const Course_details_card = (props) => {
         })
         // reload()
     }
+    // const handleDelete = async (course, id) => {
+    //     const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/deleteModule/${course}/${id}`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     })
+    //     const result = await responce.json()
+    //     toast("Module Deleted", {
+    //         position: "top-right",
+    //         autoClose: 3000,
+    //     })
+    //     // reload()
+    // }
 
     return (
         <div>

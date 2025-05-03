@@ -14,7 +14,7 @@ const I_course_card = (props) => {
     }
 
     const handleDeleteClick = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_I_courses/${props.id}`, {
+        const response = await fetch(`/api/components/i_course_card?id=${props.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,6 +26,19 @@ const I_course_card = (props) => {
             autoClose: 3000,
         })
     }
+    // const handleDeleteClick = async () => {
+    //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_I_courses/${props.id}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         }
+    //     })
+    //     const result = await response.json()
+    //     toast("Course Deleted", {
+    //         position: "top-right",
+    //         autoClose: 3000,
+    //     })
+    // }
 
     const PencilEdit01Icon = (props) => (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={32} height={32} color={"#000000"} fill={"none"} {...props}>

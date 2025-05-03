@@ -33,26 +33,42 @@ export default function Home() {
 
   // API Routes
   const upload_login_details = async (data) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_login_details`, {
+    const response = await fetch(`/api/home/upload_login_details`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
     return response
   }
+  // const upload_login_details = async (data) => {
+  //   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_login_details`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(data)
+  //   })
+  //   return response
+  // }
 
   const verify_user_auth = async (data) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/verify_user_auth`, {
+    const response = await fetch(`/api/home/verify_user_auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
     return response
   }
+  // const verify_user_auth = async (data) => {
+  //   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/verify_user_auth`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(data)
+  //   })
+  //   return response
+  // }
 
   const set_current_user = async (data) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/set_current_user`, {
+      const response = await fetch(`/api/home/set_current_user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,10 +86,30 @@ export default function Home() {
       console.error('Error:', error);
     }
   };
+  // const set_current_user = async (data) => {
+  //   try {
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/set_current_user`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(data),
+  //     });
+
+  //     // Check if the response is ok (status 200-299)
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+
+  //     const result = await response.json();
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
 
 
   const get_current_user = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+    const response = await fetch(`/api/home/get_current_user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -82,6 +118,16 @@ export default function Home() {
     const result = await response.json()
     return result
   };
+  // const get_current_user = async () => {
+  //   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //   const result = await response.json()
+  //   return result
+  // };
 
   //UseEffects
   useEffect(() => {
