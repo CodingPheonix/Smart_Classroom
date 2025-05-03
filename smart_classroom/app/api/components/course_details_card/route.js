@@ -7,7 +7,6 @@ await connect_to_mongo()
 export async function PUT(request) {
   const url = new URL(request.url);
   const searchParams = url.searchParams;
-
   const Course = searchParams.get('course');
   const Module = searchParams.get('id');
 

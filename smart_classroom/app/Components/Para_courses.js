@@ -22,7 +22,7 @@ const Para_courses = (props) => {
     );
 
     const handleDelete = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handleParadelete?id=${encodeURIComponent(props.id)}&module_id=${encodeURIComponent(props.module_id)}`, {
+        const response = await fetch(`/api/components/para_courses?id=${encodeURIComponent(props.id)}&module_id=${encodeURIComponent(props.module_id)}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

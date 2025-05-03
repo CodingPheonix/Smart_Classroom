@@ -12,7 +12,7 @@ const NoticeCard = ({ heading, description, id, notice_id }) => {
     // API call to delete the notice
     const delete_notice = async (id, notice_id) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete_notice?id=${id}&notice_id=${notice_id}`, {
+            const response = await fetch(`/api/components/notice_card?id=${id}&notice_id=${notice_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
