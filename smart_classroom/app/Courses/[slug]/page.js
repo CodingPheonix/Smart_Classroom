@@ -37,9 +37,10 @@ const Page = ({ params }) => {
     reset()
   }
 
+  // API Calls
   const getModule = useCallback(async () => {
     try {
-      const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
+      const responce = await fetch(`/api/courses/get-title?slug=${params.slug}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ const Page = ({ params }) => {
 
   const createModule = async (data) => {
     try {
-      const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/createModule/${params.slug}`, {
+      const result = await fetch(`/api/courses/createModule?slug=${params.slug}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ const Page = ({ params }) => {
 
   const set_default_moduleData = async (data) => {
     try {
-      const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/setModule`, {
+      const responce = await fetch(`/api/courses/setModule`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ const Page = ({ params }) => {
 
   const default_post_quiz_data = async (data) => {
     try {
-      const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_quiz_data`, {
+      const responce = await fetch(`/api/courses/post_quiz_data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ const Page = ({ params }) => {
   }
 
   const getTitle = async () => {
-    const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
+    const responce = await fetch(`/api/courses/get-title?slug=${params.slug}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
