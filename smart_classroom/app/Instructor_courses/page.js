@@ -34,7 +34,7 @@ const Page = () => {
     // Get Course
     const getCourse = useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses/${user_id}`, {
+            const response = await fetch(`/api/Instructor_courses?user_id=${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Page = () => {
     // Post Course
     const post_course = async (data) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/postCourses`, {
+            const response = await fetch(`/api/Instructor_courses`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const Page = () => {
     }
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
