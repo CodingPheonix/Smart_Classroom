@@ -43,7 +43,7 @@ const Page = ({ params }) => {
 
     // Fetch module data
     const get_module_data = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${course_id}/${module_id}`, {
+        const response = await fetch(`/api/L_module_theory/get_module_data?course_id=${course_id}&module_id=${module_id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -52,7 +52,7 @@ const Page = ({ params }) => {
     }, [course_id, module_id]);
 
     const get_parapagedata = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`, {
+        const response = await fetch(`/api/L_module_theory/getparapagedata?module_id=${module_id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -65,7 +65,7 @@ const Page = ({ params }) => {
     }, [module_id]);
 
     const get_quiz_details = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
+        const response = await fetch(`/api/L_module_theory/get_quiz_data?module_id=${module_id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -74,7 +74,7 @@ const Page = ({ params }) => {
     }, [module_id]);
 
     const upload_result_data = async (data) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_student_marks/${course_id}/${module_id}`, {
+        const response = await fetch(`/api/L_module_theory/post_student_marks?course_id=${course_id}&module_id=${module_id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -83,7 +83,7 @@ const Page = ({ params }) => {
     };
 
     const handle_content_data = async (data) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_content_data/${user_id}/${course_id}/${module_id}`, {
+        const response = await fetch(`/api/L_module_theory/handle_content_data?course_id=${course_id}&module_id=${module_id}&user_id=${user_id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -92,7 +92,7 @@ const Page = ({ params }) => {
     }
 
     const get_files = useCallback(async (data) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_files/${module_id}`, {
+        const response = await fetch(`/api/L_module_theory/get_files?module_id=${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const Page = ({ params }) => {
     }, [module_id]);
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
