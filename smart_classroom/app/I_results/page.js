@@ -19,7 +19,7 @@ const page = () => {
     // API calls
 
     const get_student_data = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_student_data/${user_id}`, {
+        const response = await fetch(`api/I_results/get_student_data?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const page = () => {
 
     // Functions
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
