@@ -25,7 +25,7 @@ const Page = () => {
 
     // API calls
     const send_notice = async (data) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/send_notice/${user_id}`, {
+        const response = await fetch(`/api/Instructor_notice?user_id=${user_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const Page = () => {
     }
 
     const get_notices = useCallback (async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_notices/${user_id}`, {
+        const response = await fetch(`/api/Instructor_notice?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Page = () => {
     }, [user_id]);
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
