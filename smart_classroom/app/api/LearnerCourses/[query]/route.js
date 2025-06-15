@@ -14,9 +14,9 @@ export async function GET(request, { params }) {
 
         try {
             const courses = await course.findOne({ course_id: id })
-            res.send({ success: true, message: "Course title fetched successfully", data: courses })
+            return NextResponse.json({ success: true, message: "Course title fetched successfully", data: courses });
         } catch (error) {
-            res.send({ status: 'error', message: 'Failed to fetch course title', error: error.message });
+            return NextResponse.json({ success: false, message: 'Failed to fetch course title', error: error.message }, { status: 500 });
         }
     }
     else if (query === "get_mark") {
@@ -28,12 +28,12 @@ export async function GET(request, { params }) {
         try {
             const target_module = await student_dashboard.findOne({ student_id: user, module_id: Module })
             if (target_module) {
-                res.send({ message: "Module mark status fetched", data: target_module.is_complete })
+                return NextResponse.json({ message: "Module mark status fetched", data: target_module.is_complete });
             } else {
-                res.status(404).json({ message: "No data found for the student" })
+                return NextResponse.json({ message: "No data found for the student" }, { status: 404 });
             }
         } catch (error) {
-            res.status(500).json({ message: 'Internal server error', error: error.message });
+            return NextResponse.json({ message: 'Internal server error', error: error.message }, { status: 500 });
         }
     }
 }

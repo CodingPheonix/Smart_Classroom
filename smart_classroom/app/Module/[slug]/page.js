@@ -474,7 +474,7 @@ const Page = ({ params }) => {
     });
 
     const get_parapagedata = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getparapagedata/${module_id}`);
+        const response = await fetch(`/api/Module/getparapagedata?module_id=${module_id}`);
         const result = await response.json();
 
         if (result.data && Array.isArray(result.data)) {
@@ -492,7 +492,7 @@ const Page = ({ params }) => {
 
 
     const post_files = async (fileList) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_files/${module_id}`, {
+        const response = await fetch(`/api/Module/post_files?module_id=${module_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -536,7 +536,7 @@ const Page = ({ params }) => {
 
     const handleModuleSubmit = async (data) => {
 
-        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${module_id}`, {
+        const responce = await fetch(`/api/Module/submit_module?module_id=${module_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -553,7 +553,7 @@ const Page = ({ params }) => {
     }
 
     const get_files = useCallback(async (data) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_files/${module_id}`, {
+        const response = await fetch(`/api/Module/get_files?module_id=${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -564,7 +564,7 @@ const Page = ({ params }) => {
     }, [module_id]);
 
     const handle_delete_quiz = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle_delete_quiz/${module_id}`, {
+        const response = await fetch(`/api/Module/handle_delete_quiz?module_id=${module_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -579,7 +579,7 @@ const Page = ({ params }) => {
 
     //get quiz details
     const get_quiz_details = useCallback(async (data) => {
-        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_quiz_data/${module_id}`, {
+        const responce = await fetch(`?api/Module/get_quiz_data?module_id=${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -608,7 +608,7 @@ const Page = ({ params }) => {
 
     // Fetch List
     const get_module_data = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/module/${course_id}/${module_id}`, {
+        const response = await fetch(`/api/Module/get_module_data?course_id=${course_id}&module_id=${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -620,7 +620,7 @@ const Page = ({ params }) => {
 
     // Post quiz questions to db
     const post_quiz_data = async (data) => {
-        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post_quiz_data/${module_id}`, {
+        const responce = await fetch(`/api/Module/post_quiz_data?module_id=${module_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
