@@ -20,7 +20,7 @@ const Page = ({ params }) => {
 
   const getModule = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`);
+      const response = await fetch(`/api/LearnerCourse/getModule?id=${params.slug}`);
       const result = await response.json();
       return result.data.course_details;
     } catch (error) {
@@ -31,7 +31,7 @@ const Page = ({ params }) => {
 
   const getMark = useCallback(async (module_id) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_mark/${user_id}/${module_id}`);
+      const response = await fetch(`/api/LearnerCourse/get_mark?user_id=${user_id}&module_id=${module_id}`);
       const result = await response.json();
       return result.data;
     } catch (error) {
@@ -41,7 +41,7 @@ const Page = ({ params }) => {
   }, [user_id]);
 
   const get_current_user = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+    const response = await fetch(`/api/home/get_current_user`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

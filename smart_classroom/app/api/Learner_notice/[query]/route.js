@@ -25,7 +25,6 @@ export async function GET(request, { params }) {
         const id = searchParams.get('user_id');
 
         try {
-            const { id } = req.params
             const instructor = await login.findOne({ candidate_id: id })
             if (instructor) {
                 return NextResponse.json({ message: "Fetched instructor name successfully", data: instructor.candidate_name }, { status: 200 });
