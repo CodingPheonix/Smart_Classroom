@@ -35,7 +35,7 @@ const Page = () => {
 
   // API Methods
   const get_current_user = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+    const response = await fetch(`/api/home/get_current_user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const Page = () => {
 
   const getCourseList = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getMyCourseList/${user_id}`, {
+      const response = await fetch(`/api/Learner/getMyCourseList?user_id=${user_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ const Page = () => {
   }, [user_id])
 
   const upload_user_profile_data = async (data) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload_user_profile_data/${user_id}`, {
+    const response = await fetch(`/api/Learner/upload_user_profile_data?user_id=${user_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const Page = () => {
   };
 
   const fetch_user_profile_data = useCallback(async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_user_profile_data/${user_id}`, {
+    const response = await fetch(`/api/Learner/fetch_user_profile_data?user_id=${user_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
