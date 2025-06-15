@@ -12,7 +12,7 @@ dotenv.config();
 
 const Page = () => {
     const dispatch = useDispatch();
-    
+
 
     // Store the id of the current user
     const user_id = useSelector(state => state.counter.text);
@@ -23,7 +23,7 @@ const Page = () => {
     //API calls
     const getCourseList = useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getMyCourseList/${user_id}`, {
+            const response = await fetch(`/api/Learner_mycourses?user_id=${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const Page = () => {
     }, [user_id])
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
