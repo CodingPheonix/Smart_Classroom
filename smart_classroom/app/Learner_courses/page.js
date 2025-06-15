@@ -15,7 +15,7 @@ const Page = () => {
     //API calls
     const getCourse = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/getCourses`, {
+            const response = await fetch(`/api/Learner_courses`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
