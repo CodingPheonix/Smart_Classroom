@@ -13,7 +13,7 @@ const Page = () => {
 
   //API calls
   const get_notices = useCallback (async (data) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_all_notices`, {
+    const response = await fetch(`/api/Learner_notice/get_all_notices`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const Page = () => {
   }, []);
 
   const get_instructor = async (data) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_instructor/${data}`, {
+    const response = await fetch(`/api/Learner_notice/get_instructor?user_id=${data}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
