@@ -33,7 +33,7 @@ const Page = () => {
     //Api calls
     const get_activities = useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_activities/${user_id}`, {
+            const response = await fetch(`/api/Learner_dashboard/get_activities?user_id=${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const Page = () => {
 
     const get_dashboard = useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/fetch_student_dashboard_data/${user_id}`, {
+            const response = await fetch(`/api/Learner_dashboard/fetch_student_dashboard_data?user_id=${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Page = () => {
     }, [user_id])
 
     const get_current_user = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_current_user`, {
+        const response = await fetch(`/api/home/get_current_user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const Page = () => {
     };
 
     const get_pending_assignments = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_pending_assignments/${user_id}`, {
+        const response = await fetch(`/api/Learner_dashboard/get_pending_assignments?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const Page = () => {
     }, [user_id]);
 
     const get_total_time = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_total_time/${user_id}`, {
+        const response = await fetch(`/api/Learner_dashboard/get_total_time?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ const Page = () => {
     }, [user_id]);
     
     const get_rank = useCallback(async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_rank/${user_id}`, {
+        const response = await fetch(`/api/Learner_dashboard/get_rank?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
