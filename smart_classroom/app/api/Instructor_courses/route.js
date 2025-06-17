@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connect_to_mongo } from "../../mongo/connect_to_mongo";
+import { connect_to_mongo } from "../mongo/connect_to_mongo";
 import { login, course } from "../mongo/mongo_schema";
 
 await connect_to_mongo()
@@ -18,11 +18,13 @@ export async function GET(request, { params }) {
 }
 export async function POST(request, { params }) {
     try {
-        const { id, instructor_id, courseTitle, courseDescription, courseCategory, courseDuration } = req.body
+        // Parse the JSON body
+        const { id, instructor_id, courseTitle, courseDescription, courseCategory, courseDuration } = await request.json();
 
-        if (!req.body || !req.body.id || !req.body.courseTitle) {
-            return res.status(400).send({ success: false, message: "Missing required fields" });
+        if (!id || !courseTitle) {
+            return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
         }
+
         const newcourse = new course({
             course_id: id,
             instructor_id: instructor_id,
@@ -30,17 +32,16 @@ export async function POST(request, { params }) {
             course_description: courseDescription,
             course_category: courseCategory,
             course_duration: courseDuration
-        })
-        await newcourse.save()
+        });
+        await newcourse.save();
 
-        const target_user = await login.findOne({ candidate_id: instructor_id })
+        const target_user = await login.findOne({ candidate_id: instructor_id });
         if (target_user) {
-            target_user.candidate_courses.push(id)
-            await target_user.save()
-        } else {
+            target_user.candidate_courses.push(id);
+            await target_user.save();
         }
 
-        return NextResponse.json({ success: true, message: "Course added successfully", data: newcourse })
+        return NextResponse.json({ success: true, message: "Course added successfully", data: newcourse });
     } catch (error) {
         return NextResponse.json({ status: 'error', message: 'Failed to upload course', error: error.message });
     }

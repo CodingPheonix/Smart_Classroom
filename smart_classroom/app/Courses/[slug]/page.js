@@ -25,7 +25,7 @@ const Page = ({ params }) => {
   } = useForm()
 
   const onSubmit = (data) => {
-    setModuleList([...moduleList, data])
+    setModuleList(prevList => [...prevList, data])
     const newdata = { ...data, id: uuidv4() }
     createModule(newdata)
     if (newdata.contentType === "Content") {
@@ -135,7 +135,7 @@ const Page = ({ params }) => {
 
       {/* module  */}
       <ol className='h-full'>
-        {moduleList.length > 0 ? (
+        {Array.isArray(moduleList) && moduleList.length > 0 ? (
           moduleList.map((module, index) => (
             <li key={index}>
               <Course_details_card

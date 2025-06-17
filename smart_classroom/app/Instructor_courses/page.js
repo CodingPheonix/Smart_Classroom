@@ -8,6 +8,7 @@ import I_course_card from '../Components/I_course_card'
 import { useSelector, useDispatch } from 'react-redux'
 import { setText, clearText } from '../redux/counter/counterSlice'
 import dotenv from 'dotenv';
+import { toast } from 'react-toastify';
 
 dotenv.config();
 
@@ -58,6 +59,7 @@ const Page = () => {
                 body: JSON.stringify(data)
             })
             const result = await response.json()
+            console.log(result)
         } catch (error) {
             console.error('Failed to post course', error.message);
         }
@@ -102,10 +104,10 @@ const Page = () => {
         await getCourse()
         reset()
         setIsCreate(!isCreate)
-        // toast("New Course created successfully", {
-        //     position: "top-right",
-        //     autoClose: 5000,
-        // })
+        toast("New Course created successfully", {
+            position: "top-right",
+            autoClose: 5000,
+        })
     }
 
 

@@ -15,9 +15,9 @@ export async function GET(request, { params }) {
 
         try {
             const courses = await course.findOne({ course_id: slug })
-            NextResponse.send({ success: true, message: "Course title fetched successfully", data: courses })
+            return NextResponse.json({ success: true, message: "Course title fetched successfully", data: courses });
         } catch (error) {
-            NextResponse.send({ status: 'error', message: 'Failed to fetch course title', error: error.message });
+            return NextResponse.json({ status: 'error', message: 'Failed to fetch course title', error: error.message }, { status: 500 });
         }
     }
 }
@@ -39,10 +39,10 @@ export async function POST(request, { params }) {
 
             await new_module_data.save()
 
-            NextResponse.status(200).send({ message: "Default module values added successfully", data: new_module_data })
+            return NextResponse.json({ message: "Default module values added successfully", data: new_module_data }, { status: 200 })
 
         } catch (error) {
-            NextResponse.status(500).send({ success: false, message: 'Failed to post module data', error: error.message });
+            return NextResponse.json({ success: false, message: 'Failed to post module data', error: error.message }, { status: 500 });
         }
     }
 
@@ -56,9 +56,9 @@ export async function POST(request, { params }) {
                 quiz: []
             })
             await new_quiz.save()
-            NextResponse.status(200).send({ message: "Default quiz data uploaded", data: new_quiz })
+            return NextResponse.json({ message: "Default quiz data uploaded", data: new_quiz }, { status: 200 })
         } catch (error) {
-            NextResponse.status(500).json({ message: 'Internal server error' });
+            return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
         }
     }
 }
@@ -71,7 +71,7 @@ export async function PUT(request, { params }) {
     try {
         const courses = await course.findOne({ course_id: slug });
         if (!courses) {
-            return NextResponse.status(404).send({ success: false, message: 'Course not found' });
+            return NextResponse.json({ success: false, message: 'Course not found' }, { status: 404 });
         }
 
         const { id, moduleTitle, moduleDescription, contentType, videoUrl } = req.body;
@@ -88,8 +88,8 @@ export async function PUT(request, { params }) {
 
         const updated_course = await courses.save();
 
-        NextResponse.json({ success: true, message: 'Course updated successfully', data: courses });
+        return NextResponse.json({ success: true, message: 'Course updated successfully', data: courses });
     } catch (error) {
-        NextResponse.status(500).send({ success: false, message: 'Failed to update course', error: error.message });
+        return NextResponse.json({ success: false, message: 'Failed to update course', error: error.message }, { status: 500 });
     }
 }
