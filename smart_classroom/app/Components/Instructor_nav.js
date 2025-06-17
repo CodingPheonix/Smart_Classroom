@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { setText, clearText } from '../redux/counter/counterSlice'
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 const Instructor_nav = () => {
 
@@ -29,19 +29,24 @@ const Instructor_nav = () => {
     const user_id = useSelector(state => state.counter.text);
     const [name, setName] = useState("");
     const [is_hamburgered, setIs_hamburgered] = useState(false);
+    console.log(user_id);
+
 
     const router = useRouter()
 
-    const get_instructor_details = useCallback(async () => {
-        const response = await fetch(`/api/instructor_nav?user_id=${user_id}`, {
+    const get_instructor_details = (async () => {
+        const response = await fetch(`/api/components/instructor_nav?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
+        console.log(response);
+        
         const result = await response.json();
+        console.log(result);
         setName(result.data.candidate_name);
-    }, [user_id]);
+    });
     // const get_instructor_details = useCallback(async () => {
     //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
     //         method: 'GET',
@@ -61,6 +66,7 @@ const Instructor_nav = () => {
             },
         })
         const result = await response.json()
+        console.log(result)
         return result
     };
     // const get_current_user = async () => {
@@ -94,15 +100,25 @@ const Instructor_nav = () => {
     // };
 
 
+    // useEffect(() => {
+    //     get_instructor_details();
+    // }, [get_instructor_details, user_id]);
+
     useEffect(() => {
-        get_instructor_details();
-    }, [get_instructor_details]);
+        console.log("user_id changed:", user_id);
+        if (user_id) {
+            console.log("block entered")
+            get_instructor_details();
+        }
+    }, [user_id]);
 
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const result = await get_current_user();
+                console.log("Current user data:", result);
+                
                 if (result.data && result.data.length !== 0) {
                     dispatch(setText(result.data[0].user_id));
                 }

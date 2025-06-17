@@ -26,6 +26,7 @@ export async function GET(request, { params }) {
 
         try {
             const target_user = await login.findOne({ candidate_id: id })
+            console.log(target_user)
             if (target_user) {
                 const result = {
                     title: target_user.candidate_title,

@@ -8,6 +8,7 @@ import { setText, clearText } from '../redux/counter/counterSlice'
 import { analytics } from "../Firebase/firebase-config";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import dotenv from 'dotenv';
+import defaultImage from '../Images/default.png'
 
 dotenv.config();
 
@@ -73,13 +74,14 @@ const Page = () => {
         },
       });
       const result = await response.json();
-      setName(result.data.name);
-      setAboutMe(result.data.aboutMe);
-      setTitle(result.data.title);
-      setDepartment(result.data.institution);
-      setContact(result.data.contact);
-      setAchievements(result.data.achievements);
-      setImageURL(result.data.image);
+      console.log(result);
+      setName("NAME" || result.data.name);
+      setAboutMe("ABOUT ME" || result.data.aboutMe);
+      setTitle("TITLE" || result.data.title);
+      setDepartment("DEPARTMENT" || result.data.institution);
+      setContact("CONTACT" || result.data.contact);
+      setAchievements([] || result.data.achievements);
+      setImageURL(defaultImage || result.data.image);
     };
   
     get_courses();

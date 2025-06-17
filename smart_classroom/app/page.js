@@ -195,6 +195,7 @@ export default function Home() {
     }
 
     const result = await response.json();
+    console.log("result = "+ result)
     if (response.status === 200) {
       setIsInstructorlogin(!IsInstructorlogin);
       reset();
