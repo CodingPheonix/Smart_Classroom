@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const page = () => {
+const Page = () => {
 
     const dispatch = useDispatch()
     const user_id = useSelector(state => state.counter.text)
@@ -113,4 +113,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
