@@ -262,7 +262,7 @@ const Page = ({ params }) => {
                 // Quiz Section
                 <form onSubmit={handleSubmit(onSubmit)} className="w-4/5 bg-slate-100 p-6 rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold text-center mb-6">Quiz</h1>
-                    {quizData.length > 0 ? (
+                    {Array.isArray(quizData) && quizData.length > 0 ? (
                         quizData.map((question, index) => (
                             <div key={question._id} className="mb-6">
                                 <h2 className="font-semibold text-lg mb-3">{index + 1}. {question.question_title}</h2>

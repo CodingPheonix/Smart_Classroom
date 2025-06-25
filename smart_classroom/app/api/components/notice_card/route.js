@@ -15,11 +15,11 @@ export async function DELETE(request) {
         if (target_notice) {
             target_notice.notices = target_notice.notices.filter(notice => notice._id.toString() !== notice_id);
             await target_notice.save();
-            NextResponse.status(200).send({ message: "Notice deleted successfully", data: target_notice });
+            return NextResponse.json({ message: "Notice deleted successfully", data: target_notice });
         } else {
-            NextResponse.status(404).json({ message: 'Target data not found' });
+            return NextResponse.json({ message: 'Target data not found' }, { status: 404 });
         }
     } catch (error) {
-        NextResponse.status(500).json({ message: 'Internal server error' });
+        return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
 }

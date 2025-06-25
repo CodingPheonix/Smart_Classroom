@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { connect_to_mongo } from "../../mongo/connect_to_mongo";
-import { course } from "../../mongo/mongo_schema";
+import { course, module_data, quiz_data } from "../../mongo/mongo_schema";
 
 await connect_to_mongo()
 

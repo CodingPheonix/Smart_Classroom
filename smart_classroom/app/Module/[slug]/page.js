@@ -512,11 +512,13 @@ const Page = ({ params }) => {
 
         setIsuploading(true)
 
+
         const result = await Promise.all(
             Array.from(file_upload).map((file, index) => {  // Convert FileList to Array
                 const file_ref = ref(analytics, `SmartSkill_courses/${file.name}`);
                 return uploadBytes(file_ref, file).then((data) => {
                     return getDownloadURL(data.ref).then((url) => {
+                        console.log(url);
                         return { 'url': url, "name": file.name, "type": file.type };  // Corrected dynamic key syntax
                     });
                 });
@@ -553,6 +555,8 @@ const Page = ({ params }) => {
     }
 
     const get_files = useCallback(async (data) => {
+        console.log(module_id);
+        
         const response = await fetch(`/api/Module/get_files?module_id=${module_id}`, {
             method: 'GET',
             headers: {
@@ -579,7 +583,7 @@ const Page = ({ params }) => {
 
     //get quiz details
     const get_quiz_details = useCallback(async (data) => {
-        const responce = await fetch(`?api/Module/get_quiz_data?module_id=${module_id}`, {
+        const responce = await fetch(`/api/Module/get_quiz_data?module_id=${module_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

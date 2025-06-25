@@ -74,7 +74,7 @@ export async function PUT(request, { params }) {
             return NextResponse.json({ success: false, message: 'Course not found' }, { status: 404 });
         }
 
-        const { id, moduleTitle, moduleDescription, contentType, videoUrl } = req.body;
+        const { id, moduleTitle, moduleDescription, contentType, videoUrl } = await request.json();
 
         const newModule = {
             module_id: id,

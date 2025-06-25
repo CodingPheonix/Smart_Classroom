@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connect_to_mongo } from "../../mongo/connect_to_mongo";
-import { student_dashboard } from "../../mongo/mongo_schema";
-import { add_all_durations, get_student_rank } from "@/app/operations.js";
+import { student_dashboard, quiz_data } from "../../mongo/mongo_schema";
+import { add_all_durations, get_student_rank } from "../../../operations.js";
 
 await connect_to_mongo()
 
@@ -14,6 +14,7 @@ export async function GET(request, { params }) {
         const student_id = searchParams.get('user_id');
 
         try {
+            console.log("Fetching id for student:", student_id);
             const data = await student_dashboard.find({ student_id: student_id, content_type: "quiz" });
 
             if (data && data.length > 0) {

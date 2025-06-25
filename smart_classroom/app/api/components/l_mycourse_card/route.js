@@ -13,15 +13,15 @@ export async function DELETE(request) {
     try {
         const target_user = await login.findOne({ candidate_id: user });
         if (!target_user) {
-            return NextResponse.status(404).send({ message: "User not found" });
+            return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
         target_user.candidate_courses = target_user.candidate_courses.filter(courseId => courseId !== id);
         await target_user.save();
 
         await student_dashboard.deleteMany({ student_id: user, course_id: id });
 
-        NextResponse.status(200).send({ message: "Target course deleted and data from dashboard deleted" });
+        return NextResponse.json({ message: "Target course deleted and data from dashboard deleted" }, { status: 200 });
     } catch (error) {
-        NextResponse.status(500).json({ message: 'Internal server error', error: error.message });
+        return NextResponse.json({ message: 'Internal server error', error: error.message }, { status: 500 });
     }
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connect_to_mongo } from "../../mongo/connect_to_mongo";
+import { connect_to_mongo } from "../mongo/connect_to_mongo";
 import { course } from "../mongo/mongo_schema";
 
 await connect_to_mongo()

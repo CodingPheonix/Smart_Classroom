@@ -11,7 +11,8 @@ export async function GET(request, { params }) {
         const url = new URL(request.url);
         const searchParams = url.searchParams;
         const id = searchParams.get('id');
-
+        console.log(id);
+        
         try {
             const courses = await course.findOne({ course_id: id })
             return NextResponse.json({ success: true, message: "Course title fetched successfully", data: courses });
@@ -24,6 +25,9 @@ export async function GET(request, { params }) {
         const searchParams = url.searchParams;
         const user = searchParams.get('user_id');
         const Module = searchParams.get('module_id');
+
+        console.log("user:", user);
+        console.log("module:", Module);
 
         try {
             const target_module = await student_dashboard.findOne({ student_id: user, module_id: Module })

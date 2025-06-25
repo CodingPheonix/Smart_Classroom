@@ -20,7 +20,7 @@ const Page = ({ params }) => {
 
   const getModule = useCallback(async () => {
     try {
-      const response = await fetch(`/api/LearnerCourse/getModule?id=${params.slug}`);
+      const response = await fetch(`/api/LearnerCourses/getModule?id=${params.slug}`);
       const result = await response.json();
       return result.data.course_details;
     } catch (error) {
@@ -31,7 +31,8 @@ const Page = ({ params }) => {
 
   const getMark = useCallback(async (module_id) => {
     try {
-      const response = await fetch(`/api/LearnerCourse/get_mark?user_id=${user_id}&module_id=${module_id}`);
+      console.log("Fetching mark for module_id:", module_id);
+      const response = await fetch(`/api/LearnerCourses/get_mark?user_id=${user_id}&module_id=${module_id}`);
       const result = await response.json();
       return result.data;
     } catch (error) {
@@ -55,6 +56,8 @@ useEffect(() => {
   const fetchModulesWithMarks = async () => {
     try {
       const modules = await getModule();
+      console.log(modules);
+      
       const modulesWithMarks = await Promise.all(
         modules.map(async (module) => {
           const mark = await getMark(module.module_id);
@@ -88,7 +91,7 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchTitle = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`);
+    const response = await fetch(`/api/View_Courses/get_title?course_id=${params.slug}`);
     const data = await response.json();
     setTitle(data.data.course_title);
   };

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connect_to_mongo } from "../../mongo/connect_to_mongo";
+import { connect_to_mongo } from "../mongo/connect_to_mongo";
 import { course, login } from "../mongo/mongo_schema";
 
 await connect_to_mongo()
@@ -11,7 +11,8 @@ export async function GET(request) {
 
     try {
         const candidate = await login.findOne({ candidate_id: learner_id })
-
+        console.log(candidate);
+        
         const mycourses_id = candidate.candidate_courses
 
         const mycourses = await Promise.all(

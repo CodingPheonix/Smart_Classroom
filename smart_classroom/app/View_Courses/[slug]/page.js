@@ -17,21 +17,6 @@ const Page = ({ params }) => {
     // const [courseDetails, setCourseDetails] = useState({})
     const [moduleList, setModuleList] = useState([])
 
-    useEffect(() => {
-        const getModules = async () => {
-            const modules = await getModule()
-            setModuleList(modules)
-        }
-        getModules()
-    }, [isAddingCourse, getModule])
-
-    useEffect(() => {
-        const fetchTitle = async () => {
-            await getTitle();
-        };
-        fetchTitle();
-    }, [getTitle]);
-
     // const {
     //     register,
     //     handleSubmit,
@@ -57,7 +42,7 @@ const Page = ({ params }) => {
 
     const getModule = useCallback(async () => {
         try {
-            const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
+            const responce = await fetch(`/api/View_Courses/get_title?course_id=${params.slug}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,15 +107,33 @@ const Page = ({ params }) => {
     // }
 
     const getTitle = useCallback(async () => {
-        const responce = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/courses/course/get-title/${params.slug}`, {
+        const responce = await fetch(`/api/View_Courses/get_title?course_id=${params.slug}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
+        console.log(responce);
+        
         const data = await responce.json()
         settitle(data.data.course_title)
     }, [params.slug])
+
+    useEffect(() => {
+        const getModules = async () => {
+            const modules = await getModule()
+            setModuleList(modules)
+        }
+        getModules()
+    }, [isAddingCourse, getModule])
+
+    useEffect(() => {
+        const fetchTitle = async () => {
+            await getTitle();
+        };
+        fetchTitle();
+    }, [getTitle]);
+
 
 
     return (
@@ -141,7 +144,7 @@ const Page = ({ params }) => {
 
             {/* module  */}
             <ol className='h-full flex flex-wrap gap-5 m-2'>
-                {moduleList.length > 0 ? (
+                { Array.isArray(moduleList) && moduleList.length > 0 ? (
                     moduleList.map((module, index) => (
                         <li key={index}>
                             <View_course_details_card

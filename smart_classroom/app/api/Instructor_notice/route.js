@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connect_to_mongo } from "../../mongo/connect_to_mongo";
+import { connect_to_mongo } from "../mongo/connect_to_mongo";
 import { notice_data } from "../mongo/mongo_schema";
 
 await connect_to_mongo()
@@ -26,7 +26,7 @@ export async function POST(request, { params }) {
     const user = searchParams.get('user_id');
 
     try {
-        const updatedList = req.body;
+        const updatedList = await request.json();
 
         if (!Array.isArray(updatedList) || !updatedList.every(notice => notice.heading && notice.description)) {
             return NextResponse.json({ message: "Invalid format for updatedList" }, { status: 400 });

@@ -15,11 +15,11 @@ export async function DELETE(request) {
         if (target_module) {
             target_module.module_theory = target_module.module_theory.filter(para => para._id.toString() !== id);
             await target_module.save();
-            NextResponse.status(200).send({ message: "Paragraph deleted successfully", data: target_module });
+            return NextResponse.json({ message: "Paragraph deleted successfully", data: target_module }, { status: 200 });
         } else {
-            NextResponse.status(404).json({ message: 'Module not found' });
+            return NextResponse.json({ message: 'Module not found' }, { status: 404 });
         }
     } catch (error) {
-        NextResponse.status(500).json({ message: 'Internal server error' });
+        return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
 }

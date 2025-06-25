@@ -91,12 +91,14 @@ export async function PUT(request, { params }) {
         const Module = searchParams.get('module_id');
 
         try {
+            const body = await request.json();
+
             const target_module = await module_data.findOne({ module_id: Module });
 
             if (target_module) {
                 target_module.module_theory = [];
 
-                req.body.forEach(item => {
+                body.forEach(item => {
                     const newTheory = {
                         theory_heading: item.heading,
                         theory_explanation: item.explanation
@@ -143,7 +145,7 @@ export async function PUT(request, { params }) {
             if (target_module) {
                 target_module.quiz = [];
 
-                req.body.forEach(ques => {
+                (await request.json()).forEach(ques => {
                     const newQuestion = {
                         correct_option: ques.correctAnswer,
                         question_title: ques.question,

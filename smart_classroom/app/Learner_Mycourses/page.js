@@ -19,6 +19,7 @@ const Page = () => {
 
     //States declaration
     const [CourseList, setCourseList] = useState([])
+console.log(user_id);
 
     //API calls
     const getCourseList = useCallback(async () => {

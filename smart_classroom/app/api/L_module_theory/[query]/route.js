@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connect_to_mongo } from "../../mongo/connect_to_mongo";
-import { course, module_data, quiz_data } from "../../mongo/mongo_schema";
+import { course, module_data, quiz_data, student_dashboard } from "../../mongo/mongo_schema";
+import {addTimes} from '../../../operations.js'
 
 await connect_to_mongo()
 
@@ -84,43 +85,53 @@ export async function GET(request, { params }) {
     }
 }
 export async function POST(request, { params }) {
-    const url = new URL(request.url);
-    const searchParams = url.searchParams;
-    const user = searchParams.get('user_id');
-    const Module = searchParams.get('module_id');
-    const Course = searchParams.get('course_id');
+    const query = params.query;
 
-    try {
-        const { content_type, time_diff } = req.body
+    if (query === "handle_content_data") {
+        const url = new URL(request.url);
+        const searchParams = url.searchParams;
+        const user = searchParams.get('user_id');
+        const Module = searchParams.get('module_id');
+        const Course = searchParams.get('course_id');
 
-        const existing_data = await student_dashboard.findOne({ student_id: user, module_id: Module, course_id: Course })
+        // console.log("user:", user);
+        // console.log("module:", Module);
+        // console.log("course:", Course);
 
-        if (existing_data) {
-            existing_data.is_complete = true
-            existing_data.time_taken = addTimes(existing_data.time_taken, time_diff)
-            await existing_data.save()
+        try {
+            const { content_type, time_diff } = await request.json();
 
-            return NextResponse.json({ message: "Student result updated", data: existing_data });
-        } else {
-            const new_data = new student_dashboard({
-                student_id: user,
-                module_id: Module,
-                course_id: Course,
-                content_type: content_type, // Should match the schema (array or object)
-                quiz_result: [], // Should match the schema (array or object)
-                quiz_score: 0, // Ensure score is a number in the schema
-                total_score: 0,
-                time_taken: `${time_diff.split(":")[0]}:${time_diff.split(":")[1]}:${time_diff.split(":")[2]}` || "0:0:0",
-                is_complete: false,
-                most_recent: false,
-            });
+            const existing_data = await student_dashboard.findOne({ student_id: user, module_id: Module, course_id: Course })
+            console.log("existing_data:", existing_data);
+            if (existing_data) {
+                existing_data.is_complete = true
+                existing_data.time_taken = addTimes(existing_data.time_taken, time_diff)
+                await existing_data.save()
 
-            const savedData = await new_data.save();
+                console.log("existing_data after modification:", existing_data);
 
-            return NextResponse.json({ message: "Content data uploaded", data: savedData });
+                return NextResponse.json({ message: "Student result updated", data: existing_data });
+            } else {
+                const new_data = new student_dashboard({
+                    student_id: user,
+                    module_id: Module,
+                    course_id: Course,
+                    content_type: content_type, // Should match the schema (array or object)
+                    quiz_result: [], // Should match the schema (array or object)
+                    quiz_score: 0, // Ensure score is a number in the schema
+                    total_score: 0,
+                    time_taken: `${time_diff.split(":")[0]}:${time_diff.split(":")[1]}:${time_diff.split(":")[2]}` || "0:0:0",
+                    is_complete: false,
+                    most_recent: false,
+                });
+
+                const savedData = await new_data.save();
+
+                return NextResponse.json({ message: "Content data uploaded", data: savedData });
+            }
+        } catch (error) {
+            return NextResponse.json({ success: false, message: 'Internal server error', error: error.message }, { status: 500 });
         }
-    } catch (error) {
-        return NextResponse.json({ success: false, message: 'Internal server error', error: error.message }, { status: 500 });
     }
 }
 export async function PUT(request, { params }) {
@@ -130,7 +141,7 @@ export async function PUT(request, { params }) {
     const Course = searchParams.get('course_id');
 
     try {
-        const { result, score, id, total, content_type } = req.body;
+        const { result, score, id, total, content_type } = await request.json();
 
         const existing_data = await student_dashboard.findOne({ student_id: id, module_id: Module, course_id: Course })
 

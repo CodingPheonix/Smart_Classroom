@@ -29,7 +29,6 @@ const Instructor_nav = () => {
     const user_id = useSelector(state => state.counter.text);
     const [name, setName] = useState("");
     const [is_hamburgered, setIs_hamburgered] = useState(false);
-    console.log(user_id);
 
 
     const router = useRouter()
@@ -41,10 +40,8 @@ const Instructor_nav = () => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(response);
         
         const result = await response.json();
-        console.log(result);
         setName(result.data.candidate_name);
     });
     // const get_instructor_details = useCallback(async () => {
@@ -66,7 +63,6 @@ const Instructor_nav = () => {
             },
         })
         const result = await response.json()
-        console.log(result)
         return result
     };
     // const get_current_user = async () => {
@@ -105,9 +101,7 @@ const Instructor_nav = () => {
     // }, [get_instructor_details, user_id]);
 
     useEffect(() => {
-        console.log("user_id changed:", user_id);
         if (user_id) {
-            console.log("block entered")
             get_instructor_details();
         }
     }, [user_id]);
@@ -116,9 +110,7 @@ const Instructor_nav = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await get_current_user();
-                console.log("Current user data:", result);
-                
+                const result = await get_current_user();                
                 if (result.data && result.data.length !== 0) {
                     dispatch(setText(result.data[0].user_id));
                 }

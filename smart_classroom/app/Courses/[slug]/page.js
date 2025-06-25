@@ -135,6 +135,7 @@ const Page = ({ params }) => {
 
       {/* module  */}
       <ol className='h-full'>
+        {console.log(moduleList)}
         {Array.isArray(moduleList) && moduleList.length > 0 ? (
           moduleList.map((module, index) => (
             <li key={index}>
