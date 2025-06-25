@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 const I_results_card = ({ image, name, achieved_score, registered_course, total_score, total_reading_time, modules_completed }) => {
     return (
@@ -6,10 +7,11 @@ const I_results_card = ({ image, name, achieved_score, registered_course, total_
             <div className="flex items-center justify-center bg-gray-100">
                 <div className=" bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="relative h-48">
-                        <img
+                        <Image
                             src={`${image}`}
                             alt="Student Picture"
                             className="object-cover w-full h-full"
+                            layout="fill"
                         />
                     </div>
 

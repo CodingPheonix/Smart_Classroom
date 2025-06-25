@@ -4,9 +4,9 @@ import Instructor_nav from '../Components/Instructor_nav'
 import I_results_card from '../Components/I_results_card'
 import { useSelector, useDispatch } from 'react-redux'
 import { setText, clearText } from '../redux/counter/counterSlice'
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 const Page = () => {
 

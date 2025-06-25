@@ -33,7 +33,7 @@ const Instructor_nav = () => {
 
     const router = useRouter()
 
-    const get_instructor_details = (async () => {
+    const get_instructor_details = useCallback(async () => {
         const response = await fetch(`/api/components/instructor_nav?user_id=${user_id}`, {
             method: 'GET',
             headers: {
@@ -43,7 +43,7 @@ const Instructor_nav = () => {
         
         const result = await response.json();
         setName(result.data.candidate_name);
-    });
+    }, [user_id]);
     // const get_instructor_details = useCallback(async () => {
     //     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get_user_details/${user_id}`, {
     //         method: 'GET',
@@ -104,7 +104,7 @@ const Instructor_nav = () => {
         if (user_id) {
             get_instructor_details();
         }
-    }, [user_id]);
+    }, [user_id, get_instructor_details]);
 
 
     useEffect(() => {
