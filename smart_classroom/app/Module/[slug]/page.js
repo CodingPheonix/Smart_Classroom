@@ -602,7 +602,7 @@ const Page = ({ params }) => {
             replaceQuestions(formattedQuestions);
         }
 
-    }, [module_id])
+    }, [module_id, replaceQuestions])
 
     // Function to delete a specific file
     const handleFileDelete = (index) => {

@@ -4,6 +4,8 @@ import Instructor_nav from '../Components/Instructor_nav'
 import I_results_card from '../Components/I_results_card'
 import { useSelector, useDispatch } from 'react-redux'
 import { setText, clearText } from '../redux/counter/counterSlice'
+import { get } from 'http'
+import { useCallback } from 'react';
 // import dotenv from 'dotenv';
 
 // dotenv.config();
@@ -18,16 +20,16 @@ const Page = () => {
 
     // API calls
 
-    const get_student_data = async () => {
-        const response = await fetch(`api/I_results/get_student_data?user_id=${user_id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        const result = await response.json()
-        return { responce: response, result: result }
-    };
+    // const get_student_data = async () => {
+    //     const response = await fetch(`api/I_results/get_student_data?user_id=${user_id}`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     })
+    //     const result = await response.json()
+    //     return { responce: response, result: result }
+    // };
 
 
     // Functions
@@ -62,6 +64,17 @@ const Page = () => {
         get_current_user()
     }, [])
 
+    const get_student_data = useCallback(async () => {
+        const response = await fetch(`api/I_results/get_student_data?user_id=${user_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const result = await response.json()
+        return { responce: response, result: result }
+    }, [user_id]);
+
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
@@ -72,9 +85,9 @@ const Page = () => {
                 console.error("Error fetching student data:", error);
             }
         };
-    
+
         fetchStudentData();
-    }, [user_id]);
+    }, [user_id, get_student_data]);
     
 
     return (

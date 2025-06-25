@@ -51,7 +51,7 @@ const Page = ({ params }) => {
     } catch (error) {
       console.error("Failed to fetch course list: ", error.message)
     }
-  }, [])
+  }, [params.slug])
 
 
   const createModule = async (data) => {
@@ -117,7 +117,7 @@ const Page = ({ params }) => {
 
   useEffect(() => {
     getModules();
-  }, [getModule]); 
+  }, [getModules]); 
 
   useEffect(() => {
     const fetchTitle = async () => {
