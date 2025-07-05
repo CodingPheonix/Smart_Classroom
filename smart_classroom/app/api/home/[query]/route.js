@@ -52,7 +52,7 @@ export async function POST(request, { params }) {
     if (query === 'verify_user_auth') {
         try {
             const { email, password } = await request.json();
-
+            console.log("email = " + email + " password = " + password);
             // Fetch the account by email
             const target_account = await login.findOne({ candidate_email: email });
 

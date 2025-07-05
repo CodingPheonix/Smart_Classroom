@@ -187,7 +187,7 @@ export default function Home() {
   // Form submits for instructors
   const InstructorOnSubmit = async (data) => {
     let response;
-
+    console.log("data = "+ JSON.stringify(data))
     if (isLogin) {
       response = await verify_user_auth(data);
     } else {
@@ -195,7 +195,7 @@ export default function Home() {
     }
 
     const result = await response.json();
-    console.log("result = "+ result)
+    console.log("result = ", result)
     if (response.status === 200) {
       setIsInstructorlogin(!IsInstructorlogin);
       reset();
